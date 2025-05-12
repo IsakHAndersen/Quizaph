@@ -1,0 +1,90 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager navigation
+@inject UserSettings userSettings
+
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="5" Dense="true" Color="Color.Primary" Class="h2">
+        <MudContainer MaxWidth="MaxWidth.Medium" Class="d-flex align-center justify-center">
+            <MudGrid Class="d-flex align-center">
+                <MudItem xs="2" Class="d-flex justify-center">
+                    <MudButton OnClick="MainIconClick">
+                        <img src="images/FenrisBlockIcon.png" alt="Menu" class="menu-icon" />
+                    </MudButton>
+                </MudItem>
+                <MudItem xs="8" Class="d-flex justify-center">
+                    <MudTabs Rounded="true"
+                    AlwaysShowScrollButtons = "false"
+                    ApplyEffectsToContainer="true"
+                    ActivePanelIndexChanged="PanelChanged"
+                    ActivePanelIndex="@selectedTab"
+                    Color="Color.Primary">
+                        <MudTabPanel Text="Discover" Icon="@Icons.Material.Filled.LensBlur" Style="font-size: 13px; text-transform: none" />
+                        <MudTabPanel Visible="false" />
+                        <MudTabPanel Text="GeoQuiz" Icon="@Icons.Material.Filled.ShareLocation" Style="font-size: 13px; text-transform: none;" />               
+                    </MudTabs>
+                </MudItem>
+                <MudItem xs="2" Class="d-flex justify-center">
+                    <MudButton OnClick="ToggleNightMode">
+                        <MudIcon Icon="@(isDarkMode? Icons.Material.Filled.DarkMode :  Icons.Material.Filled.WbSunny)" Color="@(isDarkMode? Color.Success: Color.Warning)"></MudIcon>
+                    </MudButton>
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </MudAppBar>
+
+    <MudMainContent>
+            @Body
+    </MudMainContent>
+</MudLayout>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
+
+@code
+{
+    public static MudTheme CustomDarkTheme = new MudTheme
+    {
+        PaletteDark = new PaletteDark()
+        {
+            Primary = "#191e22",
+            Background = "#161a1d",  
+            Surface = "#232c33",     
+            TextPrimary = "#E3E6E8",
+            TextSecondary = "rgba(255,255,255, 0.7)"
+        }
+    };
+    public bool isDarkMode = true;
+    private int selectedTab = 1; // No tab selected by default
+
+    private void MainIconClick()
+    {
+        selectedTab = 1;
+        navigation.NavigateTo("/");
+    }
+
+    private void ToggleNightMode()
+    {
+        isDarkMode = !isDarkMode;
+        userSettings.IsDarkMode = !userSettings.IsDarkMode;
+    }
+
+    private void PanelChanged(int index)
+    {
+        selectedTab = index; 
+        var route = index switch
+        {
+            0 => "/discover",
+            1 => "/",
+            2 => "/quiz",
+            _ => "/"
+        };
+        navigation.NavigateTo(route);
+    }
+}

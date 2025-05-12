@@ -1,0 +1,36 @@
+﻿<MudPaper>
+    <MudContainer>
+        <MudStack Row="true" Style="border: 15">
+            <MudImage Src="@Info.ImageSource">
+
+            </MudImage>
+            <MudText>
+                @Info.Name
+            </MudText>
+        </MudStack>
+    </MudContainer>
+</MudPaper>
+
+@code {
+    [Parameter] 
+    public QuizLabelInfo Info { get; set; }
+    public string CategoryColor { get; set; }
+
+    protected override void OnInitialized()
+    {
+        // Listen for changes in user settings
+        SetCategoryColor();
+    }
+
+    public void SetCategoryColor()
+    {
+        CategoryColor = Info.Category switch
+        {
+            QuizCategory.Alphabets => "",
+            QuizCategory.Geography => "",
+            QuizCategory.Geometry => "",
+            QuizCategory.Sports => "",
+            _ => throw new ArgumentException(message: "Invalid quiz category", paramName: nameof(Info.Category))
+        };
+    }
+}
