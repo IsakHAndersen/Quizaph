@@ -1,0 +1,167 @@
+﻿@using QuizaphFrontend.Models.QuizModels
+@using QuizaphFrontend.Models.Quizes
+@using QuizaphFrontend.Services
+@inject IJSRuntime JS
+@inject QuizDataRetrievalService QuizDataRetrievalService
+
+<MudPaper Square="true" style="background-color: transparent; overflow: hidden;" Elevation="0">
+    <MudPaper 
+              Style="position: absolute; top: 20px; left: 20px; z-index: 1100; background-color: transparent;
+                 padding: 8px 12px; border-radius: 8px; display: flex; gap: 12px; align-items: center; border-block: 0;"
+              Elevation="0">
+
+        <MudButton OnClick="@TogglePanel"
+                   Variant="Variant.Text"
+                   Color="Color.Primary"
+                   EndIcon="@toggleIcon"
+                   Style="text-transform: none; max-width: 250px;">
+            View Countries
+        </MudButton>
+        <MudFab StartIcon="@Icons.Material.Filled.RestartAlt" OnClick="Reset" Size="Size.Small" IconSize="Size.Small" Style="background-color: #f9f9f9; elevation: 1;"/>
+        <MudFab StartIcon="@Icons.Material.Filled.Output" OnClick="ShowEndScreen" Size="Size.Small" IconSize="Size.Small" Style="background-color: #f9f9f9; elevation: 1;"/>
+    </MudPaper>
+
+    @if (showPanel)
+    {
+        <MudExpansionPanels Style="position: absolute; top: 60px; margin: 20px;" Dense>
+            @foreach (var continentGroup in CountryQuizData.Countries.GroupBy(a => a.Continent))
+            {
+                <MudExpansionPanel Text="@FormatContinentName(continentGroup.Key)" Icon="@Icons.Material.Filled.Public" Style="margin: 3px; elevation: 0;">
+                    <MudStack Row="true" Spacing="0" Wrap="Wrap.Wrap">
+                        @foreach (var country in continentGroup)
+                        {
+                            <MudText Style="@GetCountryStyle(country)">
+                                @(country.Guessed? country.CountryName: "•••••")
+                            </MudText>
+                        }
+                    </MudStack>
+                </MudExpansionPanel>
+            }
+        </MudExpansionPanels>
+    }
+    <MudText Style="position: absolute; top: 10px; right: 20px; background-color: rgba(255, 255, 255, 0.8);
+                    padding: 8px 12px; border-radius: 12px; font-weight: bold; font-size: 14px; font-family: 'Roboto Condensed';">
+        @GuessedAnswers / @TotalAnswers
+    </MudText>
+
+    <div id="svg-zoom-container" style="width: 100%; height: 100%; overflow: hidden; touch-action: none;">
+        <object id="svg-map"
+                type="image/svg+xml"
+                data="SVGS/world_modified.svg"
+                style="width: 100%; height: 100%; max-height: 100%; cursor: move;">
+        </object>
+    </div>
+    <MudTextField Value="@Input"
+                  ValueChanged="async (string val) => await InputChanged(val)"
+                  Immediate="true"
+                  Placeholder="Enter country"
+                  Variant="Variant.Outlined"
+                  Adornment="Adornment.End"
+                  AdornmentIcon="@Icons.Material.Filled.Search"
+                  AdornmentColor="Color.Dark"
+                  Style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+           width: 300px; height: 40px; background-color: white;" />
+    <MudFab StartIcon="@Icons.Material.Filled.Fullscreen"
+            Color="Color.Primary"
+            Style="position: absolute; bottom: 16px; right: 16px;"
+            Size="Size.Small"
+            OnClick="ToggleFullScreen" />
+</MudPaper>
+
+
+@code {
+    [CascadingParameter] private QuizInfo? QuizInfo { get; set; }
+    private bool showPanel = false;
+    private string toggleIcon => showPanel ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore;
+    private int GuessedAnswers = 0;
+    private string Input { get; set; } = string.Empty;
+    private int TotalAnswers;
+    private CountryQuizData CountryQuizData { get; set; } = new CountryQuizData();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RetrieveQuizData();
+        TotalAnswers = CountryQuizData.Countries.Count();
+    }
+
+    private async Task RetrieveQuizData()
+    {
+        CountryQuizData = await QuizDataRetrievalService.GetCountryQuizData();
+    }
+
+    private void TogglePanel()
+    {
+        showPanel = !showPanel;
+    }
+
+    public void ShowMissingCountries(string content)
+    {
+
+    }
+
+    public void OnModeChanged(string mode)
+    {
+
+    }
+
+    private async Task ToggleFullScreen()
+    {
+        await JS.InvokeVoidAsync("toggleFullScreen");
+    }
+
+    public async void Reset()
+    {
+        Input = string.Empty;
+        GuessedAnswers = 0;
+        CountryQuizData.ResetQuiz();
+        await JS.InvokeVoidAsync("resetSvg");
+    }
+
+    private string FormatContinentName(Continent continent)
+    {
+        return continent switch
+        {
+            Continent.NorthAmerica => "North America",
+            Continent.SouthAmerica => "South America",
+            _ => continent.ToString()
+        };
+    }
+
+    private string GetCountryStyle(Country country)
+    {
+        var bgColor = country.Guessed ? "#81ef73" : "#f1f1f1";
+        return $"white-space: nowrap; background-color: {bgColor}; padding: 4px 8px; border-radius: 4px; margin: 4px; margin-bottom: 12px;";
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(100);
+            await JS.InvokeVoidAsync("enableSvgZoomPan", "svg-map");
+        }
+    }
+
+    private async Task InputChanged(string newVal)
+    {
+        Input = newVal;
+        if (string.IsNullOrWhiteSpace(Input)) return;
+        var match = CountryQuizData.Countries.Where(a => !a.Guessed).FirstOrDefault(a => a.ValidNames.Any(guess => string.Equals(guess, Input, StringComparison.OrdinalIgnoreCase)));
+        if (match != null)
+        {
+            match.Guessed = true;
+            await JS.InvokeVoidAsync("highlightSvgElementById", match.Id);
+            Input = string.Empty;
+            GuessedAnswers++;
+            if (GuessedAnswers == TotalAnswers)
+            {
+                ShowEndScreen();
+            }
+        }
+    }
+
+    private void ShowEndScreen()
+    {
+
+    }
+}

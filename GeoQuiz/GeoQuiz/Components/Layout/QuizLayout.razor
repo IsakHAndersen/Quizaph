@@ -1,0 +1,85 @@
+﻿@using QuizaphFrontend.Components.ChildComponents
+@using QuizaphFrontend.Components.MudblazorDialogComponents
+@using QuizaphFrontend.Services
+@inherits LayoutComponentBase
+@inject NavigationManager navigation
+@inject IDialogService DialogService
+@inject CurrentQuizStateService QuizState
+
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout Style="height: 100vh;">
+    <AppBarComponent/>
+    <MudPaper Square="true" MaxWidth="MaxWidth.Large" style="padding: 90px 120px 20px 120px; background-color: #258BAE; height:100%;">
+        <MudStack Spacing="7">
+            <MudItem>
+                <MudStack Row=true Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                    <MudStack row=true Spacing="6" AlignItems="AlignItems.Center">
+                        <MudText Typo="Typo.h5" Style="color: #ffffff; font-family: 'Roboto Condensed'">@QuizState.CurrentQuizInfo?.Title Quiz</MudText>
+                        @if (QuizState.CurrentQuizInfo?.QuizModes.Count > 1)
+                        {
+                            <MudMenu Label="Select Mode" Variant="Variant.Filled" Color="Color.Tertiary" Size="Size.Medium" Dense>
+                                @foreach (var mode in QuizState.CurrentQuizInfo.QuizModes)
+                                {
+                                    <MudMenuItem Label="@mode.ToString()" OnClick="@(() => SelectMode(mode.ToString()))" />
+                                }
+                            </MudMenu>
+                        }
+                    </MudStack>
+                    <MudStack row=true Spacing="4" AlignItems="AlignItems.Center">
+                        <MudButton @onclick="() => OpenDialogAsync(DialogType.Rules)" Variant="Variant.Text" Color="Color.Dark" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Style="text-transform: none;">
+                            Rules
+                        </MudButton>
+                        <MudButton @onclick="() => OpenDialogAsync(DialogType.Ranking)" Variant="Variant.Text" Color="Color.Dark" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Style="text-transform: none;">
+                            Rankings
+                        </MudButton>
+                        <MudButton @onclick="() => OpenDialogAsync(DialogType.Information)" Variant="Variant.Text" Color="Color.Dark" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Style="text-transform: none;">
+                            Info
+                        </MudButton>
+                        <MudImage Src="@QuizState.CurrentQuizInfo?.ImagePath" Elevation="25" Class="rounded-lg" Style="border-radius: 20px;"/>
+                    </MudStack>
+                </MudStack>
+            </MudItem>
+            <MudMainContent Style="background-color: #258BAE; padding: 0;">
+                @Body
+            </MudMainContent>
+        </MudStack>
+    </MudPaper>
+</MudLayout>
+
+
+@code {
+
+    private string selectedMode = "Standard";
+
+    private Task OpenDialogAsync(DialogType type)
+    {
+        var dialogData = new Dialog
+        {
+            Title = type.ToString(),
+            DialogContent = type switch
+            {
+                DialogType.Rules => QuizState.CurrentQuizInfo!.Rules,
+                DialogType.Information => new List<string> { QuizState.CurrentQuizInfo!.Description },
+                DialogType.Ranking => new List<string> { "Not Implemented" },
+            }
+        };
+
+        var parameters = new DialogParameters
+    {
+        { "Dialog", dialogData }
+    };
+
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        return DialogService.Show<BasicDialog>(dialogData.Title, parameters, options).Result;
+    }
+
+    void SelectMode(string mode)
+    {
+        selectedMode = mode;
+    }
+}

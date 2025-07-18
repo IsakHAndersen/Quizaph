@@ -1,36 +1,63 @@
-﻿<MudPaper>
-    <MudContainer>
-        <MudStack Row="true" Style="border: 15">
-            <MudImage Src="@Info.ImageSource">
+﻿@using QuizaphFrontend.Services
+@inject NavigationManager navigation
+@inject CurrentQuizStateService QuizState
+<MudPaper Style="@SetCategoryColor()" Class="mt-4" Elevation="0" @onclick="() => NavigateToQuiz()">
+    <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+        <!-- Left side: Title -->
+        <MudText Style="color: #ffffff; font-size: 14px;">
+            @QuizInfo.Title
+        </MudText>
 
-            </MudImage>
-            <MudText>
-                @Info.Name
+        <!-- Right side: Icon + Player Count -->
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+            <MudIcon Icon="@Icons.Material.Filled.Group" Style="color: #ffffff;" />
+            <MudText Style="color: #ffffff;" Typo="Typo.body2">
+                @FormatPlayersRange(QuizInfo.PlayersAvailable)
             </MudText>
         </MudStack>
-    </MudContainer>
+    </MudStack>
 </MudPaper>
 
 @code {
     [Parameter] 
-    public QuizLabelInfo Info { get; set; }
-    public string CategoryColor { get; set; }
+    public QuizInfo QuizInfo { get; set; }
 
     protected override void OnInitialized()
     {
-        // Listen for changes in user settings
         SetCategoryColor();
     }
 
-    public void SetCategoryColor()
+    public string SetCategoryColor()
     {
-        CategoryColor = Info.Category switch
+        var categoryColor = QuizInfo.QuizCategory switch
         {
-            QuizCategory.Alphabets => "",
-            QuizCategory.Geography => "",
-            QuizCategory.Geometry => "",
-            QuizCategory.Sports => "",
-            _ => throw new ArgumentException(message: "Invalid quiz category", paramName: nameof(Info.Category))
+            QuizCategory.Geography => "#a9b9a7",
+            QuizCategory.Technology => "#6029e7",
+            QuizCategory.History => "#cfd293",
+            QuizCategory.Sports => "#4f9ff3",
+            QuizCategory.GeneralKnowledge => "#6fcaaa",
+            _ => throw new ArgumentException(message: "Invalid quiz category", paramName: nameof(QuizInfo.QuizCategory))
         };
+        return $"background-color: {categoryColor}; padding: 5px 20px; border-radius: 12px; opacity: 80%;";
+    }
+
+    private string FormatPlayersRange((int? minPlayers, int? maxPlayers) players)
+    {
+        var (min, max) = players;
+
+        return (min, max) switch
+        {
+            (not null, not null) when min != max => $"{min}-{max}",
+            (not null, not null) => $"{min}",
+            (not null, null) => $"{min}",
+            (null, not null) => $"{max}",
+            _ => "N/A"
+        };
+    }
+
+    void NavigateToQuiz()
+    {
+        QuizState.CurrentQuizInfo = QuizInfo;
+        navigation.NavigateTo($"/Quiz");
     }
 }

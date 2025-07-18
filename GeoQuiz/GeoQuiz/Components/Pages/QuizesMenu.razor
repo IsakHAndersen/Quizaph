@@ -1,0 +1,63 @@
+﻿@inject NavigationManager navigation
+@page "/Quizes"
+@using QuizaphFrontend.Services
+
+
+<MudPaper Square="true" style="background-color: transparent; margin-top: 60px;" Elevation="0">
+    <MudContainer MaxWidth="MaxWidth.Medium">
+        <MudPaper MaxHeight="80%" Width="100%" Square="true" style="background-color: #ffffff; border-radius: 20px; padding: 50px 50px 30px 50px;">
+            <MudStack Row="true" Style="align-items: center" Spacing="6">
+
+                <MudText Style="font-weight: 500">
+                    Found @(QuizInfoList?.Count() ?? 0) Quizes
+                </MudText>
+                <MudTextField @bind-Value="Search" Placeholder="Search" Variant="Variant.Outlined"
+                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search"
+                              AdornmentColor="Color.Dark" Style="height: 40px;"/>
+                <MudMenu>
+                    <ActivatorContent>
+                        <MudButton Variant="Variant.Filled" Style="text-transform: none; background-color: black; color: white; border-radius: 15px;"> 
+                            Sort By
+                        </MudButton>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudMenuItem Label="Popularity" />
+                        <MudMenuItem Label="Newest" />
+                        <MudMenuItem Label="Rating" />
+                    </ChildContent>
+                </MudMenu>
+            </MudStack>
+            
+            <MudContainer Style="margin: 30px 0; padding: 0px;">
+                @if (QuizInfoList is not null)
+                {
+                    @foreach (var item in QuizInfoList)
+                    {
+                        <QuizaphFrontend.Components.ChildComponents.QuizInfoLabelComponent QuizInfo="item" />
+                    }
+                }
+                else
+                {
+                    <MudText>Loading quizzes...</MudText>
+                }
+            </MudContainer>
+            <MudStack Justify="Justify.Center" Style="margin-top: 10px;">
+                <MudButton Variant="Variant.Text" Style="color: black">
+                    Load More
+                </MudButton>
+            </MudStack>
+        </MudPaper>
+    </MudContainer>
+</MudPaper>
+
+@code{
+    private List<QuizInfo> QuizInfoList;
+    public string Search { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Database call to retrieve basic quiz info. 
+        // Whenever any filter is changed, new method that upates quizinfolist should be called.
+        QuizInfoList = await DummyDataQuiz.GetAllQuizes();
+    }
+}

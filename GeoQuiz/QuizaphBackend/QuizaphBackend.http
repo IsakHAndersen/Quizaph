@@ -1,0 +1,6 @@
+@QuizaphBackend_HostAddress = http://localhost:5274
+
+GET {{QuizaphBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

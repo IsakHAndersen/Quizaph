@@ -253,6 +253,25 @@
           "buildMultiTargeting/MudBlazor.props": {}
         }
       },
+      "MudBlazor.ThemeManager/3.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components": "8.0.12",
+          "MudBlazor": "8.0.0"
+        },
+        "compile": {
+          "lib/net8.0/MudBlazor.ThemeManager.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/MudBlazor.ThemeManager.dll": {}
+        },
+        "build": {
+          "buildTransitive/MudBlazor.ThemeManager.props": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/MudBlazor.ThemeManager.props": {}
+        }
+      },
       "System.IO.Pipelines/8.0.0": {
         "type": "package",
         "compile": {
@@ -267,6 +286,16 @@
         },
         "build": {
           "buildTransitive/net6.0/_._": {}
+        }
+      },
+      "CommonModels/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/CommonModels.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CommonModels.dll": {}
         }
       }
     }
@@ -665,6 +694,27 @@
         "staticwebassets/MudBlazor.min.js"
       ]
     },
+    "MudBlazor.ThemeManager/3.0.0": {
+      "sha512": "Bu/pvCXPd+cW9Wgkyqo3OZEQa3G30LaQlo8Ul2rqgv/4MY77cS9PnLRTs1lXzLDsN+bN/K69+UNi1BrhlUDK3w==",
+      "type": "package",
+      "path": "mudblazor.thememanager/3.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Nuget.png",
+        "README.md",
+        "build/Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+        "build/Microsoft.AspNetCore.StaticWebAssets.props",
+        "build/MudBlazor.ThemeManager.props",
+        "buildMultiTargeting/MudBlazor.ThemeManager.props",
+        "buildTransitive/MudBlazor.ThemeManager.props",
+        "lib/net8.0/MudBlazor.ThemeManager.dll",
+        "lib/net9.0/MudBlazor.ThemeManager.dll",
+        "mudblazor.thememanager.3.0.0.nupkg.sha512",
+        "mudblazor.thememanager.nuspec",
+        "staticwebassets/MudBlazorThemeManager.css"
+      ]
+    },
     "System.IO.Pipelines/8.0.0": {
       "sha512": "FHNOatmUq0sqJOkTx+UF/9YK1f180cnW5FVqnQMvYUN0elp6wFzbtPSiqbo1/ru8ICp43JM1i7kKkk6GsNGHlA==",
       "type": "package",
@@ -693,11 +743,18 @@
         "system.io.pipelines.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "CommonModels/1.0.0": {
+      "type": "project",
+      "path": "../CommonModels/CommonModels.csproj",
+      "msbuildProject": "../CommonModels/CommonModels.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "MudBlazor >= 8.6.0"
+      "CommonModels >= 1.0.0",
+      "MudBlazor >= 8.6.0",
+      "MudBlazor.ThemeManager >= 3.0.0"
     ]
   },
   "packageFolders": {
@@ -707,11 +764,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dudis\\source\\repos\\GeoQuiz\\GeoQuiz\\GeoQuiz.csproj",
-      "projectName": "GeoQuiz",
-      "projectPath": "C:\\Users\\dudis\\source\\repos\\GeoQuiz\\GeoQuiz\\GeoQuiz.csproj",
+      "projectUniqueName": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\GeoQuiz\\QuizaphFrontend.csproj",
+      "projectName": "QuizaphFrontend",
+      "projectPath": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\GeoQuiz\\QuizaphFrontend.csproj",
       "packagesPath": "C:\\Users\\dudis\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dudis\\source\\repos\\GeoQuiz\\GeoQuiz\\obj\\",
+      "outputPath": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\GeoQuiz\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -726,13 +783,16 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\CommonModels\\CommonModels.csproj": {
+              "projectPath": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\CommonModels\\CommonModels.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -745,7 +805,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.200"
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -754,6 +814,10 @@
           "MudBlazor": {
             "target": "Package",
             "version": "[8.6.0, )"
+          },
+          "MudBlazor.ThemeManager": {
+            "target": "Package",
+            "version": "[3.0.0, )"
           }
         },
         "imports": [
@@ -775,16 +839,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300-preview.0.25177.5/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json."
-    }
-  ]
+  }
 }

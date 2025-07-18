@@ -1,45 +1,19 @@
-﻿@inherits LayoutComponentBase
+﻿@using QuizaphFrontend.Components.ChildComponents
+@inherits LayoutComponentBase
 @inject NavigationManager navigation
-@inject UserSettings userSettings
 
+<MudThemeProvider />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="5" Dense="true" Color="Color.Primary" Class="h2">
-        <MudContainer MaxWidth="MaxWidth.Medium" Class="d-flex align-center justify-center">
-            <MudGrid Class="d-flex align-center">
-                <MudItem xs="2" Class="d-flex justify-center">
-                    <MudButton OnClick="MainIconClick">
-                        <img src="images/FenrisBlockIcon.png" alt="Menu" class="menu-icon" />
-                    </MudButton>
-                </MudItem>
-                <MudItem xs="8" Class="d-flex justify-center">
-                    <MudTabs Rounded="true"
-                    AlwaysShowScrollButtons = "false"
-                    ApplyEffectsToContainer="true"
-                    ActivePanelIndexChanged="PanelChanged"
-                    ActivePanelIndex="@selectedTab"
-                    Color="Color.Primary">
-                        <MudTabPanel Text="Discover" Icon="@Icons.Material.Filled.LensBlur" Style="font-size: 13px; text-transform: none" />
-                        <MudTabPanel Visible="false" />
-                        <MudTabPanel Text="GeoQuiz" Icon="@Icons.Material.Filled.ShareLocation" Style="font-size: 13px; text-transform: none;" />               
-                    </MudTabs>
-                </MudItem>
-                <MudItem xs="2" Class="d-flex justify-center">
-                    <MudButton OnClick="ToggleNightMode">
-                        <MudIcon Icon="@(isDarkMode? Icons.Material.Filled.DarkMode :  Icons.Material.Filled.WbSunny)" Color="@(isDarkMode? Color.Success: Color.Warning)"></MudIcon>
-                    </MudButton>
-                </MudItem>
-            </MudGrid>
-        </MudContainer>
-    </MudAppBar>
-
-    <MudMainContent>
-            @Body
+    <AppBarComponent />
+    <MudMainContent Style="background-color: #258BAE; height: 100vh;">
+        @Body
     </MudMainContent>
 </MudLayout>
+
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
@@ -49,19 +23,9 @@
 
 @code
 {
-    public static MudTheme CustomDarkTheme = new MudTheme
-    {
-        PaletteDark = new PaletteDark()
-        {
-            Primary = "#191e22",
-            Background = "#161a1d",  
-            Surface = "#232c33",     
-            TextPrimary = "#E3E6E8",
-            TextSecondary = "rgba(255,255,255, 0.7)"
-        }
-    };
     public bool isDarkMode = true;
-    private int selectedTab = 1; // No tab selected by default
+    private bool IsLoggedIn = false;
+    private int selectedTab = 1; // Dummy tab with no content
 
     private void MainIconClick()
     {
@@ -69,10 +33,19 @@
         navigation.NavigateTo("/");
     }
 
-    private void ToggleNightMode()
+    private void Logout()
     {
-        isDarkMode = !isDarkMode;
-        userSettings.IsDarkMode = !userSettings.IsDarkMode;
+        IsLoggedIn = false;
+    }
+
+    private void SignIn()
+    {
+        navigation.NavigateTo("Login");
+    }
+
+    private void SignUp()
+    {
+        navigation.NavigateTo("SignUp");
     }
 
     private void PanelChanged(int index)
@@ -80,9 +53,10 @@
         selectedTab = index; 
         var route = index switch
         {
-            0 => "/discover",
+            0 => "/",
             1 => "/",
-            2 => "/quiz",
+            2 => "/Quizes",
+            3 => "/",
             _ => "/"
         };
         navigation.NavigateTo(route);

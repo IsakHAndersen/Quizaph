@@ -1,0 +1,33 @@
+﻿@layout QuizLayout
+@inject NavigationManager navigation
+@inject CurrentQuizStateService QuizState
+@inject IJSRuntime JS
+@page "/Quiz"
+@using QuizaphFrontend.Components.ChildComponents
+@using QuizaphFrontend.Services
+
+    <MudPaper Elevation="0" MaxWidth="MaxWidth.Large" Style="height: 80vh; border-radius: 15px; position: relative; overflow: hidden;">
+    @if (QuizInfo?.QuizType == QuizType.ImageQuiz)
+    {
+        <!-- Render image quiz component here -->
+    }
+    else if (QuizInfo?.QuizType == QuizType.WorldCountriesQuiz)
+    {
+        <CascadingValue Value="QuizInfo">
+            <CountriesOfTheWorldComponent />
+        </CascadingValue>
+    }
+
+    </MudPaper>
+
+@code {
+
+    public QuizInfo? QuizInfo { get; set; }
+    private ElementReference paperContainerRef;
+
+    protected override void OnInitialized()
+    {
+        QuizInfo ??= QuizState.CurrentQuizInfo;
+    }
+}
+ 

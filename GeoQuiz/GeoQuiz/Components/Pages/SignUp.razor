@@ -1,0 +1,157 @@
+﻿@inject NavigationManager navigation
+@page "/SignUp"
+@using System.Net.Mail
+@using System.Text.RegularExpressions
+@layout EmptyLayout
+
+<MudPaper Square="true" style="background-color: transparent;" Elevation="0">
+    <MudButton StartIcon=@Icons.Material.Filled.ArrowBack Color="Color.Dark" Variant="Variant.Filled" Style="text-transform: none;" OnClick="@NavigateToMainPage">
+        Back
+    </MudButton>
+    <MudContainer MaxWidth="MaxWidth.ExtraSmall">
+        <MudPaper MaxHeight="40%" Width="100%" Square="true" style="background-color: #ffffff; border-radius: 20px; padding: 30px 40px 30px 40px;">
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.h5" Style="font-weight: 500; align-self: center; margin-bottom: 10px;"> Welcome To Quizaph </MudText>
+                <MudTextField @bind-Value="registerRequestObject.Email" Label="Email" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+                <MudTextField @bind-Value="registerRequestObject.Password" InputType="@PasswordInput" Label="Password"
+                              Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+                <MudTextField @bind-Value="registerRequestObject.ConfirmPassword" InputType="@PasswordInput" Label="Confirm Password"
+                              Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+                <MudButton Style="width: 120px; align-self: center" Color="Color.Primary" OnClick="@Register"
+                           Variant="Variant.Text">
+                    Continue
+                </MudButton>
+                <MudDivider DividerType="DividerType.Middle" Class="my-1" />
+                <MudText Style="align-self: center"> Or continue with </MudText>
+                <MudDivider DividerType="DividerType.Middle" Class="my-1" />
+                <MudStack Spacing="2" Row="true" AlignItems="AlignItems.Center" Style="margin-left: 5px;">
+                    <MudText> Remember me? </MudText>
+                    <MudCheckBox @bind-Value="registerRequestObject.RememberMe" Color="Color.Primary" UncheckedColor="Color.Default" Dense></MudCheckBox>
+                </MudStack>
+                <MudStack Spacing="2" Row="true" AlignItems="AlignItems.Center" Style="align-self:center;">
+                    <MudButton Style="align-self: center; color: black; text-transform: none;" OnClick="@SignIn"
+                               Variant="Variant.Text">
+                        Already a user? Sign In
+                    </MudButton>
+                </MudStack>
+                @if (ShowAlertFlag)
+                {
+                    <MudAlert Severity="@AlertSeverity" Elevation="0" Dense="true">
+                        @AlertMessage
+                    </MudAlert>
+                }
+            </MudStack>
+
+        </MudPaper>
+    </MudContainer>
+</MudPaper>
+
+@code {
+    #region AlertFunctionality
+    bool ShowAlertFlag = false;
+    Severity AlertSeverity = Severity.Normal;
+    string AlertMessage = "";
+
+    private async void ShowAlert(Severity severity, string message)
+    {
+        AlertSeverity = severity;
+        AlertMessage = message;
+        ShowAlertFlag = true;
+        await Task.Delay(3000);
+        ShowAlertFlag = false;
+    }
+    #endregion
+
+    private RegisterRequestObject registerRequestObject { get; set; } = new RegisterRequestObject();
+    bool isShow;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    protected override void OnInitialized()
+    {
+    }
+
+    private class RegisterRequestObject
+    {
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string ConfirmPassword { get; set; } = string.Empty;
+        public bool RememberMe { get; set; } = false;
+    }
+
+    private void NavigateToMainPage()
+    {
+        navigation.NavigateTo("/");
+    }
+
+    private void SignIn()
+    {
+        navigation.NavigateTo("Login");
+    }
+
+    private void Register()
+    {
+        if (!IsValidLoginRequest())
+        {
+            return;
+        }
+        ShowAlert(Severity.Success, "A confirmation email has been sent. Please check your inbox to complete your registration.");
+    }
+
+    private bool IsValidLoginRequest()
+    {
+        if (!IsValidPassword(registerRequestObject.Password))
+        {
+            return false;
+        }
+        if (!IsValidEmail(registerRequestObject.Email))
+        {
+            return false;
+        }
+        if (registerRequestObject.Password != registerRequestObject.ConfirmPassword)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private bool IsValidEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            ShowAlert(Severity.Error, "Email is required.");
+            return false;
+        }
+
+        try
+        {
+            var address = new MailAddress(email);
+            return true;
+        }
+        catch
+        {
+            ShowAlert(Severity.Error, "Invalid email format.");
+            return false;
+        }
+    }
+
+    private bool IsValidPassword(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            ShowAlert(Severity.Error, "Password cannot be empty.");
+            return false;
+        }
+        else if (password.Length < 8)
+        {
+            ShowAlert(Severity.Error, "Password cannot be less than 8 characters.");
+            return false;
+        } 
+        else if (!Regex.IsMatch(password, @"^[a-zA-Z0-9]+$"))
+        {
+            ShowAlert(Severity.Error, "Password cannot contain special characters.");
+            return false;
+        }
+        return true;
+    }
+}

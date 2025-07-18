@@ -1,0 +1,25 @@
+﻿<MudDialog Style="max-width: 50%; min-width: 400px;" >
+    <TitleContent>
+        <MudText Typo="Typo.h6">@Dialog.Title</MudText>
+    </TitleContent>
+    <DialogContent>
+        @foreach (var line in Dialog.DialogContent)
+        {
+            <MudText Class="mb-2">@line</MudText>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Submit">OK</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [Parameter]
+    public Dialog Dialog { get; set; }
+
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; }
+
+    private void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+}

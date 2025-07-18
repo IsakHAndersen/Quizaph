@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GeoQuiz")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c22eb0a8de8458b973983dad7334b43a5c3a1c46")]
 [assembly: System.Reflection.AssemblyProductAttribute("GeoQuiz")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GeoQuiz")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

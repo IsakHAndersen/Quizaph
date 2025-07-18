@@ -1,0 +1,6 @@
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuizBackend\obj\Debug\net8.0\GeoQuizBackend.csproj.AssemblyReference.cache
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuizBackend\obj\Debug\net8.0\GeoQuizBackend.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuizBackend\obj\Debug\net8.0\GeoQuizBackend.AssemblyInfoInputs.cache
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuizBackend\obj\Debug\net8.0\GeoQuizBackend.AssemblyInfo.cs
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuizBackend\obj\Debug\net8.0\GeoQuizBackend.csproj.CoreCompileInputs.cache
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuizBackend\obj\Debug\net8.0\GeoQuizBackend.sourcelink.json
