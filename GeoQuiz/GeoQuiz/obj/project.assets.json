@@ -764,9 +764,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\GeoQuiz\\QuizaphFrontend.csproj",
+      "projectUniqueName": "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\GeoQuiz\\QuizaphFrontend.csproj",
       "projectName": "QuizaphFrontend",
-      "projectPath": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\GeoQuiz\\QuizaphFrontend.csproj",
+      "projectPath": "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\GeoQuiz\\QuizaphFrontend.csproj",
       "packagesPath": "C:\\Users\\dudis\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\GeoQuiz\\obj\\",
       "projectStyle": "PackageReference",
@@ -783,14 +783,15 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\CommonModels\\CommonModels.csproj": {
-              "projectPath": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\CommonModels\\CommonModels.csproj"
+            "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\CommonModels\\CommonModels.csproj": {
+              "projectPath": "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\CommonModels\\CommonModels.csproj"
             }
           }
         }
@@ -805,7 +806,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -839,7 +840,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300-preview.0.25177.5/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -11,7 +11,7 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudLayout Style="height: 100vh;">
+<MudLayout>
     <AppBarComponent/>
     <MudPaper Square="true" MaxWidth="MaxWidth.Large" style="padding: 90px 120px 20px 120px; background-color: #258BAE; height:100%;">
         <MudStack Spacing="7">
@@ -28,6 +28,17 @@
                                 }
                             </MudMenu>
                         }
+                        <MudIconButton Icon="@Icons.Material.Filled.RestartAlt"
+                                       Color="Color.Inherit"
+                                       Size="Size.Small"
+                                       OnClick="Reset"
+                                       Style="background-color: transparent;" />
+
+                        <MudIconButton Icon="@Icons.Material.Filled.Output"
+                                       Color="Color.Inherit"
+                                       Size="Size.Small"
+                                       OnClick="ShowEndScreen"
+                                       Style="background-color: transparent;" />
                     </MudStack>
                     <MudStack row=true Spacing="4" AlignItems="AlignItems.Center">
                         <MudButton @onclick="() => OpenDialogAsync(DialogType.Rules)" Variant="Variant.Text" Color="Color.Dark" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Style="text-transform: none;">
@@ -81,5 +92,15 @@
     void SelectMode(string mode)
     {
         selectedMode = mode;
+    }
+
+    void Reset()
+    {
+        QuizState.RequestReset();
+    }
+
+    void ShowEndScreen()
+    {
+        QuizState.ShowEndScreen();
     }
 }

@@ -6,7 +6,7 @@
 @using QuizaphFrontend.Components.ChildComponents
 @using QuizaphFrontend.Services
 
-    <MudPaper Elevation="0" MaxWidth="MaxWidth.Large" Style="height: 80vh; border-radius: 15px; position: relative; overflow: hidden;">
+    <MudPaper Elevation="0" MaxWidth="MaxWidth.Large" Style="position: relative; border-radius: 10px;">
     @if (QuizInfo?.QuizType == QuizType.ImageQuiz)
     {
         <!-- Render image quiz component here -->
@@ -17,7 +17,6 @@
             <CountriesOfTheWorldComponent />
         </CascadingValue>
     }
-
     </MudPaper>
 
 @code {

@@ -7,7 +7,7 @@
 
     <MudContainer MaxWidth="MaxWidth.Large"
                   Class="d-flex align-center"
-                  Style="height: 100%;  padding-left: 300px;">
+                  Style="height: 100%;  padding-left: 250px;">
 
         <MudItem xs="4" Class="d-flex align-center justify-center">
             <img src="SVGS/TempIcon.svg" alt="Logo" width="24" height="24" style="margin-right: 10px;" />
@@ -22,12 +22,12 @@
                      ActivePanelIndex="@selectedTab"
                      Color="Color.Inherit">
                 <MudTabPanel Text="Discover" Icon="@Icons.Material.Filled.LensBlur"
-                             Style="font-size: 13px; background-color: #2E3E43; text-transform: none;" />
+                             Style="font-size: 12px; background-color: #2E3E43; text-transform: none;" />
                 <MudTabPanel Visible="false" />
                 <MudTabPanel Text="Quizes" Icon="@Icons.Material.Filled.Gamepad"
-                             Style="font-size: 13px; background-color: #2E3E43; text-transform: none;" />
+                             Style="font-size: 12px; background-color: #2E3E43; text-transform: none;" />
                 <MudTabPanel Text="About" Icon="@Icons.Material.Filled.LightbulbCircle"
-                             Style="font-size: 13px; background-color: #2E3E43; text-transform: none;" />
+                             Style="font-size: 12px; background-color: #2E3E43; text-transform: none;" />
             </MudTabs>
         </MudItem>
     </MudContainer>
@@ -35,15 +35,15 @@
     {
         <MudContainer MaxWidth="MaxWidth.Large"
                       Class="d-flex align-center"
-                      Style="height: 100%; padding-right: 300px; justify-content: right;">
-            <MudButton Style="color: #ebebeb; font-size: 13px; text-transform: none; margin-right: 5px;"
+                      Style="height: 100%; padding-right: 250px; justify-content: right;">
+            <MudButton Style="color: #ebebeb; font-size: 12px; text-transform: none; margin-right: 5px;"
                        Color="Color.Transparent"
                        DropShadow="false"
                        Variant="Variant.Text"
                        OnClick="@SignIn">
                 Login
             </MudButton>
-            <MudButton Style="background-color: black; text-transform: none; border-radius: 20px; color: #ebebeb; font-size: 13px;" OnClick="@SignUp"
+            <MudButton Style="background-color: black; text-transform: none; border-radius: 20px; color: #ebebeb; font-size: 12px;" OnClick="@SignUp"
                        Variant="Variant.Filled">
                 Sign Up
             </MudButton>

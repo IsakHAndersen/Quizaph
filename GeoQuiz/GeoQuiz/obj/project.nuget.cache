@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "V04O0xfjs9w=",
+  "dgSpecHash": "B0d52gN0yUE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\GeoQuiz\\QuizaphFrontend.csproj",
+  "projectFilePath": "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\GeoQuiz\\QuizaphFrontend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dudis\\.nuget\\packages\\microsoft.aspnetcore.authorization\\8.0.12\\microsoft.aspnetcore.authorization.8.0.12.nupkg.sha512",
     "C:\\Users\\dudis\\.nuget\\packages\\microsoft.aspnetcore.components\\8.0.12\\microsoft.aspnetcore.components.8.0.12.nupkg.sha512",
