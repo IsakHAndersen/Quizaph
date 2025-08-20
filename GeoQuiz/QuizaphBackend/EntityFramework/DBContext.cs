@@ -1,4 +1,5 @@
-﻿using GeoQuizBackend.Models;
+﻿using GeoQuiz.Models.QuizModels;
+using GeoQuizBackend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,6 +13,7 @@ namespace GeoQuizBackend.EntityFramework
     public class DBContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        DbSet<Quiz> Quiz { get; set; }
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
         }

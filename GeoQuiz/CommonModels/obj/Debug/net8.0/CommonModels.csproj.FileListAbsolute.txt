@@ -1,12 +1,5 @@
-C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\CommonModels\bin\Debug\net8.0\CommonModels.deps.json
-C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\CommonModels\bin\Debug\net8.0\CommonModels.dll
-C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\CommonModels\bin\Debug\net8.0\CommonModels.pdb
-C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.AssemblyInfoInputs.cache
-C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.AssemblyInfo.cs
-C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.csproj.CoreCompileInputs.cache
-C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.sourcelink.json
-C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.dll
-C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\refint\CommonModels.dll
-C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.pdb
-C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\ref\CommonModels.dll
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.AssemblyInfoInputs.cache
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.AssemblyInfo.cs
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.csproj.CoreCompileInputs.cache
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.sourcelink.json

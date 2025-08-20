@@ -99,8 +99,19 @@
         QuizState.RequestReset();
     }
 
-    void ShowEndScreen()
+    async void ShowEndScreen()
     {
-        QuizState.ShowEndScreen();
+        bool? result = await DialogService.ShowMessageBox(
+        "End Quiz?",
+        "Are you sure you want to end the quiz?",
+        yesText: "Confirm",
+        cancelText: "Cancel",
+        options: new DialogOptions { MaxWidth = MaxWidth.Small });
+
+        if (result == true)
+        {
+            QuizState.ShowEndScreen();
+        }
+       
     }
 }
