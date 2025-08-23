@@ -1,8 +1,12 @@
+using GeoQuizBackend.EntityFramework;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.EntityFrameworkCore;
+using QuizaphBackend.EntityFramework;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -16,15 +20,32 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = googleAuthSection["ClientSecret"]!;
 });
 
-// needed?
+// Authorization
 builder.Services.AddAuthorization();
+
+// Controllers + Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// EF Core DbContext (InMemory for now)
+builder.Services.AddDbContext<DBContext>(options =>
+{
+    options.UseInMemoryDatabase("TestDb")
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Seed database
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<DBContext>();
+    DbInitializer.Seed(context);
+}
+
+// Middleware pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -33,10 +54,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();    
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapFallbackToFile("index.html");
 
 app.Run();

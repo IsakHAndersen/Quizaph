@@ -1,6 +1,7 @@
 ﻿@using QuizaphFrontend.Models.QuizModels
 @using QuizaphFrontend.Models.Quizes
 @using QuizaphFrontend.Services
+@using global::Models.Enums
 @inject IJSRuntime JS
 @inject QuizDataRetrievalService QuizDataRetrievalService
 @inject CurrentQuizStateService QuizState
@@ -71,7 +72,7 @@
 
 
 @code {
-    [CascadingParameter] private QuizInfo? QuizInfo { get; set; }
+    [CascadingParameter] private Quiz? QuizInfo { get; set; }
     private bool showPanel = false;
     private string toggleIcon => showPanel ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore;
     private int GuessedAnswers = 0;

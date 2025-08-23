@@ -1,4 +1,6 @@
-﻿using CommonModels.Enums;
+﻿
+
+using Models.Enums;
 
 namespace QuizaphFrontend.Models.QuizModels
 {

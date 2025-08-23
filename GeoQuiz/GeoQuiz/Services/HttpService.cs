@@ -1,14 +1,17 @@
 ﻿using Microsoft.AspNetCore.Components;
 using QuizaphFrontend.Models;
 using QuizaphFrontend.Models.Quizes;
+using System.Net.Http;
 
 namespace QuizaphFrontend.Services
 {
     public class HttpService : IHttpService
     {
+        private readonly HttpClient _httpClient;
 
-        public HttpService()
+        public HttpService(HttpClient httpClient)
         {
+            _httpClient = httpClient;
         }
 
         public async Task LoginAsync(string returnUrl = "/")
@@ -32,13 +35,13 @@ namespace QuizaphFrontend.Services
         //    return new CountryQuiz();
         //}
 
-        // Should be a query with parameters to filter quizzes
-        public async Task<List<QuizInfo>> GetQuizInfos()
+        public async Task<List<Quiz>> GetAllQuizes()
         {
-            //var url = "";
-            //var response = await _httpClient.GetAsync(url);
-            //response.EnsureSuccessStatusCode();
-            return await DummyDataQuiz.GetAllQuizes();
+            var response = await _httpClient.GetAsync("home/quizzes");
+            response.EnsureSuccessStatusCode();
+
+            var quizzes = await response.Content.ReadFromJsonAsync<List<Quiz>>();
+            return quizzes ?? new List<Quiz>();
         }
     }
 }

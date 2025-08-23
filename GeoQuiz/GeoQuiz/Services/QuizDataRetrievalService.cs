@@ -1,4 +1,4 @@
-﻿using CommonModels.Enums;
+﻿using Models.Enums;
 using QuizaphFrontend.Models.Quizes;
 using QuizaphFrontend.Models.QuizModels;
 

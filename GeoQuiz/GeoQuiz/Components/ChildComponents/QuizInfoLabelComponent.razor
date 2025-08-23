@@ -1,4 +1,5 @@
 ﻿@using QuizaphFrontend.Services
+@using global::Models.Enums
 @inject NavigationManager navigation
 @inject CurrentQuizStateService QuizState
 <MudPaper Style="@SetCategoryColor()" Class="mt-4" Elevation="0" @onclick="() => NavigateToQuiz()">
@@ -12,7 +13,7 @@
         <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
             <MudIcon Icon="@Icons.Material.Filled.Group" Style="color: #ffffff;" />
             <MudText Style="color: #ffffff;" Typo="Typo.body2">
-                @FormatPlayersRange(QuizInfo.PlayersAvailable)
+                @FormatPlayersRange(QuizInfo.MinPlayers, QuizInfo.MaxPlayers)
             </MudText>
         </MudStack>
     </MudStack>
@@ -20,7 +21,7 @@
 
 @code {
     [Parameter] 
-    public QuizInfo QuizInfo { get; set; }
+    public Quiz QuizInfo { get; set; }
 
     protected override void OnInitialized()
     {
@@ -41,10 +42,8 @@
         return $"background-color: {categoryColor}; padding: 5px 20px; border-radius: 12px; opacity: 80%;";
     }
 
-    private string FormatPlayersRange((int? minPlayers, int? maxPlayers) players)
+    private string FormatPlayersRange(int? min, int? max)
     {
-        var (min, max) = players;
-
         return (min, max) switch
         {
             (not null, not null) when min != max => $"{min}-{max}",

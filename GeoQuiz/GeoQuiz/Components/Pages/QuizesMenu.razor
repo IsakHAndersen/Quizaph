@@ -1,4 +1,5 @@
 ﻿@inject NavigationManager navigation
+@inject HttpService HttpService
 @page "/Quizes"
 @using QuizaphFrontend.Services
 
@@ -9,9 +10,9 @@
             <MudStack Row="true" Style="align-items: center" Spacing="6">
 
                 <MudText Style="font-weight: 500">
-                    Found @(QuizInfoList?.Count() ?? 0) Quizes
+                    Found @(quizzes?.Count() ?? 0) Quizzes
                 </MudText>
-                <MudTextField @bind-Value="Search" Placeholder="Search" Variant="Variant.Outlined"
+                <MudTextField @bind-Value="search" Placeholder="Search" Variant="Variant.Outlined"
                               Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search"
                               AdornmentColor="Color.Dark" Style="height: 40px;"/>
                 <MudMenu>
@@ -29,9 +30,9 @@
             </MudStack>
             
             <MudContainer Style="margin: 30px 0; padding: 0px;">
-                @if (QuizInfoList is not null)
+                @if (quizzes is not null)
                 {
-                    @foreach (var item in QuizInfoList)
+                    @foreach (var item in quizzes)
                     {
                         <QuizaphFrontend.Components.ChildComponents.QuizInfoLabelComponent QuizInfo="item" />
                     }
@@ -51,13 +52,14 @@
 </MudPaper>
 
 @code{
-    private List<QuizInfo> QuizInfoList;
-    public string Search { get; set; }
+    private List<QuizaphBackend.Models.Quiz> quizzes;
+    public string search { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        quizzes = await HttpService.GetAllQuizes();
         // Database call to retrieve basic quiz info. 
         // Whenever any filter is changed, new method that upates quizinfolist should be called.
-        QuizInfoList = await DummyDataQuiz.GetAllQuizes();
+        // Quizes = await DummyDataQuiz.GetAllQuizes();
     }
 }

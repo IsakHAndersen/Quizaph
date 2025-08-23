@@ -1,6 +1,8 @@
-﻿using MudBlazor.Services;
+﻿global using QuizaphBackend.Models;
+using MudBlazor.Services;
 using QuizaphFrontend.Components;
 using QuizaphFrontend.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,12 @@ builder.Services.AddRazorComponents()
 builder.Services.AddMudServices();
 builder.Services.AddScoped<CurrentQuizStateService>();
 builder.Services.AddScoped<QuizDataRetrievalService>();
+
+builder.Services.AddScoped(sp => new HttpClient
+{
+    BaseAddress = new Uri("http://localhost:5274/") // 👈 backend host address
+});
+builder.Services.AddScoped<HttpService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

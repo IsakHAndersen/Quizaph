@@ -1,5 +1,4 @@
-﻿using GeoQuiz.Models.QuizModels.Enums;
-using GeoQuiz.Models.QuizModels.Interfaces;
+﻿
 
 namespace GeoQuiz.Models.QuizModels.QuizStructures
 {

@@ -4,7 +4,7 @@ namespace QuizaphFrontend.Services
 {
     public class CurrentQuizStateService
     {
-        public QuizInfo? CurrentQuizInfo { get; set; }
+        public Quiz? CurrentQuizInfo { get; set; }
 
         public event Action? OnResetRequested;
         public event Action? OnShowEndScreen;

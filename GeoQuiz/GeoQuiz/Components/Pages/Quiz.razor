@@ -5,15 +5,16 @@
 @page "/Quiz"
 @using QuizaphFrontend.Components.ChildComponents
 @using QuizaphFrontend.Services
+@using global::Models.Enums
 
     <MudPaper Elevation="0" MaxWidth="MaxWidth.Large" Style="position: relative; border-radius: 10px;">
-    @if (QuizInfo?.QuizType == QuizType.ImageQuiz)
+    @if (CurrentQuiz?.QuizType == QuizType.ImageQuiz)
     {
         <!-- Render image quiz component here -->
     }
-    else if (QuizInfo?.QuizType == QuizType.WorldCountriesQuiz)
+    else if (CurrentQuiz?.QuizType == QuizType.WorldCountriesQuiz)
     {
-        <CascadingValue Value="QuizInfo">
+        <CascadingValue Value="CurrentQuiz">
             <CountriesOfTheWorldComponent />
         </CascadingValue>
     }
@@ -21,12 +22,12 @@
 
 @code {
 
-    public QuizInfo? QuizInfo { get; set; }
+    public QuizaphBackend.Models.Quiz? CurrentQuiz { get; set; }
     private ElementReference paperContainerRef;
 
     protected override void OnInitialized()
     {
-        QuizInfo ??= QuizState.CurrentQuizInfo;
+        CurrentQuiz ??= QuizState.CurrentQuizInfo;
     }
 }
  
