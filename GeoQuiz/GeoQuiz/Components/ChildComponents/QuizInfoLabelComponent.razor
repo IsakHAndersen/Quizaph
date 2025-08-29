@@ -2,22 +2,49 @@
 @using global::Models.Enums
 @inject NavigationManager navigation
 @inject CurrentQuizStateService QuizState
-<MudPaper Style="@SetCategoryColor()" Class="mt-4" Elevation="0" @onclick="() => NavigateToQuiz()">
-    <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
-        <!-- Left side: Title -->
-        <MudText Style="color: #ffffff; font-size: 14px;">
+
+<MudPaper Style="@SetCategoryColor()" 
+          Class="mt-4" Elevation="0" @onclick="() => NavigateToQuiz()">
+    <MudStack Row="false" Spacing="1">
+        <!-- Title -->
+        <MudText Style="color: #ffffff; font-size: 14px; font-weight: 600;">
             @QuizInfo.Title
         </MudText>
 
-        <!-- Right side: Icon + Player Count -->
-        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
-            <MudIcon Icon="@Icons.Material.Filled.Group" Style="color: #ffffff;" />
-            <MudText Style="color: #ffffff;" Typo="Typo.body2">
-                @FormatPlayersRange(QuizInfo.MinPlayers, QuizInfo.MaxPlayers)
-            </MudText>
+        <!-- Info Row -->
+        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+
+            <!-- Left side: Players + Times Taken -->
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="4">
+                <!-- Players group -->
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                    <MudIcon Icon="@Icons.Material.Filled.Group" Style="color: #ffffff;" />
+                    <MudText Style="color: #ffffff;" Typo="Typo.body2">
+                        @FormatPlayersRange(QuizInfo.MinPlayers, QuizInfo.MaxPlayers)
+                    </MudText>
+                </MudStack>
+
+                <!-- Times Taken group -->
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                    <MudIcon Icon="@Icons.Material.Filled.History" Style="color: #ffffff;" />
+                    <MudText Style="color: #ffffff;" Typo="Typo.body2">
+                        Taken @QuizInfo.TimesTaken times
+                    </MudText>
+                </MudStack>
+            </MudStack>
+
+
+            <!-- Right side: Rating -->
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                <MudText Style="color: #ffffff;" Typo="Typo.body2">
+                    @QuizInfo.StarRating
+                </MudText>
+                <MudIcon Icon="@Icons.Material.Filled.Star" Style="color: gold;" />
+            </MudStack>
         </MudStack>
     </MudStack>
 </MudPaper>
+
 
 @code {
     [Parameter] 
@@ -32,14 +59,15 @@
     {
         var categoryColor = QuizInfo.QuizCategory switch
         {
-            QuizCategory.Geography => "#a9b9a7",
+            QuizCategory.Geography => "#1976D2",
             QuizCategory.Technology => "#6029e7",
             QuizCategory.History => "#cfd293",
             QuizCategory.Sports => "#4f9ff3",
             QuizCategory.GeneralKnowledge => "#6fcaaa",
             _ => throw new ArgumentException(message: "Invalid quiz category", paramName: nameof(QuizInfo.QuizCategory))
         };
-        return $"background-color: {categoryColor}; padding: 5px 20px; border-radius: 12px; opacity: 80%;";
+        return $"background-color: {categoryColor}; padding: 12px 20px; border-radius: 10px; opacity: 0.9;";
+
     }
 
     private string FormatPlayersRange(int? min, int? max)

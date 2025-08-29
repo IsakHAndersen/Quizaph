@@ -2,17 +2,18 @@
 @inject HttpService HttpService
 @page "/Quizes"
 @using QuizaphFrontend.Services
+@using global::Models.Enums
 
 
 
 
-<MudPaper Square="true" style="background-color: transparent; margin-top: 60px;" Elevation="0">
+<MudPaper Square="true" style="background-color: transparent;" Elevation="0" MaxHeight="100%">
     <MudContainer MaxWidth="MaxWidth.Large">
         <MudGrid>
 
             <!-- Left filter panel -->
             <MudItem xs="12" md="3">
-                <MudPaper Outlined="true" Square="true" 
+                <MudPaper Outlined="true" Square="true"
                           style="background-color: #ffffff; border-radius: 20px; padding: 20px;">
                     <MudText Typo="Typo.h6" GutterBottom="true">Filters</MudText>
                     <MudDivider Class="my-2" />
@@ -40,7 +41,7 @@
                     </MudStack>
 
                     <!-- Completed toggle -->
-                    <MudCheckBox @bind-Value="onlyCompleted" Label="Show only completed" Class="mt-4" Dense/>
+                    <MudCheckBox @bind-Value="onlyCompleted" Label="Show only completed" Class="mt-4" Dense Color="Color.Tertiary" />
 
                     <!-- Apply button -->
                     <MudStack Justify="Justify.Center" Class="mt-4">
@@ -56,91 +57,146 @@
 
             <!-- Main content (quiz list) -->
             <MudItem xs="12" md="9">
-                <MudPaper MaxHeight="80%" Width="100%" Square="true"
-                          style="background-color: #ffffff; border-radius: 20px; padding: 50px 50px 30px 50px;"
+                <MudPaper Width="100%" Square="true"
+                          style="background-color: #ffffff; border-radius: 20px; padding: 50px 50px 30px 50px; max-height: 85vh; display: flex; flex-direction: column;"
                           Outlined=true>
+
+                    <!-- Header + search -->
                     <MudStack Row="true" Style="align-items: center" Spacing="6">
                         <MudText Style="font-weight: 500">
-                            Found (@(filteredQuizzes?.Count() ?? 0)) Quizzes
+                            Found (@(filteredQuizzesList?.Count() ?? 0)) Quizzes
                         </MudText>
-                        <MudTextField @bind-Value="search" Placeholder="Search" Variant="Variant.Outlined"
-                                      Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search"
-                                      AdornmentColor="Color.Dark" Style="height: 40px;"/>
+                        <MudTextField Value="@search"
+                                      Placeholder="Search for quiz"
+                                      Variant="Variant.Outlined"
+                                      Adornment="Adornment.End"
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      AdornmentColor="Color.Dark"
+                                      Style="height: 40px;" />
                     </MudStack>
 
-                    <MudContainer Style="margin: 30px 0; padding: 0px;">
-                        @if (filteredQuizzes is not null)
+                    <!-- Scrollable quiz list -->
+                    <MudPaper Elevation="0" Square="true"
+                              Style="flex-grow: 1; overflow-y: auto; padding-bottom: 20px; margin: 20px 0;">
+                        @if (visibleQuizzesList.Any())
                         {
-                            @foreach (var item in filteredQuizzes)
+                            @foreach (var item in visibleQuizzesList)
                             {
                                 <QuizaphFrontend.Components.ChildComponents.QuizInfoLabelComponent QuizInfo="item" />
                             }
                         }
                         else
                         {
-                            <MudText>Loading quizzes...</MudText>
+                            <MudText>No quizzes found.</MudText>
                         }
-                    </MudContainer>
+                    </MudPaper>
 
-                    <MudStack Justify="Justify.Center" Style="margin-top: 10px;">
-                        <MudButton Variant="Variant.Text" Style="color: black" OnClick="LoadMore">
-                            Load More
-                        </MudButton>
-                    </MudStack>
+                    <!-- Load More button -->
+                    @if (filteredQuizzesList != null && visibleQuizzesList.Count() < filteredQuizzesList.Count())
+                    {
+                        <MudStack Justify="Justify.Center" Style="margin-top: 10px;">
+                            <MudButton Variant="Variant.Text" Style="color: black" OnClick="LoadMore">
+                                Load More
+                            </MudButton>
+                        </MudStack>
+                    }
+
                 </MudPaper>
             </MudItem>
+
         </MudGrid>
     </MudContainer>
 </MudPaper>
 
-@code{
+@code {
     // Filter states
-    public string selectedPopularity { get; set; }
-    public string selectedRating { get; set; }
-    public int? minPlayers { get; set; }
-    public int? maxPlayers { get; set; }
-    public bool onlyCompleted { get; set; }
+    private string? selectedPopularity { get; set; } = null;
+    private string? selectedRating { get; set; } = null;
+    private int? minPlayers { get; set; }
+    private int? maxPlayers { get; set; }
+    private bool onlyCompleted { get; set; }
 
-    private List<QuizaphBackend.Models.Quiz> quizzes;
-    public List<QuizaphBackend.Models.Quiz> filteredQuizzes => quizzes
-    ?.Where(q =>
-        (string.IsNullOrEmpty(search) || q.Title.Contains(search, StringComparison.OrdinalIgnoreCase)) &&
-        (minPlayers == null || q.MinPlayers >= minPlayers) &&
-        (maxPlayers == null || q.MaxPlayers <= maxPlayers)
-    // Must be logged in (!onlyCompleted || q.Completed)
-    )
-    .OrderBy(q =>
-        selectedPopularity == "MostPopular" ? -q.TimesTaken :
-        selectedPopularity == "LeastPopular" ? q.TimesTaken : 0
-    )
-    .ThenBy(q =>
-        selectedRating == "HighestRated" ? -q.StarRating :
-        selectedRating == "LowestRated" ? q.StarRating : 0
-    )
-    .ToList();
+    private int pageSize = 10;
 
+    private List<QuizaphBackend.Models.Quiz> quizzes = new();
+    private List<QuizaphBackend.Models.Quiz> filteredQuizzesList = new();
+    private List<QuizaphBackend.Models.Quiz> visibleQuizzesList = new();
 
-    public string search { get; set; }
+    private string search = string.Empty;
+    private System.Timers.Timer? debounceTimer;
 
     protected override async Task OnInitializedAsync()
     {
         quizzes = await HttpService.GetAllQuizes();
-        StateHasChanged();
-
+        ApplyFilters(); // Populate filtered and visible quizzes
     }
 
-    void ApplyFilters()
+
+    #region Filter logic
+    private void LoadMore()
     {
+        if (filteredQuizzesList == null || filteredQuizzesList.Count == 0) return;
+
+        var nextItems = filteredQuizzesList
+            .Skip(visibleQuizzesList.Count)
+            .Take(pageSize)
+            .ToList();
+
+        visibleQuizzesList.AddRange(nextItems);
         StateHasChanged();
     }
 
-    void ClearFilters()
+    private void ApplyFilters()
     {
-        StateHasChanged();
+        if (quizzes == null) return;
+
+        filteredQuizzesList = quizzes
+            .Where(q =>
+                (string.IsNullOrEmpty(search) || q.Title.Contains(search, StringComparison.OrdinalIgnoreCase)) &&
+                (minPlayers == null || q.MinPlayers >= minPlayers) &&
+                (maxPlayers == null || q.MaxPlayers <= maxPlayers)
+            )
+            .ToList();
+        if (!string.IsNullOrEmpty(selectedPopularity))
+        {
+            filteredQuizzesList = selectedPopularity switch
+            {
+                "MostPopular" => filteredQuizzesList.OrderByDescending(q => q.TimesTaken).ToList(),
+                "LeastPopular" => filteredQuizzesList.OrderBy(q => q.TimesTaken).ToList(),
+                _ => filteredQuizzesList
+            };
+        }
+
+        if (!string.IsNullOrEmpty(selectedRating))
+        {
+            filteredQuizzesList = selectedRating switch
+            {
+                "HighestRated" => filteredQuizzesList.OrderByDescending(q => q.StarRating).ToList(),
+                "LowestRated" => filteredQuizzesList.OrderBy(q => q.StarRating).ToList(),
+                _ => filteredQuizzesList
+            };
+        }
+
+        visibleQuizzesList.Clear();
+        LoadMore();
     }
 
-    void LoadMore()
+    private void ClearFilters()
     {
-        
+        search = string.Empty;
+        minPlayers = null;
+        maxPlayers = null;
+        selectedPopularity = null;
+        selectedRating = null;
+
+        ApplyFilters();
     }
+
+    private async Task LoadUsersCompletedQuizzes()
+    {
+        var completedQuizzes = await HttpService.GetCompletedQuizzes();
+
+    }
+
+    #endregion
 }

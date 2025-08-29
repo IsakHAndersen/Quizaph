@@ -11,103 +11,189 @@ namespace QuizaphBackend.EntityFramework
             if (context.Quizes.Any())
                 return; // DB already seeded
 
-            var quiz1 = new Quiz
+            // When new quiz is added these are needed: New QuizType for the type, an imagepath, rules, description and available modes.
+
+            var quizes = new List<Quiz>
             {
+                new Quiz
+                {
                 CreatorId = 1,
-                Title = "World Capitals Quiz",
-                Description = "Test your knowledge of world capitals.",
-                TimesTaken = 0,
-                MaxPlayers = 4,
+                Title = "World Countries Quiz",
+                Description = "Test your knowledge of world countries.",
+                TimesTaken = 1634,
+                MaxPlayers = 1,
                 MinPlayers = 1,
-                Rules = new List<string> { "No cheating", "Time limit: 60s" },
+                Rules = new List<string> { "Abrevations dont count for many countries", "Completion is reached when all countries are guessed" },
+                ImagePath = "/QuizImages.world_resized.jpg",
+                QuizCategory = QuizCategory.Geography,
+                QuizModes = new List<QuizModes> { QuizModes.Timed, QuizModes.RandomlySelected, QuizModes.Standard, QuizModes.TriviaExpansion},
+                QuizType = QuizType.WorldCountriesQuiz,
+                StarRating = 4,
+                QuizTypeId = 1
+                },
+                new Quiz
+                {
+                CreatorId = 1,
+                Title = "Europe Countries Quiz",
+                Description = "Test your knowledge of european countries.",
+                TimesTaken = 1634,
+                MaxPlayers = 1,
+                MinPlayers = 1,
+                Rules = new List<string> { "Abrevations dont count for many countries", "Completion is reached when all countries are guessed" },
                 ImagePath = "/images/capitals.png",
                 QuizCategory = QuizCategory.Geography,
-                QuizModes = new List<QuizModes> { QuizModes.Alphabetical, QuizModes.Random },
+                QuizModes = new List<QuizModes> { QuizModes.Timed, QuizModes.RandomlySelected, QuizModes.Standard, QuizModes.TriviaExpansion},
                 QuizType = QuizType.WorldCountriesQuiz,
-                QuizTypeId = 1
-            };
-
-            var quiz2 = new Quiz
-            {
-                CreatorId = 2,
-                Title = "Math Challenge",
-                Description = "Solve tricky math problems.",
-                TimesTaken = 0,
+                QuizTypeId = 1,
+                StarRating = 4
+                },
+                new Quiz
+                {
+                CreatorId = 1,
+                Title = "Europe Countries Quiz",
+                Description = "Test your knowledge of european countries.",
+                TimesTaken = 1634,
+                MaxPlayers = 1,
                 MinPlayers = 1,
-                MaxPlayers = 2,
-                Rules = new List<string> { "Use pen & paper only" },
-                ImagePath = "/images/math.png",
-                QuizCategory = QuizCategory.History,
-                QuizModes = new List<QuizModes> { QuizModes.Standard },
-                QuizType = QuizType.WorldCountriesQuiz,
-                QuizTypeId = 2
-            };
-
-            var quiz3 = new Quiz
-            {
-                CreatorId = 2,
-                Title = "Math Challenge",
-                Description = "Solve tricky math problems.",
-                TimesTaken = 0,
-                MinPlayers = 1,
-                MaxPlayers = 2,
-                Rules = new List<string> { "Use pen & paper only" },
-                ImagePath = "/images/math.png",
-                QuizCategory = QuizCategory.Technology,
-                QuizModes = new List<QuizModes> { QuizModes.Standard },
-                QuizType = QuizType.WorldCountriesQuiz,
-                QuizTypeId = 2
-            };
-
-            var quiz4 = new Quiz
-            {
-                CreatorId = 2,
-                Title = "Math Challenge",
-                Description = "Solve tricky math problems.",
-                TimesTaken = 0,
-                MinPlayers = 1,
-                MaxPlayers = 2,
-                Rules = new List<string> { "Use pen & paper only" },
-                ImagePath = "/images/math.png",
-                QuizCategory = QuizCategory.Technology,
-                QuizModes = new List<QuizModes> { QuizModes.Standard },
-                QuizType = QuizType.WorldCountriesQuiz,
-                QuizTypeId = 2
-            };
-
-            var quiz5 = new Quiz
-            {
-                CreatorId = 2,
-                Title = "Math Challenge",
-                Description = "Solve tricky math problems.",
-                TimesTaken = 0,
-                MaxPlayers = 2,
-                MinPlayers = 1,
-                Rules = new List<string> { "Use pen & paper only" },
-                ImagePath = "/images/math.png",
-                QuizCategory = QuizCategory.History,
-                QuizModes = new List<QuizModes> { QuizModes.Standard },
-                QuizType = QuizType.WorldCountriesQuiz,
-                QuizTypeId = 2
-            };
-
-            var quiz6 = new Quiz
-            {
-                CreatorId = 2,
-                Title = "Math Challenge",
-                Description = "Solve tricky math problems.",
-                TimesTaken = 0,
-                MaxPlayers = 2,
-                MinPlayers = 1,
-                Rules = new List<string> { "Use pen & paper only" },
-                ImagePath = "/images/math.png",
+                Rules = new List<string> { "Abrevations dont count for many countries", "Completion is reached when all countries are guessed" },
+                ImagePath = "/images/capitals.png",
                 QuizCategory = QuizCategory.Geography,
-                QuizModes = new List<QuizModes> { QuizModes.Standard },
+                QuizModes = new List<QuizModes> { QuizModes.Timed, QuizModes.RandomlySelected, QuizModes.Standard, QuizModes.TriviaExpansion},
                 QuizType = QuizType.WorldCountriesQuiz,
-                QuizTypeId = 2
-            };
+                QuizTypeId = 1,
+                StarRating = 4
+                },
+                new Quiz
+                {
+                CreatorId = 1,
+                Title = "Europe Countries Quiz",
+                Description = "Test your knowledge of european countries.",
+                TimesTaken = 1634,
+                MaxPlayers = 1,
+                MinPlayers = 1,
+                Rules = new List<string> { "Abrevations dont count for many countries", "Completion is reached when all countries are guessed" },
+                ImagePath = "/images/capitals.png",
+                QuizCategory = QuizCategory.Geography,
+                QuizModes = new List<QuizModes> { QuizModes.Timed, QuizModes.RandomlySelected, QuizModes.Standard, QuizModes.TriviaExpansion},
+                QuizType = QuizType.WorldCountriesQuiz,
+                QuizTypeId = 1,
+                StarRating = 4
+                },
+                new Quiz
+                {
+                CreatorId = 1,
+                Title = "Europe Countries Quiz",
+                Description = "Test your knowledge of european countries.",
+                TimesTaken = 1634,
+                MaxPlayers = 1,
+                MinPlayers = 1,
+                Rules = new List<string> { "Abrevations dont count for many countries", "Completion is reached when all countries are guessed" },
+                ImagePath = "/images/capitals.png",
+                QuizCategory = QuizCategory.Geography,
+                QuizModes = new List<QuizModes> { QuizModes.Timed, QuizModes.RandomlySelected, QuizModes.Standard, QuizModes.TriviaExpansion},
+                QuizType = QuizType.WorldCountriesQuiz,
+                QuizTypeId = 1,
+                StarRating = 4
+                },
+                new Quiz
+                {
+                CreatorId = 1,
+                Title = "Europe Countries Quiz",
+                Description = "Test your knowledge of european countries.",
+                TimesTaken = 1634,
+                MaxPlayers = 1,
+                MinPlayers = 1,
+                Rules = new List<string> { "Abrevations dont count for many countries", "Completion is reached when all countries are guessed" },
+                ImagePath = "/images/capitals.png",
+                QuizCategory = QuizCategory.Geography,
+                QuizModes = new List<QuizModes> { QuizModes.Timed, QuizModes.RandomlySelected, QuizModes.Standard, QuizModes.TriviaExpansion},
+                QuizType = QuizType.WorldCountriesQuiz,
+                QuizTypeId = 1,
+                StarRating = 4
+                },
+                new Quiz
+                {
+                CreatorId = 1,
+                Title = "Europe Countries Quiz",
+                Description = "Test your knowledge of european countries.",
+                TimesTaken = 1634,
+                MaxPlayers = 1,
+                MinPlayers = 1,
+                Rules = new List<string> { "Abrevations dont count for many countries", "Completion is reached when all countries are guessed" },
+                ImagePath = "/images/capitals.png",
+                QuizCategory = QuizCategory.Geography,
+                QuizModes = new List<QuizModes> { QuizModes.Timed, QuizModes.RandomlySelected, QuizModes.Standard, QuizModes.TriviaExpansion},
+                QuizType = QuizType.WorldCountriesQuiz,
+                QuizTypeId = 1,
+                StarRating = 4
+                },
+                new Quiz
+                {
+                CreatorId = 1,
+                Title = "Europe Countries Quiz",
+                Description = "Test your knowledge of european countries.",
+                TimesTaken = 1634,
+                MaxPlayers = 1,
+                MinPlayers = 1,
+                Rules = new List<string> { "Abrevations dont count for many countries", "Completion is reached when all countries are guessed" },
+                ImagePath = "/images/capitals.png",
+                QuizCategory = QuizCategory.Geography,
+                QuizModes = new List<QuizModes> { QuizModes.Timed, QuizModes.RandomlySelected, QuizModes.Standard, QuizModes.TriviaExpansion},
+                QuizType = QuizType.WorldCountriesQuiz,
+                QuizTypeId = 1,
+                StarRating = 4
+                },
+                new Quiz
+                {
+                CreatorId = 1,
+                Title = "Europe Countries Quiz",
+                Description = "Test your knowledge of european countries.",
+                TimesTaken = 1634,
+                MaxPlayers = 1,
+                MinPlayers = 1,
+                Rules = new List<string> { "Abrevations dont count for many countries", "Completion is reached when all countries are guessed" },
+                ImagePath = "/images/capitals.png",
+                QuizCategory = QuizCategory.Geography,
+                QuizModes = new List<QuizModes> { QuizModes.Timed, QuizModes.RandomlySelected, QuizModes.Standard, QuizModes.TriviaExpansion},
+                QuizType = QuizType.WorldCountriesQuiz,
+                QuizTypeId = 1,
+                StarRating = 4
+                },
+                new Quiz
+                {
+                CreatorId = 1,
+                Title = "Europe Countries Quiz",
+                Description = "Test your knowledge of european countries.",
+                TimesTaken = 1634,
+                MaxPlayers = 1,
+                MinPlayers = 1,
+                Rules = new List<string> { "Abrevations dont count for many countries", "Completion is reached when all countries are guessed" },
+                ImagePath = "/images/capitals.png",
+                QuizCategory = QuizCategory.Geography,
+                QuizModes = new List<QuizModes> { QuizModes.Timed, QuizModes.RandomlySelected, QuizModes.Standard, QuizModes.TriviaExpansion},
+                QuizType = QuizType.WorldCountriesQuiz,
+                QuizTypeId = 1,
+                StarRating = 4
+                },
+                new Quiz
+                {
+                CreatorId = 1,
+                Title = "Europe Countries Quiz",
+                Description = "Test your knowledge of european countries.",
+                TimesTaken = 1634,
+                MaxPlayers = 1,
+                MinPlayers = 1,
+                Rules = new List<string> { "Abrevations dont count for many countries", "Completion is reached when all countries are guessed" },
+                ImagePath = "/images/capitals.png",
+                QuizCategory = QuizCategory.Geography,
+                QuizModes = new List<QuizModes> { QuizModes.Timed, QuizModes.RandomlySelected, QuizModes.Standard, QuizModes.TriviaExpansion},
+                QuizType = QuizType.WorldCountriesQuiz,
+                QuizTypeId = 1,
+                StarRating = 4
+                },
+            };      
 
-            context.Quizes.AddRange(quiz1, quiz2);
+            context.Quizes.AddRange(quizes);
             context.SaveChanges();
         }
     }

@@ -12,81 +12,81 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = QuizaphFrontend
 build_property.RootNamespace = QuizaphFrontend
-build_property.ProjectDir = C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz\
+build_property.ProjectDir = C:\Users\salom\Source\Repos\Quizaph\GeoQuiz\GeoQuiz\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz
+build_property.MSBuildProjectDirectory = C:\Users\salom\Source\Repos\Quizaph\GeoQuiz\GeoQuiz
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/App.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/ChildComponents/AppBarComponent.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/ChildComponents/AppBarComponent.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDaGlsZENvbXBvbmVudHNcQXBwQmFyQ29tcG9uZW50LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/ChildComponents/CountriesOfTheWorldComponent.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/ChildComponents/CountriesOfTheWorldComponent.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDaGlsZENvbXBvbmVudHNcQ291bnRyaWVzT2ZUaGVXb3JsZENvbXBvbmVudC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/ChildComponents/QuizInfoLabelComponent.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/ChildComponents/QuizInfoLabelComponent.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDaGlsZENvbXBvbmVudHNcUXVpekluZm9MYWJlbENvbXBvbmVudC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Layout/EmptyLayout.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/Layout/EmptyLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRW1wdHlMYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Layout/QuizLayout.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/Layout/QuizLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcUXVpekxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/MudblazorDialogComponents/BasicDialog.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/MudblazorDialogComponents/BasicDialog.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNdWRibGF6b3JEaWFsb2dDb21wb25lbnRzXEJhc2ljRGlhbG9nLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/Error.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/Home.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/Login.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dpbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/Quiz.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/Quiz.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xRdWl6LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/QuizesMenu.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/QuizesMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xRdWl6ZXNNZW51LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/SignUp.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/SignUp.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTaWduVXAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Routes.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/_Imports.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Layout/MainLayout.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-fk98c7h1o3
 
-[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Layout/NavMenu.razor]
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-iid1f2skkv

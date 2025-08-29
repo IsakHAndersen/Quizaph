@@ -24,6 +24,9 @@ namespace Models.Enums
         Alphabetical,
         Random,
         Standard,
+        RandomlySelected,
+        Timed,
+        TriviaExpansion,
     }
 
     public enum Continent

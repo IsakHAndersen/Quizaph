@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Models.Enums;
 using QuizaphFrontend.Models;
 using QuizaphFrontend.Models.Quizes;
 using System.Net.Http;
@@ -34,6 +35,14 @@ namespace QuizaphFrontend.Services
         //    response.EnsureSuccessStatusCode();
         //    return new CountryQuiz();
         //}
+        public async Task<List<QuizType>> GetUserCompletedQuizzes()
+        {
+            var response = await _httpClient.GetAsync("home/");
+            response.EnsureSuccessStatusCode();
+
+            var quizzes = await response.Content.ReadFromJsonAsync<List<Quiz>>();
+            return quizzes ?? new List<Quiz>();
+        }
 
         public async Task<List<Quiz>> GetAllQuizes()
         {
