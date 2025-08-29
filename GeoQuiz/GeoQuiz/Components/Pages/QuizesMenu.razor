@@ -4,62 +4,143 @@
 @using QuizaphFrontend.Services
 
 
-<MudPaper Square="true" style="background-color: transparent; margin-top: 60px;" Elevation="0">
-    <MudContainer MaxWidth="MaxWidth.Medium">
-        <MudPaper MaxHeight="80%" Width="100%" Square="true" style="background-color: #ffffff; border-radius: 20px; padding: 50px 50px 30px 50px;">
-            <MudStack Row="true" Style="align-items: center" Spacing="6">
 
-                <MudText Style="font-weight: 500">
-                    Found @(quizzes?.Count() ?? 0) Quizzes
-                </MudText>
-                <MudTextField @bind-Value="search" Placeholder="Search" Variant="Variant.Outlined"
-                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search"
-                              AdornmentColor="Color.Dark" Style="height: 40px;"/>
-                <MudMenu>
-                    <ActivatorContent>
-                        <MudButton Variant="Variant.Filled" Style="text-transform: none; background-color: black; color: white; border-radius: 15px;"> 
-                            Sort By
+
+<MudPaper Square="true" style="background-color: transparent; margin-top: 60px;" Elevation="0">
+    <MudContainer MaxWidth="MaxWidth.Large">
+        <MudGrid>
+
+            <!-- Left filter panel -->
+            <MudItem xs="12" md="3">
+                <MudPaper Outlined="true" Square="true" 
+                          style="background-color: #ffffff; border-radius: 20px; padding: 20px;">
+                    <MudText Typo="Typo.h6" GutterBottom="true">Filters</MudText>
+                    <MudDivider Class="my-2" />
+
+                    <!-- Popularity -->
+                    <MudSelect T="string" Label="Sort by Popularity" @bind-Value="selectedPopularity">
+                        <MudSelectItem Value="@("None")">None</MudSelectItem>
+                        <MudSelectItem Value="@("MostPopular")">Most Popular</MudSelectItem>
+                        <MudSelectItem Value="@("LeastPopular")">Least Popular</MudSelectItem>
+                    </MudSelect>
+
+                    <!-- Rating -->
+                    <MudSelect T="string" Label="Sort by Rating" @bind-Value="selectedRating" Class="mt-4">
+                        <MudSelectItem Value="@("None")">None</MudSelectItem>
+                        <MudSelectItem Value="@("HighestRated")">High Rating</MudSelectItem>
+                        <MudSelectItem Value="@("LowestRated")">Low Rating</MudSelectItem>
+                    </MudSelect>
+
+
+                    <!-- Players Range -->
+                    <MudText Typo="Typo.subtitle2" Class="mt-4">Players (min - max)</MudText>
+                    <MudStack Row="true" Spacing="2">
+                        <MudNumericField Label="Min" @bind-Value="minPlayers" Variant="Variant.Outlined" />
+                        <MudNumericField Label="Max" @bind-Value="maxPlayers" Variant="Variant.Outlined" />
+                    </MudStack>
+
+                    <!-- Completed toggle -->
+                    <MudCheckBox @bind-Value="onlyCompleted" Label="Show only completed" Class="mt-4" Dense/>
+
+                    <!-- Apply button -->
+                    <MudStack Justify="Justify.Center" Class="mt-4">
+                        <MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="ClearFilters">
+                            Clear Filters
                         </MudButton>
-                    </ActivatorContent>
-                    <ChildContent>
-                        <MudMenuItem Label="Popularity" />
-                        <MudMenuItem Label="Newest" />
-                        <MudMenuItem Label="Rating" />
-                    </ChildContent>
-                </MudMenu>
-            </MudStack>
-            
-            <MudContainer Style="margin: 30px 0; padding: 0px;">
-                @if (quizzes is not null)
-                {
-                    @foreach (var item in quizzes)
-                    {
-                        <QuizaphFrontend.Components.ChildComponents.QuizInfoLabelComponent QuizInfo="item" />
-                    }
-                }
-                else
-                {
-                    <MudText>Loading quizzes...</MudText>
-                }
-            </MudContainer>
-            <MudStack Justify="Justify.Center" Style="margin-top: 10px;">
-                <MudButton Variant="Variant.Text" Style="color: black">
-                    Load More
-                </MudButton>
-            </MudStack>
-        </MudPaper>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ApplyFilters">
+                            Apply Filters
+                        </MudButton>
+                    </MudStack>
+                </MudPaper>
+            </MudItem>
+
+            <!-- Main content (quiz list) -->
+            <MudItem xs="12" md="9">
+                <MudPaper MaxHeight="80%" Width="100%" Square="true"
+                          style="background-color: #ffffff; border-radius: 20px; padding: 50px 50px 30px 50px;"
+                          Outlined=true>
+                    <MudStack Row="true" Style="align-items: center" Spacing="6">
+                        <MudText Style="font-weight: 500">
+                            Found (@(filteredQuizzes?.Count() ?? 0)) Quizzes
+                        </MudText>
+                        <MudTextField @bind-Value="search" Placeholder="Search" Variant="Variant.Outlined"
+                                      Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search"
+                                      AdornmentColor="Color.Dark" Style="height: 40px;"/>
+                    </MudStack>
+
+                    <MudContainer Style="margin: 30px 0; padding: 0px;">
+                        @if (filteredQuizzes is not null)
+                        {
+                            @foreach (var item in filteredQuizzes)
+                            {
+                                <QuizaphFrontend.Components.ChildComponents.QuizInfoLabelComponent QuizInfo="item" />
+                            }
+                        }
+                        else
+                        {
+                            <MudText>Loading quizzes...</MudText>
+                        }
+                    </MudContainer>
+
+                    <MudStack Justify="Justify.Center" Style="margin-top: 10px;">
+                        <MudButton Variant="Variant.Text" Style="color: black" OnClick="LoadMore">
+                            Load More
+                        </MudButton>
+                    </MudStack>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
     </MudContainer>
 </MudPaper>
 
 @code{
+    // Filter states
+    public string selectedPopularity { get; set; }
+    public string selectedRating { get; set; }
+    public int? minPlayers { get; set; }
+    public int? maxPlayers { get; set; }
+    public bool onlyCompleted { get; set; }
+
     private List<QuizaphBackend.Models.Quiz> quizzes;
+    public List<QuizaphBackend.Models.Quiz> filteredQuizzes => quizzes
+    ?.Where(q =>
+        (string.IsNullOrEmpty(search) || q.Title.Contains(search, StringComparison.OrdinalIgnoreCase)) &&
+        (minPlayers == null || q.MinPlayers >= minPlayers) &&
+        (maxPlayers == null || q.MaxPlayers <= maxPlayers)
+    // Must be logged in (!onlyCompleted || q.Completed)
+    )
+    .OrderBy(q =>
+        selectedPopularity == "MostPopular" ? -q.TimesTaken :
+        selectedPopularity == "LeastPopular" ? q.TimesTaken : 0
+    )
+    .ThenBy(q =>
+        selectedRating == "HighestRated" ? -q.StarRating :
+        selectedRating == "LowestRated" ? q.StarRating : 0
+    )
+    .ToList();
+
+
     public string search { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         quizzes = await HttpService.GetAllQuizes();
-        // Database call to retrieve basic quiz info. 
-        // Whenever any filter is changed, new method that upates quizinfolist should be called.
-        // Quizes = await DummyDataQuiz.GetAllQuizes();
+        StateHasChanged();
+
+    }
+
+    void ApplyFilters()
+    {
+        StateHasChanged();
+    }
+
+    void ClearFilters()
+    {
+        StateHasChanged();
+    }
+
+    void LoadMore()
+    {
+        
     }
 }

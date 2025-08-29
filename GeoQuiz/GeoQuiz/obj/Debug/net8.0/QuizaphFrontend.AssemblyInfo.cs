@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuizaphFrontend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fa676c772d2cf9abe400201a85d5cee0c13806da")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4163e76b2145e114dd1e7634be769ea6562623c4")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuizaphFrontend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuizaphFrontend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

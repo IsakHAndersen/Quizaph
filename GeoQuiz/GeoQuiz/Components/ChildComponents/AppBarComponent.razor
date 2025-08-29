@@ -2,33 +2,35 @@
 
 <MudAppBar Fixed=true
            Elevation="2"
-           Style="background-color: #f1f8fa; color: #2C2C2E ; height: 64px;">
+           Style="background-color: #f1f8fa; color: #2C2C2E ; height: 64px; position: relative;">
 
-
+    <!-- Left section: logo -->
     <MudContainer MaxWidth="MaxWidth.Large"
                   Class="d-flex align-center"
-                  Style="height: 100%;  padding-left: 250px;">
-
-        <MudItem xs="4" Class="d-flex align-center justify-center">
-            <img src="SVGS/TempIcon.svg" alt="Logo" width="24" height="24" style="margin-right: 10px;" />
-            <MudText Style="font-size: 21px; font-weight: 450;">
-                Quizaph
-            </MudText>
-        </MudItem>
-
-            <MudTabs MinimumTabWidth="120px"
-                     ActivePanelIndexChanged="PanelChanged"
-                     ActivePanelIndex="@selectedTab"
-                     >
-                <MudTabPanel Text="Discover" Icon="@Icons.Material.Filled.LensBlur"
-                         Style="font-size: 14px; background-color: #f1f8fa; text-transform: none;" />
-                <MudTabPanel Visible="false" />
-                <MudTabPanel Text="Quizes" Icon="@Icons.Material.Filled.Gamepad"
-                         Style="font-size: 14px; background-color: #f1f8fa; text-transform: none; " />
-                <MudTabPanel Text="About" Icon="@Icons.Material.Filled.LightbulbCircle"
-                         Style="font-size: 14px; background-color: #f1f8fa; text-transform: none;" />
-            </MudTabs>
+                  Style="height: 100%; padding-left: 250px;">
+        <img src="SVGS/TempIcon.svg" alt="Logo" width="30" height="30" style="margin-right: 10px;" />
+        <MudText Style="font-size: 25px; font-weight: 450;">
+            Quizaph
+        </MudText>
     </MudContainer>
+
+    <!-- Centered tabs -->
+    <div style="position: absolute; left: 50%; transform: translateX(-50%); height: 100%; display: flex; align-items: center;">
+        <MudTabs MinimumTabWidth="120px"
+                 ActivePanelIndexChanged="PanelChanged"
+                 ActivePanelIndex="@selectedTab"
+                 Centered="true">
+            <MudTabPanel Text="Discover" Icon="@Icons.Material.Filled.LensBlur"
+                         Style="font-size: 14px; background-color: #f1f8fa; text-transform: none;" />
+            <MudTabPanel Visible="false" />
+            <MudTabPanel Text="Quizes" Icon="@Icons.Material.Filled.Gamepad"
+                         Style="font-size: 14px; background-color: #f1f8fa; text-transform: none;" />
+            <MudTabPanel Text="About" Icon="@Icons.Material.Filled.LightbulbCircle"
+                         Style="font-size: 14px; background-color: #f1f8fa; text-transform: none;" />
+        </MudTabs>
+    </div>
+
+    <!-- Right section: login/signup or profile -->
     @if (!IsLoggedIn)
     {
         <MudContainer MaxWidth="MaxWidth.Large"
@@ -40,7 +42,8 @@
                        OnClick="@SignIn">
                 Login
             </MudButton>
-            <MudButton Style="background-color: black; text-transform: none; border-radius: 20px; color: #ebebeb; font-size: 14px;" OnClick="@SignUp"
+            <MudButton Style="background-color: black; text-transform: none; border-radius: 20px; color: #ebebeb; font-size: 14px;"
+                       OnClick="@SignUp"
                        Variant="Variant.Filled">
                 Sign Up
             </MudButton>
@@ -51,25 +54,24 @@
         <MudContainer MaxWidth="MaxWidth.Large"
                       Class="d-flex align-center"
                       Style="height: 100%; padding-right: 300px; justify-content: right;">
-            <MudMenu Label="Profile" Variant="Variant.Text" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Style="color: #ebebeb;" Color="Color.Inherit" Size="Size.Small" Dense>
+            <MudMenu Label="Profile" Variant="Variant.Text"
+                     EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
+                     Style="color: #ebebeb;" Color="Color.Inherit" Size="Size.Small" Dense>
                 <MudMenuItem Icon="@Icons.Material.Filled.Person" Label="Edit profile" IconColor="Color.Tertiary" />
-                <MudMenuItem Icon="@(isDarkMode? Icons.Material.Filled.DarkMode :  Icons.Material.Filled.WbSunny)" Label="Toggle Darkmode" IconColor="Color.Warning" />
+                <MudMenuItem Icon="@(isDarkMode? Icons.Material.Filled.DarkMode : Icons.Material.Filled.WbSunny)" Label="Toggle Darkmode" IconColor="Color.Warning" />
                 <MudMenuItem Icon="@Icons.Material.Filled.Logout" Label="Logout" IconColor="Color.Dark" OnClick="@Logout" />
             </MudMenu>
         </MudContainer>
     }
 </MudAppBar>
+
+
 @code {
     public bool isDarkMode = true;
     private bool IsLoggedIn = false;
     private string appBarColor = "#302A2A";
     private int selectedTab = 1; // Dummy tab with no content
 
-    private void MainIconClick()
-    {
-        selectedTab = 1;
-        navigation.NavigateTo("/");
-    }
 
     private void Logout()
     {
@@ -92,9 +94,9 @@
         var route = index switch
         {
             0 => "/",
-            1 => "/",
+            1 => "/Discover",
             2 => "/Quizes",
-            3 => "/",
+            3 => "/About",
             _ => "/"
         };
         navigation.NavigateTo(route);

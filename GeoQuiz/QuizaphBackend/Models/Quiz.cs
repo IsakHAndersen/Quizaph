@@ -17,5 +17,6 @@ namespace QuizaphBackend.Models
         public List<QuizModes> QuizModes { get; set; } = new();
         public QuizType? QuizType { get; set; }
         public int QuizTypeId { get; set; }
+        public int StarRating { get; set; }
     }
 }
