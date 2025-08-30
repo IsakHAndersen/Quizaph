@@ -6,8 +6,8 @@ namespace QuizaphBackend.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public int QuizTypeId { get; set; }
-        public QuizModes QuizModes { get; set; }
+        public QuizType QuizType { get; set; }
+        public QuizMode QuizMode { get; set; }
         public string FastestTime { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace GeoQuizBackend.EntityFramework
     public class DBContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<Quiz> Quizes { get; set; }
+        public DbSet<Quiz> Quizzes { get; set; }
         public DbSet<QuizCompletion> QuizCompletions { get; set; }
 
         public DBContext(DbContextOptions<DBContext> options) : base(options)

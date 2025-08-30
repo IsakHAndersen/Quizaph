@@ -6,35 +6,40 @@ using Microsoft.AspNetCore.Mvc;
 namespace QuizaphBackend.Controllers
 {
     [ApiController]
-    [Route("/[controller]")]
-    public class HomeController : Controller
+    [Route("api/[controller]")]
+    public class QuizzesController : ControllerBase
     {
         private readonly DBContext _context;
-        public HomeController(DBContext context)
+        public QuizzesController(DBContext context)
         {
             _context = context;
         }
 
-        // GET: /home/quizzes
-        [HttpGet("quizzes")]
+        [HttpGet]
         public IActionResult GetAllQuizzes()
         {
-            var quizzes = _context.Quizes.ToList();
+            var quizzes = _context.Quizzes.ToList();
             return Ok(quizzes);
         }
 
-        // GET: /home/quizzes/5
-        [HttpGet("quizzes/{quizId}")]
-        public IActionResult GetQuizById(int quizId)
+        [HttpGet("{id}")]
+        public IActionResult GetQuizById(int id)
         {
-            var quiz = _context.Quizes.FirstOrDefault(q => q.Id == quizId);
-
-            if (quiz == null)
-                return NotFound();
-
+            var quiz = _context.Quizzes.FirstOrDefault(q => q.Id == id);
+            if (quiz == null) return NotFound();
             return Ok(quiz);
         }
 
+        [HttpGet("/api/users/{userId}/completed-quizzes")]
+        public IActionResult GetCompletedQuizzesByUserId(int userId)
+        {
+            var completions = _context.QuizCompletions
+                .Where(a => a.UserId == userId)
+                .ToList();
+
+            if (!completions.Any()) return NotFound();
+            return Ok(completions);
+        }
 
     }
 }

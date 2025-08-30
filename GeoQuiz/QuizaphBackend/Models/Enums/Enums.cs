@@ -19,7 +19,7 @@ namespace Models.Enums
         GeneralKnowledge
     }
 
-    public enum QuizModes
+    public enum QuizMode
     {
         Alphabetical,
         Random,

@@ -3,14 +3,22 @@
 @inject NavigationManager navigation
 @inject CurrentQuizStateService QuizState
 
-<MudPaper Style="@SetCategoryColor()" 
+<MudPaper Style="@StyleQuizElement()" 
           Class="mt-4" Elevation="0" @onclick="() => NavigateToQuiz()">
     <MudStack Row="false" Spacing="1">
-        <!-- Title -->
-        <MudText Style="color: #ffffff; font-size: 14px; font-weight: 600;">
-            @QuizInfo.Title
-        </MudText>
+        <MudStack Row="true" AlignItems="AlignItems.Center">
+            <!-- Title -->
+            <MudText Style="color: #ffffff; font-size: 14px; font-weight: 600;">
+                @QuizInfo.Title
+            </MudText>
 
+            <MudSpacer />
+
+            <!-- Category -->
+            <MudText Style="color: #ffffff;" Typo="Typo.body2">
+                @FormatQuizCategory()
+            </MudText>
+        </MudStack>
         <!-- Info Row -->
         <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
 
@@ -52,21 +60,12 @@
 
     protected override void OnInitialized()
     {
-        SetCategoryColor();
+
     }
 
-    public string SetCategoryColor()
+    public string StyleQuizElement()
     {
-        var categoryColor = QuizInfo.QuizCategory switch
-        {
-            QuizCategory.Geography => "#1976D2",
-            QuizCategory.Technology => "#6029e7",
-            QuizCategory.History => "#cfd293",
-            QuizCategory.Sports => "#4f9ff3",
-            QuizCategory.GeneralKnowledge => "#6fcaaa",
-            _ => throw new ArgumentException(message: "Invalid quiz category", paramName: nameof(QuizInfo.QuizCategory))
-        };
-        return $"background-color: {categoryColor}; padding: 12px 20px; border-radius: 10px; opacity: 0.9;";
+        return $"background-color: {QuizInfo.CategoryColor}; padding: 12px 20px; border-radius: 10px; opacity: 0.9;";
 
     }
 
@@ -79,6 +78,15 @@
             (not null, null) => $"{min}",
             (null, not null) => $"{max}",
             _ => "N/A"
+        };
+    }
+
+    private string FormatQuizCategory()
+    {
+        return QuizInfo.QuizCategory switch
+        {
+            QuizCategory.GeneralKnowledge => "General Knowledge",
+            _ => QuizInfo.QuizCategory.ToString()
         };
     }
 

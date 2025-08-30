@@ -71,3 +71,9 @@ C:\Users\salom\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\stat
 C:\Users\salom\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\salom\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\salom\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\salom\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\salom\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\salom\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\salom\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\salom\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\salom\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\staticwebassets.build.json

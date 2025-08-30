@@ -41,7 +41,7 @@
                     </MudStack>
 
                     <!-- Completed toggle -->
-                    <MudCheckBox @bind-Value="onlyCompleted" Label="Show only completed" Class="mt-4" Dense Color="Color.Tertiary" />
+                    <MudCheckBox @bind-Value="showOnlyUncompleted" Label="Show only uncompleted" Class="mt-4" Dense Color="Color.Tertiary" />
 
                     <!-- Apply button -->
                     <MudStack Justify="Justify.Center" Class="mt-4">
@@ -114,7 +114,8 @@
     private string? selectedRating { get; set; } = null;
     private int? minPlayers { get; set; }
     private int? maxPlayers { get; set; }
-    private bool onlyCompleted { get; set; }
+    private bool showOnlyUncompleted { get; set; }
+    private List<QuizCompletion> CompletedQuizzes { get; set; } = new();
 
     private int pageSize = 10;
 
@@ -127,7 +128,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        quizzes = await HttpService.GetAllQuizes();
+        quizzes = await HttpService.GetAllQuizzes();
         ApplyFilters(); // Populate filtered and visible quizzes
     }
 
@@ -146,7 +147,7 @@
         StateHasChanged();
     }
 
-    private void ApplyFilters()
+    private async Task ApplyFilters()
     {
         if (quizzes == null) return;
 
@@ -176,6 +177,16 @@
                 _ => filteredQuizzesList
             };
         }
+        if (showOnlyUncompleted)
+        {
+            if (!CompletedQuizzes.Any())
+            {
+                CompletedQuizzes = await HttpService.GetUserCompletedQuizzes(1);
+            }
+            filteredQuizzesList = filteredQuizzesList
+            .Where(quiz => !CompletedQuizzes.Any(c => c.QuizType == quiz.QuizType))
+            .ToList();
+        }
 
         visibleQuizzesList.Clear();
         LoadMore();
@@ -191,12 +202,5 @@
 
         ApplyFilters();
     }
-
-    private async Task LoadUsersCompletedQuizzes()
-    {
-        var completedQuizzes = await HttpService.GetCompletedQuizzes();
-
-    }
-
     #endregion
 }

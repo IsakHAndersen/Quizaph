@@ -27,26 +27,18 @@ namespace QuizaphFrontend.Services
         {
             //await _httpClient.GetAsync("/account/logout");
         }
-
-        //public async Task<CountryQuiz> GetCountryQuiz()
-        //{
-        //    var url = "";
-        //    var response = await _httpClient.GetAsync(url);
-        //    response.EnsureSuccessStatusCode();
-        //    return new CountryQuiz();
-        //}
-        public async Task<List<QuizType>> GetUserCompletedQuizzes()
+        public async Task<List<QuizCompletion>> GetUserCompletedQuizzes(int userId)
         {
-            var response = await _httpClient.GetAsync("home/");
+            var response = await _httpClient.GetAsync($"api/users/{userId}/completed-quizzes");
             response.EnsureSuccessStatusCode();
 
-            var quizzes = await response.Content.ReadFromJsonAsync<List<Quiz>>();
-            return quizzes ?? new List<Quiz>();
+            var quizzes = await response.Content.ReadFromJsonAsync<List<QuizCompletion>>();
+            return quizzes ?? new List<QuizCompletion>();
         }
 
-        public async Task<List<Quiz>> GetAllQuizes()
+        public async Task<List<Quiz>> GetAllQuizzes()
         {
-            var response = await _httpClient.GetAsync("home/quizzes");
+            var response = await _httpClient.GetAsync("api/quizzes");
             response.EnsureSuccessStatusCode();
 
             var quizzes = await response.Content.ReadFromJsonAsync<List<Quiz>>();
