@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\salom\\Source\\Repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\QuizaphBackend.csproj": {}
+    "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\QuizaphBackend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\salom\\Source\\Repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\QuizaphBackend.csproj": {
+    "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\QuizaphBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\salom\\Source\\Repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\QuizaphBackend.csproj",
+        "projectUniqueName": "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\QuizaphBackend.csproj",
         "projectName": "QuizaphBackend",
-        "projectPath": "C:\\Users\\salom\\Source\\Repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\QuizaphBackend.csproj",
-        "packagesPath": "C:\\Users\\salom\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\salom\\Source\\Repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\obj\\",
+        "projectPath": "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\QuizaphBackend.csproj",
+        "packagesPath": "C:\\Users\\dudis\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\salom\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\dudis\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -86,7 +86,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300-preview.0.25177.5/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
