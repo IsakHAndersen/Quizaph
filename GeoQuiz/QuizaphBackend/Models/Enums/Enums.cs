@@ -8,6 +8,7 @@ namespace Models.Enums
 {
     public enum QuizCategory
     {
+        None,
         Geography,
         History,
         Science,
@@ -20,7 +21,7 @@ namespace Models.Enums
     }
 
     public enum QuizMode
-    {
+    {   
         Alphabetical,
         Random,
         Standard,

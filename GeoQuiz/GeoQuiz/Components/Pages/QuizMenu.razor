@@ -19,24 +19,18 @@
                     <MudDivider Class="my-2" />
 
                     <!-- Category -->
-                    <MudSelect T="string" Label="Category" @bind-Value="selectedPopularity">
+                    <MudSelect T="QuizCategory" Label="Category" @bind-Value="selectedCategory">
+                        @foreach (var category in Enum.GetValues(typeof(QuizCategory)).Cast<QuizCategory>())
+                        {
+                            <MudSelectItem Value="@category">@category</MudSelectItem>
+                        }
+                    </MudSelect>
+
+                    <!-- Sorting -->
+                    <MudSelect T="string" Label="Sort by" @bind-Value="selectedSort">
                         <MudSelectItem Value="@("None")">None</MudSelectItem>
                         <MudSelectItem Value="@("MostPopular")">Most Popular</MudSelectItem>
                         <MudSelectItem Value="@("LeastPopular")">Least Popular</MudSelectItem>
-                    </MudSelect>
-
-
-
-                    <!-- Popularity -->
-                    <MudSelect T="string" Label="Sort by Popularity" @bind-Value="selectedPopularity">
-                        <MudSelectItem Value="@("None")">None</MudSelectItem>
-                        <MudSelectItem Value="@("MostPopular")">Most Popular</MudSelectItem>
-                        <MudSelectItem Value="@("LeastPopular")">Least Popular</MudSelectItem>
-                    </MudSelect>
-
-                    <!-- Rating -->
-                    <MudSelect T="string" Label="Sort by Rating" @bind-Value="selectedRating" Class="mt-4">
-                        <MudSelectItem Value="@("None")">None</MudSelectItem>
                         <MudSelectItem Value="@("HighestRated")">High Rating</MudSelectItem>
                         <MudSelectItem Value="@("LowestRated")">Low Rating</MudSelectItem>
                     </MudSelect>
@@ -119,12 +113,12 @@
 
 @code {
     // Filter states
-    private string? selectedPopularity { get; set; } = null;
-    private string? selectedRating { get; set; } = null;
+    private string? selectedSort { get; set; } = "None";
     private int? minPlayers { get; set; }
     private int? maxPlayers { get; set; }
     private bool showOnlyUncompleted { get; set; }
     private List<QuizCompletion> CompletedQuizzes { get; set; } = new();
+    private QuizCategory selectedCategory = QuizCategory.None;
 
     private int pageSize = 10;
 
@@ -138,7 +132,7 @@
     protected override async Task OnInitializedAsync()
     {
         quizzes = await HttpService.GetAllQuizzes();
-        ApplyFilters(); // Populate filtered and visible quizzes
+        await ApplyFilters(); // Populate filtered and visible quizzes
     }
 
 
@@ -164,52 +158,50 @@
             .Where(q =>
                 (string.IsNullOrEmpty(search) || q.Title.Contains(search, StringComparison.OrdinalIgnoreCase)) &&
                 (minPlayers == null || q.MinPlayers >= minPlayers) &&
-                (maxPlayers == null || q.MaxPlayers <= maxPlayers)
+                (maxPlayers == null || q.MaxPlayers <= maxPlayers) &&
+
+                (selectedCategory == QuizCategory.None || q.QuizCategory == selectedCategory)
             )
             .ToList();
-        if (!string.IsNullOrEmpty(selectedPopularity))
+
+        if (!string.IsNullOrEmpty(selectedSort) && selectedSort != "None")
         {
-            filteredQuizzesList = selectedPopularity switch
+            filteredQuizzesList = selectedSort switch
             {
                 "MostPopular" => filteredQuizzesList.OrderByDescending(q => q.TimesTaken).ToList(),
                 "LeastPopular" => filteredQuizzesList.OrderBy(q => q.TimesTaken).ToList(),
-                _ => filteredQuizzesList
-            };
-        }
-
-        if (!string.IsNullOrEmpty(selectedRating))
-        {
-            filteredQuizzesList = selectedRating switch
-            {
                 "HighestRated" => filteredQuizzesList.OrderByDescending(q => q.StarRating).ToList(),
                 "LowestRated" => filteredQuizzesList.OrderBy(q => q.StarRating).ToList(),
                 _ => filteredQuizzesList
             };
         }
+
         if (showOnlyUncompleted)
         {
             if (!CompletedQuizzes.Any())
             {
                 CompletedQuizzes = await HttpService.GetUserCompletedQuizzes(1);
             }
+
             filteredQuizzesList = filteredQuizzesList
-            .Where(quiz => !CompletedQuizzes.Any(c => c.QuizType == quiz.QuizType))
-            .ToList();
+                .Where(quiz => !CompletedQuizzes.Any(c => c.QuizType == quiz.QuizType))
+                .ToList();
         }
 
         visibleQuizzesList.Clear();
         LoadMore();
     }
 
-    private void ClearFilters()
+
+    private async void ClearFilters()
     {
         search = string.Empty;
         minPlayers = null;
         maxPlayers = null;
-        selectedPopularity = null;
-        selectedRating = null;
-
-        ApplyFilters();
+        selectedSort = "None";
+        selectedCategory = QuizCategory.None;
+        showOnlyUncompleted = false;
+        await ApplyFilters();
     }
     #endregion
 }

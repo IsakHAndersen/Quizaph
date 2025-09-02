@@ -1,12 +1,6 @@
-﻿using GeoQuiz.Models.QuizModels;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
 using QuizaphBackend.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using QuizaphBackend.Models.QuizResults;
 
 namespace GeoQuizBackend.EntityFramework
 {
@@ -14,7 +8,7 @@ namespace GeoQuizBackend.EntityFramework
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Quiz> Quizzes { get; set; }
-        public DbSet<QuizCompletion> QuizCompletions { get; set; }
+        public DbSet<QuizResult> QuizResults { get; set; }
 
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
@@ -29,6 +23,23 @@ namespace GeoQuizBackend.EntityFramework
                     .EnableSensitiveDataLogging()
                     .LogTo(Console.WriteLine, LogLevel.Information); // Logs to console
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<QuizResult>()
+                .HasKey(q => new { q.UserId, q.QuizType, q.QuizMode });
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<QuizResult>()
+                .HasOne(q => q.User)
+                .WithMany(u => u.QuizResults)
+                .HasForeignKey(q => q.UserId);
         }
     }
 } 

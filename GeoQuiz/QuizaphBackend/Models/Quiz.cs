@@ -73,7 +73,7 @@ namespace QuizaphBackend.Models
         {
             QuizCategory.Geography => "#1976D2",
             QuizCategory.Technology => "#6029e7",
-            QuizCategory.History => "#cfd293",
+            QuizCategory.History => "#8B5E3C",
             QuizCategory.Sports => "#4f9ff3",
             QuizCategory.GeneralKnowledge => "#6fcaaa",
             _ => throw new ArgumentException("Invalid quiz category", nameof(category))

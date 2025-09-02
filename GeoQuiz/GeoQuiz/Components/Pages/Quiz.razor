@@ -1,33 +1,172 @@
-﻿@layout QuizLayout
-@inject NavigationManager navigation
+﻿@layout MainLayout
+@page "/Quiz"
+@inject NavigationManager Navigation
+@inject IDialogService DialogService
 @inject CurrentQuizStateService QuizState
 @inject IJSRuntime JS
-@page "/Quiz"
 @using QuizaphFrontend.Components.ChildComponents
 @using QuizaphFrontend.Services
 @using global::Models.Enums
+@using QuizaphFrontend.Components.MudblazorDialogComponents
 
-    <MudPaper Elevation="0" MaxWidth="MaxWidth.Large" Style="position: relative; border-radius: 10px;">
-    @if (CurrentQuiz?.QuizType == QuizType.ImageQuiz)
-    {
-        <!-- Render image quiz component here -->
-    }
-    else if (CurrentQuiz?.QuizType == QuizType.WorldCountriesQuiz)
-    {
-        <CascadingValue Value="CurrentQuiz">
-            <CountriesOfTheWorldComponent />
-        </CascadingValue>
-    }
-    </MudPaper>
+<MudPaper Square="true" MaxWidth="MaxWidth.Large"
+          Style="padding: 0px 120px 0px 120px; background-color: #f1f8fa; min-height: 100vh;" Elevation="0">
+    <MudStack Spacing="7">
+
+        <!-- Header + Image + Buttons -->
+        <MudItem>
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                <MudStack Row="true" Spacing="6" AlignItems="AlignItems.Center">
+                    <MudText Typo="Typo.h5" Style="font-family: 'Roboto Condensed'">
+                        @QuizState.CurrentQuizInfo?.Title
+                    </MudText>
+
+                    @if (QuizState.CurrentQuizInfo?.QuizModes.Count > 1)
+                    {
+                        <MudMenu Label="Select Mode" Variant="Variant.Filled" Color="Color.Tertiary" Size="Size.Medium" Dense>
+                            @foreach (var mode in QuizState.CurrentQuizInfo.QuizModes)
+                            {
+                                <MudMenuItem Label="@mode.ToString()" OnClick="@(() => SelectMode(mode.ToString()))" />
+                            }
+                        </MudMenu>
+                    }
+
+                    <MudButton Variant="Variant.Text" Color="Color.Inherit" Size="Size.Small"
+                               OnClick="Reset" StartIcon="@Icons.Material.Filled.RestartAlt"
+                               Style="text-transform: none;">
+                        Restart
+                    </MudButton>
+
+                    <MudButton Variant="Variant.Text" Color="Color.Inherit" Size="Size.Small"
+                               OnClick="ShowEndScreen" StartIcon="@Icons.Material.Filled.Output"
+                               Style="text-transform: none;">
+                        End Quiz
+                    </MudButton>
+                </MudStack>
+
+                <MudStack Row="true" Spacing="4" AlignItems="AlignItems.Center">
+                    @if (QuizState.CurrentQuizInfo?.Rules?.Any() == true)
+                    {
+                        <MudButton @onclick="() => OpenDialogAsync(DialogType.Rules)"
+                                   Variant="Variant.Text" Color="Color.Dark"
+                                   EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
+                                   Style="text-transform: none;" Size="Size.Small">
+                            Rules
+                        </MudButton>
+                    }
+
+                    @if (QuizState.CurrentQuizInfo != null)
+                    {
+                        <MudButton @onclick="() => OpenDialogAsync(DialogType.Ranking)"
+                                   Variant="Variant.Text" Color="Color.Dark"
+                                   EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
+                                   Style="text-transform: none;" Size="Size.Small">
+                            Rankings
+                        </MudButton>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(QuizState.CurrentQuizInfo?.Description))
+                    {
+                        <MudButton @onclick="() => OpenDialogAsync(DialogType.Information)"
+                                   Variant="Variant.Text" Color="Color.Dark"
+                                   EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
+                                   Style="text-transform: none;" Size="Size.Small">
+                            Info
+                        </MudButton>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(QuizState.CurrentQuizInfo?.ImagePath))
+                    {
+                        <MudImage Src="@QuizState.CurrentQuizInfo.ImagePath"
+                                  Elevation="25"
+                                  Class="rounded-lg"
+                                  Style="border-radius: 20px;" />
+                    }
+                </MudStack>
+            </MudStack>
+        </MudItem>
+
+        <!-- Main quiz content -->
+        @if (QuizState.CurrentQuizInfo != null)
+        {
+            <MudPaper Square="true" Style="position: relative; padding: 0; background-color: transparent;" Elevation="0">
+                @switch (QuizState.CurrentQuizInfo.QuizType)
+                {
+                    case QuizType.ImageQuiz:
+                        <ImageQuizComponent Quiz="@QuizState.CurrentQuizInfo" />
+                        break;
+                    case QuizType.WorldCountriesQuiz:
+                        <CascadingValue Value="QuizState.CurrentQuizInfo">
+                            <CountriesOfTheWorldComponent />
+                        </CascadingValue>
+                        break;
+                    default:
+                        <MudText>No quiz available.</MudText>
+                        break;
+                }
+            </MudPaper>
+        }
+    </MudStack>
+</MudPaper>
 
 @code {
 
-    public QuizaphBackend.Models.Quiz? CurrentQuiz { get; set; }
-    private ElementReference paperContainerRef;
+    private string selectedMode = "Standard";
 
-    protected override void OnInitialized()
+    private Task OpenDialogAsync(DialogType type)
     {
-        CurrentQuiz ??= QuizState.CurrentQuizInfo;
+        // Build the dialog data
+        var dialogData = new Dialog
+        {
+            Title = type.ToString(),
+            DialogContent = type switch
+            {
+                DialogType.Rules => QuizState.CurrentQuizInfo?.Rules ?? new List<string>(),
+                DialogType.Information => !string.IsNullOrWhiteSpace(QuizState.CurrentQuizInfo?.Description)
+                                          ? new List<string> { QuizState.CurrentQuizInfo.Description }
+                                          : new List<string>(),
+                DialogType.Ranking => new List<string> { "Not Implemented" },
+                _ => new List<string>()
+            }
+        };
+
+        // Pass parameters to the dialog
+        var parameters = new DialogParameters
+    {
+        { "Dialog", dialogData }
+    };
+
+        // Set options
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        DialogService.Show<BasicDialog>(dialogData.Title, parameters, options);
+        return Task.CompletedTask;
+    }
+
+
+    void SelectMode(string mode)
+    {
+        selectedMode = mode;
+    }
+
+    void Reset()
+    {
+        QuizState.RequestReset();
+    }
+
+    async void ShowEndScreen()
+    {
+        bool? result = await DialogService.ShowMessageBox(
+        "End Quiz?",
+        "Are you sure you want to end the quiz?",
+        yesText: "Confirm",
+        cancelText: "Cancel",
+        options: new DialogOptions { MaxWidth = MaxWidth.Small });
+
+        if (result == true)
+        {
+            QuizState.ShowEndScreen();
+        }
+       
     }
 }
- 

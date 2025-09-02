@@ -43,12 +43,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRW1wdHlMYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/Layout/QuizLayout.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcUXVpekxheW91dC5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/MudblazorDialogComponents/BasicDialog.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNdWRibGF6b3JEaWFsb2dDb21wb25lbnRzXEJhc2ljRGlhbG9nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/MudblazorDialogComponents/EndScreenDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNdWRibGF6b3JEaWFsb2dDb21wb25lbnRzXEVuZFNjcmVlbkRpYWxvZy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/salom/Source/Repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/Error.razor]

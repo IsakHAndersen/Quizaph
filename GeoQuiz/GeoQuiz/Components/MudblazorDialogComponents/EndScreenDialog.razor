@@ -1,0 +1,50 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudStack Spacing="4" AlignItems="Center">
+            <MudText Typo="Typo.h4" Color="Color.Primary">Quiz Finished!</MudText>
+
+            <MudPaper Class="p-4 rounded-lg shadow-sm" Style="min-width:300px; text-align:center;">
+                <MudText Typo="Typo.h6">Your Score</MudText>
+                <MudText Typo="Typo.h3" Color="Color.Secondary">
+                    @QuizResult.Score / @QuizResult.TotalQuestions
+                </MudText>
+                <MudProgressCircular Value="@QuizResult.Percentage" Color="Color.Primary" Size="80" Thickness="4" />
+            </MudPaper>
+
+            @if (QuizResult.HasTimer)
+            {
+                <MudText Typo="Typo.subtitle1">
+                    Time Taken: <b>@QuizResult.TimeTaken.ToString(@"mm\:ss")</b>
+                </MudText>
+            }
+
+            @if (QuizResult.IsPersonalBest)
+            {
+                <MudChip Color="Color.Success" Variant="Variant.Filled">🎉 New Personal Best!</MudChip>
+            }
+
+            <MudDivider />
+
+            <MudText Typo="Typo.body1">
+                Average Score: <b>@QuizResult.AverageScore%</b><br />
+                Average Time: <b>@QuizResult.AverageTime.ToString(@"mm\:ss")</b>
+            </MudText>
+
+            <MudStack Row="true" Spacing="2" Justify="Center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Reset">
+                    Retry
+                </MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ShowRanking">
+                    Rankings
+                </MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Inherit" OnClick="CloseDialog">
+                    Exit
+                </MudButton>
+            </MudStack>
+        </MudStack>
+    </DialogContent>
+</MudDialog>
+
+@code {
+
+}
