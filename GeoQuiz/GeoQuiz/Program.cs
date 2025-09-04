@@ -12,6 +12,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddMudServices();
 builder.Services.AddScoped<CurrentQuizStateService>();
 builder.Services.AddScoped<QuizDataRetrievalService>();
+builder.Services.AddScoped<UserClaimsService>();
 
 builder.Services.AddScoped(sp => new HttpClient
 {

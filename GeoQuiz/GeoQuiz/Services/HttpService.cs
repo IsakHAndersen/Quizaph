@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Models.Enums;
+using QuizaphBackend.Models.QuizResults;
 using QuizaphFrontend.Models;
 using QuizaphFrontend.Models.Quizes;
 using System.Net.Http;
@@ -27,13 +28,13 @@ namespace QuizaphFrontend.Services
         {
             //await _httpClient.GetAsync("/account/logout");
         }
-        public async Task<List<QuizCompletion>> GetUserCompletedQuizzes(int userId)
+        public async Task<List<QuizResult>> GetUserQuizResults(int userId)
         {
-            var response = await _httpClient.GetAsync($"api/users/{userId}/completed-quizzes");
+            var response = await _httpClient.GetAsync($"api/users/{userId}/quiz-results");
             response.EnsureSuccessStatusCode();
 
-            var quizzes = await response.Content.ReadFromJsonAsync<List<QuizCompletion>>();
-            return quizzes ?? new List<QuizCompletion>();
+            var quizResults = await response.Content.ReadFromJsonAsync<List<QuizResult>>();
+            return quizResults ?? new List<QuizResult>();
         }
 
         public async Task<List<Quiz>> GetAllQuizzes()

@@ -167,8 +167,24 @@
         QuizState.OnShowEndScreen -= ShowEndScreen;
     }
 
-    private void ShowEndScreen()
+    // Compare to others should only be allowed when logged in
+    private async Task ShowEndScreen(QuizResult result, bool isPersonalBest)
     {
+        var parameters = new DialogParameters
+        {
+            { nameof(QuizResultDialog.QuizResult), result },
+            { nameof(QuizResultDialog.IsPersonalBest), isPersonalBest },
+        };
+        var options = new DialogOptions { MaxWidth = MaxWidth.Medium, CloseButton = true };
+        var dialog = DialogService.Show<QuizResultDialog>("Quiz Finished!", parameters, options);
+        var dialogResult = await dialog.Result;
 
+        if (!dialogResult.Cancelled)
+        {
+            if (dialogResult.Data?.ToString() == "retry")
+            {
+                Reset();
+            }
+        }
     }
 }

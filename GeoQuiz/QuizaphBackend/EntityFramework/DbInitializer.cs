@@ -1,6 +1,7 @@
 ﻿using GeoQuizBackend.EntityFramework;
 using Models.Enums;
 using QuizaphBackend.Models;
+using QuizaphBackend.Models.QuizResults;
 
 namespace QuizaphBackend.EntityFramework
 {
@@ -177,16 +178,9 @@ namespace QuizaphBackend.EntityFramework
                 new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
             };
 
-            var quizCompletions = new List<QuizCompletion>()
+            var quizResults = new List<QuizResult>()
             {
-                new QuizCompletion
-                {
-                    FastestTime = "10:01",
-                    Id = 1,
-                    QuizMode = QuizMode.Standard,
-                    QuizType = QuizType.MultipleChoiceQuiz,
-                    UserId = 1,
-                }
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 10, new TimeSpan(9000)),
             };
 
 
@@ -201,7 +195,7 @@ namespace QuizaphBackend.EntityFramework
                 }
             };
 
-            context.QuizCompletions.AddRange(quizCompletions);
+            context.QuizResults.AddRange(quizResults);
             context.Users.AddRange(users);
             context.Quizzes.AddRange(quizzes);
 
