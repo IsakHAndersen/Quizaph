@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Models.Enums;
 using QuizaphBackend.Models.QuizResults;
 using QuizaphFrontend.Models;
@@ -28,15 +29,6 @@ namespace QuizaphFrontend.Services
         {
             //await _httpClient.GetAsync("/account/logout");
         }
-        public async Task<List<QuizResult>> GetUserQuizResults(int userId)
-        {
-            var response = await _httpClient.GetAsync($"api/users/{userId}/quiz-results");
-            response.EnsureSuccessStatusCode();
-
-            var quizResults = await response.Content.ReadFromJsonAsync<List<QuizResult>>();
-            return quizResults ?? new List<QuizResult>();
-        }
-
         public async Task<List<Quiz>> GetAllQuizzes()
         {
             var response = await _httpClient.GetAsync("api/quizzes");
@@ -44,6 +36,35 @@ namespace QuizaphFrontend.Services
 
             var quizzes = await response.Content.ReadFromJsonAsync<List<Quiz>>();
             return quizzes ?? new List<Quiz>();
+        }
+        public async Task<List<QuizResult>> GetAllUserQuizResults(int userId)
+        {
+            var response = await _httpClient.GetAsync($"api/users/{userId}/quiz-results");
+            response.EnsureSuccessStatusCode();
+
+            var results = await response.Content.ReadFromJsonAsync<List<QuizResult>>();
+            return results ?? new List<QuizResult>();
+        }
+
+        public async Task<List<QuizResult>> GetCompletedQuizzes(int userId)
+        {
+            var response = await _httpClient.GetAsync($"api/users/{userId}/completed-quizzes");
+            response.EnsureSuccessStatusCode();
+
+            var completed = await response.Content.ReadFromJsonAsync<List<QuizResult>>();
+            return completed ?? new List<QuizResult>();
+        }
+
+        public async Task<QuizResult?> GetBestUserQuizResultAsync(int userId, QuizType type, QuizMode mode)
+        {
+            var response = await _httpClient.GetAsync($"api/users/{userId}/quiz-results/{type}/{mode}");
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return null; // no attempts yet
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<QuizResult>();
         }
     }
 }

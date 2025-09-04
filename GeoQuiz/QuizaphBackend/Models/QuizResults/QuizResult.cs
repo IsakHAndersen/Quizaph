@@ -5,15 +5,16 @@ namespace QuizaphBackend.Models.QuizResults
 {
     public class QuizResult
     {
-        // Composite primary key of quiztype quizmode and userId
+        // Primary key for each attempt
+        public int Id { get; set; }
+
+        // Foreign key to user
+        public int UserId { get; set; }
+        public User User { get; set; } = default!;
+
+        // Quiz info
         public QuizType QuizType { get; set; }
         public QuizMode QuizMode { get; set; }
-        public int UserId { get; set; }
-
-
-        // Used for EF to properly map relations
-        public User User { get; set; }
-
 
         // Attributes
         public bool IsCompleted { get; set; }
@@ -21,24 +22,33 @@ namespace QuizaphBackend.Models.QuizResults
         public int MaxScore { get; set; }
         public TimeSpan? TimeTaken { get; set; }
 
-        public QuizResult()
-        {
-           
-        }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public QuizResult(QuizType quizType, QuizMode quizMode, int userId, int score, TimeSpan timeTaken)
+        public QuizResult() { }
+
+        public QuizResult(QuizType quizType, QuizMode quizMode, int userId, int score, TimeSpan? timeTaken)
         {
             QuizType = quizType;
             QuizMode = quizMode;
             UserId = userId;
             Score = score;
-            TimeTaken = timeTaken;
-        }
-
-        private void IsQuizCompleted()
-        {
             MaxScore = StaticData.QuizMaxScores[QuizType];
+            TimeTaken = timeTaken;
+            CreatedAt = DateTime.UtcNow;
+            IsQuizCompleted();
         }
 
+        private void IsQuizCompleted() 
+        {
+            if (Score == MaxScore) 
+            {
+                IsCompleted = true;
+            } 
+            else 
+            {
+                IsCompleted = false;
+            }
+        }
     }
+
 }

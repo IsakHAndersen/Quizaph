@@ -187,7 +187,7 @@
         {
             if (!QuizResults.Any())
             {
-                QuizResults = await HttpService.GetUserQuizResults(userId);
+                QuizResults = await HttpService.GetCompletedQuizzes(userId);
             }
 
             filteredQuizzesList = filteredQuizzesList

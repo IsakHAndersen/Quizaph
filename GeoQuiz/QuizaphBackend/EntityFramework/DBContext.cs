@@ -6,9 +6,9 @@ namespace GeoQuizBackend.EntityFramework
 {
     public class DBContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Quiz> Quizzes { get; set; }
-        public DbSet<QuizResult> QuizResults { get; set; }
+        public DbSet<User> Users { get; set; } = default!;
+        public DbSet<Quiz> Quizzes { get; set; } = default!;
+        public DbSet<QuizResult> QuizResults { get; set; } = default!;
 
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
@@ -29,8 +29,9 @@ namespace GeoQuizBackend.EntityFramework
         {
             base.OnModelCreating(modelBuilder);
 
+            // QuizResult: use Id as primary key
             modelBuilder.Entity<QuizResult>()
-                .HasKey(q => new { q.UserId, q.QuizType, q.QuizMode });
+                .HasKey(q => q.Id);
 
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
@@ -39,7 +40,9 @@ namespace GeoQuizBackend.EntityFramework
             modelBuilder.Entity<QuizResult>()
                 .HasOne(q => q.User)
                 .WithMany(u => u.QuizResults)
-                .HasForeignKey(q => q.UserId);
+                .HasForeignKey(q => q.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
-} 
+
+}

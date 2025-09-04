@@ -12,15 +12,15 @@ namespace QuizaphFrontend.Services
             _authStateProvider = authStateProvider;
         }
 
-        public async Task<string?> GetUserIdAsync()
+        public async Task<int?> GetUserIdAsync()
         {
             var authState = await _authStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
 
             if (user.Identity?.IsAuthenticated ?? false)
             {
-                return user.FindFirst("sub")?.Value
-                    ?? user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                return Convert.ToInt32(user.FindFirst("sub")?.Value
+                    ?? user.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             }
 
             return null;

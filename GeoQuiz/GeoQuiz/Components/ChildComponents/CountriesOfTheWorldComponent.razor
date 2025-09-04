@@ -8,6 +8,8 @@
 @inject QuizDataRetrievalService QuizDataRetrievalService
 @inject CurrentQuizStateService QuizState
 @inject IDialogService DialogService
+@inject HttpService HttpService
+@inject UserClaimsService UserClaimsService
 @implements IDisposable
 
 <MudPaper Square="true" style="background-color: #ffffff; overflow: hidden; border-radius: 20px;" Elevation="0" id="container">
@@ -184,12 +186,10 @@
             Score = GuessedAnswers,
             MaxScore = TotalAnswers,
         };
-
-
         var parameters = new DialogParameters
         {
             { nameof(EndScreenDialog.QuizResult), result },
-            { nameof(EndScreenDialog.IsPersonalBest), isPersonalBest },
+            { nameof(EndScreenDialog.IsPersonalBest), isPersonalBest()},
         };
         var options = new DialogOptions { MaxWidth = MaxWidth.Medium, CloseButton = true };
         var dialog = DialogService.Show<EndScreenDialog>("Quiz Finished!", parameters, options);
@@ -199,5 +199,19 @@
         {
             Reset();
         }
+    }
+
+    private async Task<bool> isPersonalBest()
+    {
+        var userId = await UserClaimsService.GetUserIdAsync();
+        if (userId.HasValue)
+        {
+            var bestResult = await HttpService.GetBestUserQuizResultAsync(userId.Value, QuizInfo.QuizType, SelectedMode);
+            if (bestResult != null)
+            {
+                return GuessedAnswers > bestResult.Score;
+            }
+        }
+        return true;
     }
 }
