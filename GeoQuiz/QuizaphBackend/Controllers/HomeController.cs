@@ -30,15 +30,15 @@ namespace QuizaphBackend.Controllers
             return Ok(quiz);
         }
 
-        [HttpGet("/api/users/{userId}/completed-quizzes")]
-        public IActionResult GetCompletedQuizzesByUserId(int userId)
+        [HttpGet("/api/users/{userId}/quiz-results")]
+        public IActionResult GetQuizResultsByUserId(int userId)
         {
-            var completions = _context.QuizCompletions
+            var results = _context.QuizResults
                 .Where(a => a.UserId == userId)
                 .ToList();
 
-            if (!completions.Any()) return NotFound();
-            return Ok(completions);
+            if (!results.Any()) return NotFound();
+            return Ok(results);
         }
 
     }

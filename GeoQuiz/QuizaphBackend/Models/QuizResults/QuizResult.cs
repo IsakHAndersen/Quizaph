@@ -18,7 +18,7 @@ namespace QuizaphBackend.Models.QuizResults
         // Attributes
         public bool IsCompleted { get; set; }
         public int Score { get; set; }
-        public int TotalQuestions { get; set; }
+        public int MaxScore { get; set; }
         public TimeSpan? TimeTaken { get; set; }
 
         public QuizResult()
@@ -33,7 +33,15 @@ namespace QuizaphBackend.Models.QuizResults
             UserId = userId;
             Score = score;
             TimeTaken = timeTaken;
+            SetCompletedStatus();
         }
+
+        private void SetCompletedStatus()
+        {
+            var maxScore = StaticData.QuizMaxScores[QuizType];
+            IsCompleted = (Score == maxScore);
+        }
+
 
     }
 }
