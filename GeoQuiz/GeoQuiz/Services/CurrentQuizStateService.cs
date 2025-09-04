@@ -1,22 +1,31 @@
-﻿using QuizaphFrontend.Models;
+﻿using Models.Enums;
+using QuizaphBackend.Models.QuizResults;
+using QuizaphFrontend.Models;
 
 namespace QuizaphFrontend.Services
 {
     public class CurrentQuizStateService
     {
-        public Quiz? CurrentQuizInfo { get; set; }
+        public Quiz CurrentQuizInfo { get; set; } = new();
 
         public event Action? OnResetRequested;
-        public event Action? OnShowEndScreen;
+        public event Func<Task>? OnShowEndScreen;
+        public event Action<QuizMode>? OnCurrentModeChanged;
 
-        public void RequestReset()
+        public void InvokeRequestReset()
         {
             OnResetRequested?.Invoke();
         }
 
-        public void ShowEndScreen()
+        public async Task InvokeShowEndScreen()
         {
-            OnShowEndScreen?.Invoke();
+            if (OnShowEndScreen is not null)
+                await OnShowEndScreen.Invoke();
+        }
+
+        public void InvokeModeChanged(QuizMode mode)
+        {
+            OnCurrentModeChanged?.Invoke(mode);
         }
     }
 }

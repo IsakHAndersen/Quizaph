@@ -26,7 +26,7 @@
                         <MudMenu Label="Select Mode" Variant="Variant.Filled" Color="Color.Tertiary" Size="Size.Medium" Dense>
                             @foreach (var mode in QuizState.CurrentQuizInfo.QuizModes)
                             {
-                                <MudMenuItem Label="@mode.ToString()" OnClick="@(() => SelectMode(mode.ToString()))" />
+                                <MudMenuItem Label="@mode.ToString()" OnClick="@(() => SelectMode(mode))" />
                             }
                         </MudMenu>
                     }
@@ -92,9 +92,6 @@
             <MudPaper Square="true" Style="position: relative; padding: 0; background-color: transparent;" Elevation="0">
                 @switch (QuizState.CurrentQuizInfo.QuizType)
                 {
-                    case QuizType.ImageQuiz:
-                        <ImageQuizComponent Quiz="@QuizState.CurrentQuizInfo" />
-                        break;
                     case QuizType.WorldCountriesQuiz:
                         <CascadingValue Value="QuizState.CurrentQuizInfo">
                             <CountriesOfTheWorldComponent />
@@ -111,11 +108,10 @@
 
 @code {
 
-    private string selectedMode = "Standard";
+    private QuizMode selectedMode = QuizMode.Standard;
 
     private Task OpenDialogAsync(DialogType type)
     {
-        // Build the dialog data
         var dialogData = new Dialog
         {
             Title = type.ToString(),
@@ -129,8 +125,6 @@
                 _ => new List<string>()
             }
         };
-
-        // Pass parameters to the dialog
         var parameters = new DialogParameters
     {
         { "Dialog", dialogData }
@@ -144,14 +138,14 @@
     }
 
 
-    void SelectMode(string mode)
+    void SelectMode(QuizMode mode)
     {
-        selectedMode = mode;
+        QuizState.InvokeModeChanged(mode);
     }
 
     void Reset()
     {
-        QuizState.RequestReset();
+        QuizState.InvokeRequestReset();
     }
 
     async void ShowEndScreen()
@@ -165,7 +159,7 @@
 
         if (result == true)
         {
-            QuizState.ShowEndScreen();
+            QuizState.InvokeShowEndScreen();
         }
        
     }

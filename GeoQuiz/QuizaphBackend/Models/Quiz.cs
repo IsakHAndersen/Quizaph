@@ -26,7 +26,7 @@ namespace QuizaphBackend.Models
         public QuizCategory QuizCategory { get; set; }
     
         public List<QuizMode> QuizModes { get; set; } = new();
-        public QuizType? QuizType { get; set; }
+        public QuizType QuizType { get; set; }
         public int QuizTypeId { get; set; }
         public int StarRating { get; set; }
         public string CategoryColor { get; set; }

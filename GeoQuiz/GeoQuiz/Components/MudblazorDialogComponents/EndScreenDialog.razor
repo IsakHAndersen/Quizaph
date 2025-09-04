@@ -52,8 +52,8 @@
 
     [Parameter] public QuizResult QuizResult { get; set; } = default!;
     [Parameter] public bool IsPersonalBest { get; set; }
-    [Parameter] public double AverageScore { get; set; }
-    [Parameter] public TimeSpan AverageTime { get; set; }
+    public double AverageScore { get; set; }
+    public TimeSpan AverageTime { get; set; }
 
     private double QuizResultPercentage => (double)QuizResult.Score / QuizResult.MaxScore * 100;
 
