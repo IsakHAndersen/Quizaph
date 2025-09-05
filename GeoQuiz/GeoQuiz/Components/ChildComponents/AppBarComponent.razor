@@ -1,35 +1,39 @@
 ﻿@inject NavigationManager navigation
 
 <MudAppBar Fixed=true
-           Elevation="2"
-           Style="background-color: #f1f8fa; color: #2C2C2E ; height: 64px;">
+           Elevation="1"
+           Style="background-color: #F5F8FC; color: #2C2C2E ; height: 64px;">
 
-    <!-- Left section: logo -->
+    <!-- Left section: logo + title + tabs -->
     <MudContainer MaxWidth="MaxWidth.Large"
                   Class="d-flex align-center"
                   Style="height: 100%; padding-left: 250px;">
-        <img src="SVGS/TempIcon.svg" alt="Logo" width="30" height="30" style="margin-right: 10px;" />
-        <MudText Style="font-size: 25px; font-weight: 450;">
+
+        <img src="QuizImages/appbaricon.png"
+             alt="Quizaph Logo"
+             width="36" height="36"
+             style="margin-right: 10px;" />
+
+
+        <MudText Class="quizaph-gradient"
+                 Style="font-size: 28px; font-weight: 500; margin-right: 20px; font-family: 'Roboto Condensed';">
             Quizaph
         </MudText>
-    </MudContainer>
 
-    <!-- Centered tabs -->
-    <div style="position: absolute; left: 50%; transform: translateX(-50%); height: 100%; display: flex; align-items: center;">
-        <MudTabs MinimumTabWidth="120px"
+        <MudTabs MinimumTabWidth="80px"
                  ActivePanelIndexChanged="PanelChanged"
                  ActivePanelIndex="@selectedTab"
-                 Centered="true">
-            <MudTabPanel Text="Discover" Icon="@Icons.Material.Filled.LensBlur"
+                 Style="margin-left: 30px;">
+            <MudTabPanel Text="Discover"
                          Style="font-size: 14px; background-color: #f1f8fa; text-transform: none;" />
             <MudTabPanel Visible="false" />
-            <MudTabPanel Text="Quizes" Icon="@Icons.Material.Filled.Gamepad"
+            <MudTabPanel Text="Quizes"
                          Style="font-size: 14px; background-color: #f1f8fa; text-transform: none;" />
-            <MudTabPanel Text="About" Icon="@Icons.Material.Filled.LightbulbCircle"
+            <MudTabPanel Text="About"
                          Style="font-size: 14px; background-color: #f1f8fa; text-transform: none;" />
         </MudTabs>
-    </div>
 
+    </MudContainer>
     <!-- Right section: login/signup or profile -->
     @if (!IsLoggedIn)
     {
@@ -65,6 +69,15 @@
     }
 </MudAppBar>
 
+<style>
+    .quizaph-gradient {
+        background: linear-gradient(90deg, purple, #455ADE, cyan);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text; /* fallback */
+        color: transparent; /* ensures gradient shows */
+    }
+</style>
 
 @code {
     public bool isDarkMode = true;

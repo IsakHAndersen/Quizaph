@@ -1,16 +1,22 @@
 ﻿@using QuizaphBackend.Models.QuizResults
+@using QuizaphFrontend.Services
+@inject HttpService HttpService
+@inject UserClaimsService UserClaimsService 
 
 <MudDialog>
     <DialogContent>
-        <MudStack Spacing="4" AlignItems="AlignItems.Center">
-            <MudText Typo="Typo.h4" Color="Color.Primary">Quiz Finished!</MudText>
+        <MudStack Spacing="4" AlignItems="AlignItems.Center" Class="pb-2">
+            <MudText Typo="Typo.h5" Color="Color.Dark">Quiz Finished</MudText>
 
-            <MudPaper Class="p-4 rounded-lg shadow-sm" Style="min-width:300px; text-align:center;">
+            <MudPaper Class="p-4 rounded-lg shadow-sm pt-5" Style="min-width:500px; text-align:center;">
                 <MudText Typo="Typo.h6">Your Score</MudText>
                 <MudText Typo="Typo.h3" Color="Color.Secondary">
                     @QuizResult.Score / @QuizResult.MaxScore
                 </MudText>
-                <MudProgressCircular Value="@QuizResultPercentage" Color="Color.Primary" Size="Size.Medium" Thickness="4" />
+                @if (QuizResultPercentage.HasValue)
+                {
+                    <MudProgressCircular Value="@QuizResultPercentage.Value" Color="Color.Primary" Size="Size.Medium" />
+                }
             </MudPaper>
 
             @if (QuizResult.TimeTaken is not null)
@@ -26,18 +32,31 @@
             }
 
             <MudDivider />
-
-            <MudText Typo="Typo.body1">
-                Average Score: <b>@AverageScore%</b><br />
-                Average Time: <b>@AverageTime.ToString(@"mm\:ss")</b>
-            </MudText>
-
-            <MudStack Row="true" Spacing="2" Justify="Justify.Center">
+            @if (AverageScorePercent is not null)
+            {
+                <MudText Typo="Typo.body1">
+                    Average Score Percentage: <b>@AverageScorePercent%</b><br />
+                </MudText>
+            }
+            @if (AverageTime is not null)
+            {
+                <MudText Typo="Typo.body1">
+                    Average Score: <b>@AverageScore</b><br />
+                </MudText>
+            }
+            @if (AverageTime is not null)
+            {
+                <MudText Typo="Typo.body1">
+                    Average Time: <b> @AverageTime.ToString() </b>
+                </MudText>
+               
+            }
+            <MudStack Row="true" Justify="Justify.SpaceBetween" Style="width:100%;" Class="p-3 pt-5">
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Retry">
                     Retry
                 </MudButton>
-                <MudButton Variant="Variant.Text" Color="Color.Inherit" OnClick="CloseDialog">
-                    Exit
+                <MudButton Variant="Variant.Text" Color="Color.Error" OnClick="CloseDialog" EndIcon="@Icons.Material.Filled.ArrowForward">
+                    Quiz Menu
                 </MudButton>
             </MudStack>
         </MudStack>
@@ -46,14 +65,41 @@
 
 @code {
     [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;
-
     [Parameter] public QuizResult QuizResult { get; set; } = default!;
-    [Parameter] public bool IsPersonalBest { get; set; }
-    public double AverageScore { get; set; }
-    public TimeSpan AverageTime { get; set; }
 
-    private double QuizResultPercentage => (double)QuizResult.Score / QuizResult.MaxScore * 100;
+    public double? AverageScorePercent { get; set; } 
+    public double? AverageScore { get; set; }
+    public TimeSpan? AverageTime { get; set; }
+    public bool IsPersonalBest { get; set; } = false;
+    private double? QuizResultPercentage => (double)QuizResult.Score / QuizResult.MaxScore * 100;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var quizStats = await HttpService.GetQuizStatisticsAsync(QuizResult.QuizType, QuizResult.QuizMode);
+        if (quizStats != null)
+        {
+            AverageScore = quizStats.AverageScore;
+            AverageScorePercent = quizStats.AverageScorePercent;
+            AverageTime = quizStats.AverageTime;
+        }
+        IsPersonalBest = await isPersonalBest();
+    }
+
+    private async Task<bool> isPersonalBest()
+    {
+        var userId = await UserClaimsService.GetUserIdAsync();
+        if (userId.HasValue)
+        {
+            var bestResult = await HttpService.GetBestUserQuizResultAsync(userId.Value, QuizResult.QuizType, QuizResult.QuizMode);
+            if (bestResult == null)
+            {
+                return true; // No previous result, so this is a personal best
+            }
+            return QuizResult.Score > bestResult.Score;
+        }
+        return false;
+    }
 
     private void Retry() => MudDialog.Close(DialogResult.Ok("retry"));
     private void CloseDialog() => MudDialog.Cancel();
-}
+}                                                                                                                                                                                                                                                                                           

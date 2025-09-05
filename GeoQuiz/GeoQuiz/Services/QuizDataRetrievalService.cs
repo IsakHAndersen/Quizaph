@@ -4,17 +4,10 @@ using QuizaphFrontend.Models.QuizModels;
 
 namespace QuizaphFrontend.Services
 {
-    public class QuizDataRetrievalService
+    public static class StaticQuizDataRetrievalService
     {
-        public QuizDataRetrievalService()
+        public static CountryQuizData GetCountryQuizData()
         {
-
-        }
-
-        public async Task<CountryQuizData> GetCountryQuizData()
-        {
-            // Simulate an asynchronous data retrieval operation
-            await Task.Delay(1000); // Simulating network delay
             return new CountryQuizData
             {
                 Countries = new List<Country>

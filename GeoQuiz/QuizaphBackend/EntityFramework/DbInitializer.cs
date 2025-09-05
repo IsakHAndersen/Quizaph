@@ -12,8 +12,6 @@ namespace QuizaphBackend.EntityFramework
             if (context.Quizzes.Any())
                 return; // DB already seeded
 
-            // When new quiz is added these are needed: New QuizType for the type, an imagepath, rules, description and available modes.
-
             var quizzes = new List<Quiz>
             {
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg", 
@@ -180,9 +178,14 @@ namespace QuizaphBackend.EntityFramework
 
             var quizResults = new List<QuizResult>()
             {
-                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 10, new TimeSpan(9000)),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 100, TimeSpan.FromMinutes(10)),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 90, TimeSpan.FromMinutes(12)),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 50, TimeSpan.FromMinutes(14)),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 50, TimeSpan.FromMinutes(15)),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 20, TimeSpan.FromMinutes(11)),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 12, TimeSpan.FromMinutes(13)),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 10, TimeSpan.FromMinutes(10)),
             };
-
 
             var users = new List<User>()
             {

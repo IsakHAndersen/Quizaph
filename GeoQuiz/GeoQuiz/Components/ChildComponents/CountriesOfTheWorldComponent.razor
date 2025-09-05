@@ -5,7 +5,6 @@
 @using QuizaphFrontend.Services
 @using global::Models.Enums
 @inject IJSRuntime JS
-@inject QuizDataRetrievalService QuizDataRetrievalService
 @inject CurrentQuizStateService QuizState
 @inject IDialogService DialogService
 @inject HttpService HttpService
@@ -87,18 +86,18 @@
     private bool fullScreen = false;
     private MudTextField<string> _searchField = new MudTextField<string>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         QuizState.OnResetRequested += Reset;
         QuizState.OnShowEndScreen += ShowEndScreen;
         QuizState.OnCurrentModeChanged += OnModeChanged;
-        await RetrieveQuizData();
+        RetrieveQuizData();
         TotalAnswers = CountryQuizData.Countries.Count();
     }
 
-    private async Task RetrieveQuizData()
+    private void RetrieveQuizData()
     {
-        CountryQuizData = await QuizDataRetrievalService.GetCountryQuizData();
+        CountryQuizData = StaticQuizDataRetrievalService.GetCountryQuizData();
     }
 
     private void TogglePanel()
@@ -137,7 +136,7 @@
         }
     }
 
-    private void CheckIfCountryExists()
+    private async Task CheckIfCountryExists()
     {
         var input = _searchField.Text;
         if (string.IsNullOrWhiteSpace(input)) return;
@@ -145,12 +144,12 @@
         if (match != null)
         {
             match.Guessed = true;
-            Task.FromResult(JS.InvokeVoidAsync("highlightSvgElementById", match.Id));
+            await Task.FromResult(JS.InvokeVoidAsync("highlightSvgElementById", match.Id));
             GuessedAnswers++;
-            _searchField.SetText("");
+            await _searchField.SetText("");
             if (GuessedAnswers == TotalAnswers)
             {
-                ShowEndScreen();
+                await ShowEndScreen();
             }
         }
     }
@@ -186,32 +185,20 @@
             Score = GuessedAnswers,
             MaxScore = TotalAnswers,
         };
+
+
         var parameters = new DialogParameters
         {
             { nameof(EndScreenDialog.QuizResult), result },
-            { nameof(EndScreenDialog.IsPersonalBest), isPersonalBest()},
         };
+
         var options = new DialogOptions { MaxWidth = MaxWidth.Medium, CloseButton = true };
-        var dialog = DialogService.Show<EndScreenDialog>("Quiz Finished!", parameters, options);
+        var dialog = DialogService.Show<EndScreenDialog>("", parameters, options);
         var dialogResult = await dialog.Result;
 
         if (!dialogResult.Canceled && dialogResult.Data?.ToString() == "retry")
         {
             Reset();
         }
-    }
-
-    private async Task<bool> isPersonalBest()
-    {
-        var userId = await UserClaimsService.GetUserIdAsync();
-        if (userId.HasValue)
-        {
-            var bestResult = await HttpService.GetBestUserQuizResultAsync(userId.Value, QuizInfo.QuizType, SelectedMode);
-            if (bestResult != null)
-            {
-                return GuessedAnswers > bestResult.Score;
-            }
-        }
-        return true;
     }
 }

@@ -8,7 +8,7 @@ using System.Net.Http;
 
 namespace QuizaphFrontend.Services
 {
-    public class HttpService : IHttpService
+    public class HttpService
     {
         private readonly HttpClient _httpClient;
 
@@ -29,6 +29,7 @@ namespace QuizaphFrontend.Services
         {
             //await _httpClient.GetAsync("/account/logout");
         }
+
         public async Task<List<Quiz>> GetAllQuizzes()
         {
             var response = await _httpClient.GetAsync("api/quizzes");
@@ -37,9 +38,10 @@ namespace QuizaphFrontend.Services
             var quizzes = await response.Content.ReadFromJsonAsync<List<Quiz>>();
             return quizzes ?? new List<Quiz>();
         }
+
         public async Task<List<QuizResult>> GetAllUserQuizResults(int userId)
         {
-            var response = await _httpClient.GetAsync($"api/users/{userId}/quiz-results");
+            var response = await _httpClient.GetAsync($"api/quizzes/{userId}/quiz-results");
             response.EnsureSuccessStatusCode();
 
             var results = await response.Content.ReadFromJsonAsync<List<QuizResult>>();
@@ -48,7 +50,7 @@ namespace QuizaphFrontend.Services
 
         public async Task<List<QuizResult>> GetCompletedQuizzes(int userId)
         {
-            var response = await _httpClient.GetAsync($"api/users/{userId}/completed-quizzes");
+            var response = await _httpClient.GetAsync($"api/quizzes/{userId}/completed-quizzes");
             response.EnsureSuccessStatusCode();
 
             var completed = await response.Content.ReadFromJsonAsync<List<QuizResult>>();
@@ -57,14 +59,25 @@ namespace QuizaphFrontend.Services
 
         public async Task<QuizResult?> GetBestUserQuizResultAsync(int userId, QuizType type, QuizMode mode)
         {
-            var response = await _httpClient.GetAsync($"api/users/{userId}/quiz-results/{type}/{mode}");
+            var response = await _httpClient.GetAsync($"api/quizzes/{userId}/quiz-results/{type}/{mode}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                return null; // no attempts yet
+                return null;
 
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadFromJsonAsync<QuizResult>();
+        }
+        public async Task<QuizStatistic?> GetQuizStatisticsAsync(QuizType type, QuizMode mode)
+        {
+            var response = await _httpClient.GetAsync($"api/quizzes/quiz-stats/{type}/{mode}");
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return null;
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<QuizStatistic>();
         }
     }
 }

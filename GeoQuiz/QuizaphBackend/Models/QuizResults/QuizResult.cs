@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration.UserSecrets;
 using Models.Enums;
+using System.Data.Entity.Infrastructure;
 
 namespace QuizaphBackend.Models.QuizResults
 {
@@ -9,8 +10,8 @@ namespace QuizaphBackend.Models.QuizResults
         public int Id { get; set; }
 
         // Foreign key to user
-        public int UserId { get; set; }
         public User User { get; set; } = default!;
+        public int UserId { get; set; } 
 
         // Quiz info
         public QuizType QuizType { get; set; }
@@ -37,7 +38,7 @@ namespace QuizaphBackend.Models.QuizResults
             CreatedAt = DateTime.UtcNow;
             IsQuizCompleted();
         }
-
+         
         private void IsQuizCompleted() 
         {
             if (Score == MaxScore) 

@@ -23,10 +23,12 @@
                     <MudDivider Class="my-2" />
 
                     <!-- Category -->
-                    <MudSelect T="QuizCategory" Label="Category" @bind-Value="selectedCategory">
-                        @foreach (var category in Enum.GetValues(typeof(QuizCategory)).Cast<QuizCategory>())
+                    <MudSelect T="QuizCategory"
+                               Label="Category"
+                               @bind-Value="selectedCategory">
+                        @foreach (QuizCategory category in Enum.GetValues(typeof(QuizCategory)))
                         {
-                            <MudSelectItem Value="@category">@category</MudSelectItem>
+                            <MudSelectItem Value="category">@category</MudSelectItem>
                         }
                     </MudSelect>
 
@@ -132,16 +134,16 @@
 
     private string search = string.Empty;
 
-    private int userId;
+    private int? userId;
 
     protected override async Task OnInitializedAsync()
     {
         quizzes = await HttpService.GetAllQuizzes();
+        userId = await UserClaimsService.GetUserIdAsync();
         await ApplyFilters(); // Populate filtered and visible quizzes
 
 
     }
-
 
     #region Filter logic
     private void LoadMore()
@@ -187,7 +189,10 @@
         {
             if (!QuizResults.Any())
             {
-                QuizResults = await HttpService.GetCompletedQuizzes(userId);
+                if (userId.HasValue)
+                {
+                    QuizResults = await HttpService.GetCompletedQuizzes(userId.Value);
+                }
             }
 
             filteredQuizzesList = filteredQuizzesList

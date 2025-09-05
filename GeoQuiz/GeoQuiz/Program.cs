@@ -11,12 +11,11 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddMudServices();
 builder.Services.AddScoped<CurrentQuizStateService>();
-builder.Services.AddScoped<QuizDataRetrievalService>();
 builder.Services.AddScoped<UserClaimsService>();
 
 builder.Services.AddScoped(sp => new HttpClient
 {
-    BaseAddress = new Uri("http://localhost:5274/") // 👈 backend host address
+    BaseAddress = new Uri("http://localhost:5274/") // Backend URL
 });
 builder.Services.AddScoped<HttpService>();
 var app = builder.Build();
