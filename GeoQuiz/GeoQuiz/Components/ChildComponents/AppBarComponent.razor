@@ -1,94 +1,138 @@
 ﻿@inject NavigationManager navigation
 
-<MudAppBar Fixed=true
-           Elevation="1"
-           Style="background-color: #F5F8FC; color: #2C2C2E ; height: 64px;">
-
-    <!-- Left section: logo + title + tabs -->
+<MudAppBar Fixed="true" Elevation="1"
+           Style="background-color: #F5F8FC; color: #2C2C2E; height: 64px;">
     <MudContainer MaxWidth="MaxWidth.Large"
-                  Class="d-flex align-center"
-                  Style="height: 100%; padding-left: 250px;">
+                  Class="d-flex justify-space-between align-center"
+                  Style="height: 100%; padding: 0 16px;">
 
-        <img src="QuizImages/appbaricon.png"
-             alt="Quizaph Logo"
-             width="36" height="36"
-             style="margin-right: 10px;" />
+        <!-- Left side -->
+        <div class="d-flex align-center">
+            <img src="QuizImages/appbaricon.png" alt="Quizaph Logo" width="36" height="36" class="mr-2" />
 
+            <MudText Class="quizaph-gradient"
+                     Style="font-size: 24px; font-weight: 500; font-family: 'Roboto Condensed'; margin-right: 20px;">
+                Quizaph
+            </MudText>
 
-        <MudText Class="quizaph-gradient"
-                 Style="font-size: 28px; font-weight: 500; margin-right: 20px; font-family: 'Roboto Condensed';">
-            Quizaph
-        </MudText>
+            <!-- Desktop "Tabs" -->
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <div class="d-flex ml-4">
+                    @foreach (var tab in tabs)
+                    {
+                        <MudButton Variant="Variant.Text"
+                                   Class="@(currentRoute == tab.Route ? "nav-tab nav-tab-active" : "nav-tab")"
+                                   OnClick="@(() => Navigate(tab.Route))" style="margin-left: 8px; margin-right: 8px; border-radius: 0px; font-weight: 350;">
 
-        <MudTabs MinimumTabWidth="80px"
-                 ActivePanelIndexChanged="PanelChanged"
-                 ActivePanelIndex="@selectedTab"
-                 Style="margin-left: 30px;">
-            <MudTabPanel Text="Discover"
-                         Style="font-size: 14px; background-color: #f1f8fa; text-transform: none;" />
-            <MudTabPanel Visible="false" />
-            <MudTabPanel Text="Quizes"
-                         Style="font-size: 14px; background-color: #f1f8fa; text-transform: none;" />
-            <MudTabPanel Text="About"
-                         Style="font-size: 14px; background-color: #f1f8fa; text-transform: none;" />
-        </MudTabs>
+                            @tab.Label
+                        </MudButton>
+                    }
+                </div>
+            </MudHidden>
+            
+            <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" AnchorOrigin="Origin.TopLeft" TransformOrigin="Origin.TopLeft">
+                    @foreach (var tab in tabs)
+                    {
+                        <MudMenuItem OnClick="@(() => Navigate(tab.Route))">
+                            @tab.Label
+                        </MudMenuItem>
+                    }
+                </MudMenu>
+            </MudHidden>
+        </div>
 
+        <!-- Right side -->
+        <div class="d-flex align-center">
+            @if (!isLoggedIn)
+            {
+                <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                    <MudButton Variant="Variant.Text" OnClick="@SignIn">Login</MudButton>
+                    <MudButton OnClick="@SignUp" Variant="Variant.Filled"
+                               Style="background-color: black; border-radius: 20px; color: #ebebeb;">
+                        Sign Up
+                    </MudButton>
+                </MudHidden>
+            }
+            else
+            {
+                <MudMenu Label="Profile" Variant="Variant.Text"
+                         EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
+                         StartIcon="@Icons.Material.Filled.Person"
+                         Color="Color.Inherit" Dense Class="profile-menu">
+                    <MudMenuItem Icon="@Icons.Material.Filled.Person" Label="Edit profile" />
+                    <MudMenuItem Icon="@Icons.Material.Filled.Logout" Label="Logout" OnClick="Logout" />
+                    <MudMenuItem Icon="@((isDarkMode) ? Icons.Material.Filled.WbSunny : Icons.Material.Filled.NightsStay)"
+                                 Label="Dark Mode" OnClick="ToggleDarkMode" />
+                </MudMenu>
+            }
+        </div>
     </MudContainer>
-    <!-- Right section: login/signup or profile -->
-    @if (!IsLoggedIn)
-    {
-        <MudContainer MaxWidth="MaxWidth.Large"
-                      Class="d-flex align-center"
-                      Style="height: 100%; padding-right: 250px; justify-content: right;">
-            <MudButton Style="font-size: 14px; text-transform: none; margin-right: 5px;"
-                       DropShadow="false"
-                       Variant="Variant.Text"
-                       OnClick="@SignIn">
-                Login
-            </MudButton>
-            <MudButton Style="background-color: black; text-transform: none; border-radius: 20px; color: #ebebeb; font-size: 14px;"
-                       OnClick="@SignUp"
-                       Variant="Variant.Filled">
-                Sign Up
-            </MudButton>
-        </MudContainer>
-    }
-    else
-    {
-        <MudContainer MaxWidth="MaxWidth.Large"
-                      Class="d-flex align-center"
-                      Style="height: 100%; padding-right: 300px; justify-content: right;">
-            <MudMenu Label="Profile" Variant="Variant.Text"
-                     EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
-                     Style="color: #ebebeb;" Color="Color.Inherit" Size="Size.Small" Dense>
-                <MudMenuItem Icon="@Icons.Material.Filled.Person" Label="Edit profile" IconColor="Color.Tertiary" />
-                <MudMenuItem Icon="@(isDarkMode? Icons.Material.Filled.DarkMode : Icons.Material.Filled.WbSunny)" Label="Toggle Darkmode" IconColor="Color.Warning" />
-                <MudMenuItem Icon="@Icons.Material.Filled.Logout" Label="Logout" IconColor="Color.Dark" OnClick="@Logout" />
-            </MudMenu>
-        </MudContainer>
-    }
 </MudAppBar>
 
 <style>
     .quizaph-gradient {
-        background: linear-gradient(90deg, purple, #455ADE, cyan);
+        background: linear-gradient(90deg, blue, #455ADE, cyan);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        background-clip: text; /* fallback */
-        color: transparent; /* ensures gradient shows */
+        background-clip: text;
+        color: transparent;
+    }
+
+    .profile-menu .mud-button-label {
+        font-weight: 350;
+    }
+    .nav-tab {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-transform: none;
+        font-size: 14px;
+        min-width: 80px;
+        color: #2C2C2E;
+        border-bottom: 2px solid transparent;
+        padding: 6px 12px;
+    }
+
+    .nav-tab-active {
+        font-weight: 600;
+        border-bottom: 2px solid #455ADE;
+        color: #455ADE !important;
     }
 </style>
 
 @code {
-    public bool isDarkMode = true;
-    private bool IsLoggedIn = false;
-    private string appBarColor = "#302A2A";
-    private int selectedTab = 1; // Dummy tab with no content
+    private bool isLoggedIn = true;
+    private bool isDarkMode = false;
+    private string currentRoute;
 
+
+    private List<(string Label, string Route)> tabs = new()
+    {
+        ("Discover", "/"),
+        ("Quizzes", "/Quizzes"),
+        ("About", "/About")
+    };
+
+    protected override void OnInitialized()
+    {
+        currentRoute = navigation.Uri.Replace(navigation.BaseUri, "/");
+    }
+
+    private void Navigate(string route)
+    {
+        currentRoute = route;
+        navigation.NavigateTo(route);
+    }
 
     private void Logout()
     {
-        IsLoggedIn = false;
+        // your logout logic
+    }
+
+    private void ToggleDarkMode()
+    {
+        isDarkMode = !isDarkMode;
     }
 
     private void SignIn()
@@ -99,19 +143,5 @@
     private void SignUp()
     {
         navigation.NavigateTo("SignUp");
-    }
-
-    private void PanelChanged(int index)
-    {
-        selectedTab = index;
-        var route = index switch
-        {
-            0 => "/",
-            1 => "/Discover",
-            2 => "/Quizes",
-            3 => "/About",
-            _ => "/"
-        };
-        navigation.NavigateTo(route);
     }
 }

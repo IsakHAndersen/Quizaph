@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
 using Models.Enums;
 using QuizaphBackend.Models;
-using QuizaphBackend.Models.QuizResults;
 using System.Data.Entity;
 
 namespace QuizaphBackend.Controllers
@@ -112,7 +111,7 @@ namespace QuizaphBackend.Controllers
         [HttpGet("/data/{quizType}/{dataset}")]
         public IActionResult GetQuizData(QuizType quizType, string dataset)
         {
-            return null;
+            return null!;
         }
         #endregion
     }

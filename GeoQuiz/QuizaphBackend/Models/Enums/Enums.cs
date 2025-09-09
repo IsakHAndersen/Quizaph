@@ -17,17 +17,39 @@ namespace Models.Enums
         Sports,
         Entertainment,
         Technology,
-        GeneralKnowledge
+        GeneralKnowledge,
+        Mathematics,
+        Language,
+        Philosophy,
+        Politics,
+        Economics,
+        Music,
+        MoviesAndTV,
+        Gaming,
+        FoodAndDrink,
+        Travel,
+        Fashion,
+        Mythology,
+        Religion,
+        Nature,
+        Medicine,
+        Astronomy,
+        Business,
+        Riddles,
+        CurrentEvents
     }
 
+
+    [Flags]
     public enum QuizMode
-    {   
-        Alphabetical,
-        Random,
-        Standard,
-        RandomlySelected,
-        Timed,
-        TriviaExpansion,
+    {
+        None = 0,
+        Alphabetical = 1 << 0,    
+        Random = 1 << 1,          
+        Standard = 1 << 2,        
+        RandomlySelected = 1 << 3,
+        Timed = 1 << 4,           
+        TriviaExpansion = 1 << 5  
     }
 
     public enum Continent

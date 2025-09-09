@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Models.Enums;
-using QuizaphBackend.Models.QuizResults;
 using QuizaphFrontend.Models;
 using QuizaphFrontend.Models.Quizes;
 using System.Net.Http;

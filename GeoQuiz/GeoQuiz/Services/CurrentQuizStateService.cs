@@ -1,5 +1,4 @@
 ﻿using Models.Enums;
-using QuizaphBackend.Models.QuizResults;
 using QuizaphFrontend.Models;
 
 namespace QuizaphFrontend.Services
@@ -8,13 +7,14 @@ namespace QuizaphFrontend.Services
     {
         public Quiz CurrentQuizInfo { get; set; } = new();
 
-        public event Action? OnResetRequested;
+        public event Func<Task>? OnResetRequested;
         public event Func<Task>? OnShowEndScreen;
-        public event Action<QuizMode>? OnCurrentModeChanged;
+        public event Func<QuizMode, Task>? OnCurrentModeChanged;
 
-        public void InvokeRequestReset()
+        public async Task InvokeRequestReset()
         {
-            OnResetRequested?.Invoke();
+            if (OnResetRequested is not null)
+            await OnResetRequested.Invoke();
         }
 
         public async Task InvokeShowEndScreen()
@@ -23,9 +23,12 @@ namespace QuizaphFrontend.Services
                 await OnShowEndScreen.Invoke();
         }
 
-        public void InvokeModeChanged(QuizMode mode)
+        public async Task InvokeModeChanged(QuizMode mode)
         {
-            OnCurrentModeChanged?.Invoke(mode);
+            if (OnCurrentModeChanged is not null)
+            {
+                await OnCurrentModeChanged.Invoke(mode);
+            }
         }
     }
 }

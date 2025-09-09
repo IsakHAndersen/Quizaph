@@ -21,14 +21,21 @@
                         @QuizState.CurrentQuizInfo?.Title
                     </MudText>
 
-                    @if (QuizState.CurrentQuizInfo?.QuizModes.Count > 1)
+                    @if (QuizState.CurrentQuizInfo is not null)
                     {
-                        <MudMenu Label="Select Mode" Variant="Variant.Filled" Color="Color.Tertiary" Size="Size.Medium" Dense>
-                            @foreach (var mode in QuizState.CurrentQuizInfo.QuizModes)
-                            {
-                                <MudMenuItem Label="@mode.ToString()" OnClick="@(() => SelectMode(mode))" />
-                            }
-                        </MudMenu>
+                        var modes = Enum.GetValues(typeof(QuizMode))
+                        .Cast<QuizMode>()
+                        .Where(m => QuizState.CurrentQuizInfo.QuizModes.HasFlag(m) && m != QuizMode.None);
+
+                        if (modes.Count() > 1)
+                        {
+                            <MudMenu Label="Select Mode" Variant="Variant.Filled" Color="Color.Tertiary" Size="Size.Medium" Dense>
+                                @foreach (var mode in modes)
+                                {
+                                    <MudMenuItem Label="@HelperMethods.SplitByCamelCase(mode.ToString())" OnClick="@(() => SelectMode(mode))" />
+                                }
+                            </MudMenu>
+                        }
                     }
 
                     <MudButton Variant="Variant.Text" Color="Color.Inherit" Size="Size.Small"
@@ -109,15 +116,14 @@
 @code {
 
     private QuizMode selectedMode = QuizMode.Standard;
-
-    private Task OpenDialogAsync(DialogType type)
+    private async Task OpenDialogAsync(DialogType type)
     {
         var dialogData = new Dialog
         {
             Title = type.ToString(),
             DialogContent = type switch
             {
-                DialogType.Rules => QuizState.CurrentQuizInfo?.Rules ?? new List<string>(),
+                DialogType.Rules => QuizState.CurrentQuizInfo?.Rules?.Select(r => r.Rule).ToList()?? new List<string>(){ "No rules."},
                 DialogType.Information => !string.IsNullOrWhiteSpace(QuizState.CurrentQuizInfo?.Description)
                                           ? new List<string> { QuizState.CurrentQuizInfo.Description }
                                           : new List<string>(),
@@ -133,22 +139,18 @@
         // Set options
         var options = new DialogOptions { CloseOnEscapeKey = true };
 
-        DialogService.Show<BasicDialog>(dialogData.Title, parameters, options);
-        return Task.CompletedTask;
+        await DialogService.ShowAsync<BasicDialog>(dialogData.Title, parameters, options);
     }
-
-
-    void SelectMode(QuizMode mode)
+    async Task SelectMode(QuizMode mode)
     {
-        QuizState.InvokeModeChanged(mode);
+        selectedMode = mode;
+        await QuizState.InvokeModeChanged(mode);
     }
-
-    void Reset()
+    async Task Reset()
     {
-        QuizState.InvokeRequestReset();
+        await QuizState.InvokeRequestReset();
     }
-
-    async void ShowEndScreen()
+    async Task ShowEndScreen()
     {
         bool? result = await DialogService.ShowMessageBox(
         "End Quiz?",
@@ -159,8 +161,7 @@
 
         if (result == true)
         {
-            QuizState.InvokeShowEndScreen();
+            await QuizState.InvokeShowEndScreen();
         }
-       
     }
 }

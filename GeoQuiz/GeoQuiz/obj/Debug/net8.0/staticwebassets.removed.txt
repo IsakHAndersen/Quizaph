@@ -1,0 +1,1 @@
+C:\Users\salom\Source\Repos\Quizaph\GeoQuiz\GeoQuiz\wwwroot\scripts\preventZoomOnHover.js

@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration.UserSecrets;
 using Models.Enums;
-using System.Data.Entity.Infrastructure;
 
-namespace QuizaphBackend.Models.QuizResults
+namespace QuizaphBackend.Models
 {
     public class QuizResult
     {
         // Primary key for each attempt
         public int Id { get; set; }
+
 
         // Foreign key to user
         public User User { get; set; } = default!;

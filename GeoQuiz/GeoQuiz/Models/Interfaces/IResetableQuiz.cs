@@ -1,4 +1,4 @@
-﻿namespace QuizaphFrontend.Models.Quizes
+﻿namespace QuizaphFrontend.Models.Interfaces
 {
     public interface IResetableQuiz
     {

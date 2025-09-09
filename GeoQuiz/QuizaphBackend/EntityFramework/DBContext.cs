@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuizaphBackend.Models;
-using QuizaphBackend.Models.QuizResults;
 
 namespace GeoQuizBackend.EntityFramework
 {
@@ -9,7 +8,8 @@ namespace GeoQuizBackend.EntityFramework
         public DbSet<User> Users { get; set; } = default!;
         public DbSet<Quiz> Quizzes { get; set; } = default!;
         public DbSet<QuizResult> QuizResults { get; set; } = default!;
-
+        public DbSet<QuizRule> QuizRules { get; set; } = default!;
+        public DbSet<QuizRating> QuizRatings { get; set; } = default!;
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
         }
@@ -42,6 +42,9 @@ namespace GeoQuizBackend.EntityFramework
                 .WithMany(u => u.QuizResults)
                 .HasForeignKey(q => q.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Quiz>()
+            .OwnsMany(q => q.Rules);
         }
     }
 

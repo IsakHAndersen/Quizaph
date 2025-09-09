@@ -1,11 +1,42 @@
 ﻿using Models.Enums;
 using QuizaphFrontend.Models.Quizes;
-using QuizaphFrontend.Models.QuizModels;
 
 namespace QuizaphFrontend.Services
 {
     public static class StaticQuizDataRetrievalService
     {
+
+        public static readonly Dictionary<QuizCategory, string> CategoryColorMap = new()
+    {
+        { QuizCategory.Geography, "#1976D2" },       // Blue - oceans, maps
+        { QuizCategory.GeneralKnowledge, "#6fcaaa" },// Teal - versatile
+        { QuizCategory.History, "#8B5E3C" },         // Brown - old books, parchment
+        { QuizCategory.Technology, "#6029e7" },      // Purple - futuristic
+        { QuizCategory.Sports, "#4f9ff3" },          // Sky blue - energy, action
+        { QuizCategory.Science, "#00ACC1" },         // Cyan - lab, chemistry
+        { QuizCategory.Literature, "#A1887F" },      // Warm brown - paper, books
+        { QuizCategory.Art, "#E91E63" },             // Pink/magenta - creativity
+        { QuizCategory.Entertainment, "#FF9800" },   // Orange - fun, playful
+        { QuizCategory.Mathematics, "#9C27B0" },     // Deep purple - logic, formulas
+        { QuizCategory.Language, "#009688" },        // Teal green - communication
+        { QuizCategory.Philosophy, "#455A64" },      // Slate gray - thoughtful, deep
+        { QuizCategory.Politics, "#D32F2F" },        // Red - debate, power
+        { QuizCategory.Economics, "#388E3C" },       // Green - money, growth
+        { QuizCategory.Music, "#7E57C2" },           // Soft purple - artistic, rhythm
+        { QuizCategory.MoviesAndTV, "#F44336" },     // Red - cinema curtains
+        { QuizCategory.Gaming, "#00C853" },          // Bright green - game consoles
+        { QuizCategory.FoodAndDrink, "#FF7043" },    // Orange/red - appetizing
+        { QuizCategory.Travel, "#5D4037" },          // Earthy brown - exploration
+        { QuizCategory.Fashion, "#EC407A" },         // Pink - stylish, modern
+        { QuizCategory.Mythology, "#6A1B9A" },       // Dark violet - mystical
+        { QuizCategory.Religion, "#FFD600" },        // Gold/yellow - sacred
+        { QuizCategory.Nature, "#388E3C" },          // Green - forests
+        { QuizCategory.Medicine, "#0288D1" },        // Medical blue
+        { QuizCategory.Astronomy, "#1A237E" },       // Deep blue/navy - night sky
+        { QuizCategory.Business, "#2E7D32" },        // Corporate green
+        { QuizCategory.Riddles, "#FFC107" },         // Amber - playful, puzzles
+        { QuizCategory.CurrentEvents, "#F57C00" }    // Orange - news, urgency
+    };
         public static CountryQuizData GetCountryQuizData()
         {
             return new CountryQuizData

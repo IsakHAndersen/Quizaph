@@ -1,7 +1,6 @@
 ﻿using GeoQuizBackend.EntityFramework;
 using Models.Enums;
 using QuizaphBackend.Models;
-using QuizaphBackend.Models.QuizResults;
 
 namespace QuizaphBackend.EntityFramework
 {
@@ -15,115 +14,23 @@ namespace QuizaphBackend.EntityFramework
             var quizzes = new List<Quiz>
             {
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg", 
-                QuizCategory.Geography, 
+                QuizCategory.Religion, 
                 QuizType.WorldCountriesQuiz, 
                 1, 
                 4, 
                 1634, 
                 1, 
-                1, 
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" }, 
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
+                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                ),
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Geography,
-                QuizType.WorldCountriesQuiz,
-                1,
-                4,
-                1634,
-                1,
-                1,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Geography,
-                QuizType.WorldCountriesQuiz,
-                1,
-                4,
-                1634,
-                1,
-                1,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Geography,
-                QuizType.WorldCountriesQuiz,
-                1,
-                4,
-                1634,
-                1,
-                1,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Geography,
-                QuizType.WorldCountriesQuiz,
-                1,
-                4,
-                1634,
-                1,
-                1,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Geography,
-                QuizType.WorldCountriesQuiz,
-                1,
-                4,
-                1634,
-                1,
-                1,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Geography,
-                QuizType.WorldCountriesQuiz,
-                1,
-                4,
-                1634,
-                1,
-                1,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Geography,
-                QuizType.WorldCountriesQuiz,
-                1,
-                4,
-                1634,
-                1,
-                1,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Geography,
-                QuizType.WorldCountriesQuiz,
-                1,
-                4,
-                1634,
-                1,
-                1,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Geography,
-                QuizType.WorldCountriesQuiz,
-                1,
-                4,
-                1634,
-                1,
-                1,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Geography,
+                QuizCategory.Science,
                 QuizType.WorldCountriesQuiz,
                 1,
                 4,
                 5000,
                 1,
-                1,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
+                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                ),
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
                 QuizCategory.Geography,
                 QuizType.WorldCountriesQuiz,
@@ -131,9 +38,8 @@ namespace QuizaphBackend.EntityFramework
                 4,
                 1634,
                 1,
-                1,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
+                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                ),
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
                 QuizCategory.Geography,
                 QuizType.WorldCountriesQuiz,
@@ -141,9 +47,8 @@ namespace QuizaphBackend.EntityFramework
                 4,
                 1634,
                 1,
-                1,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
+                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                ),
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
                 QuizCategory.Geography,
                 QuizType.WorldCountriesQuiz,
@@ -151,9 +56,8 @@ namespace QuizaphBackend.EntityFramework
                 5,
                 2000,
                 3,
-                4,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
+                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                ),
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
                 QuizCategory.History,
                 QuizType.MultipleChoiceQuiz,
@@ -161,9 +65,8 @@ namespace QuizaphBackend.EntityFramework
                 5,
                 3000,
                 2,
-                4,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
+                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                ),
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
                 QuizCategory.GeneralKnowledge,
                 QuizType.MultipleChoiceQuiz,
@@ -171,9 +74,8 @@ namespace QuizaphBackend.EntityFramework
                 4,
                 1634,
                 1,
-                1,
-                new List<string> { "Abbreviations don't count for many countries", "Completion is reached when all countries are guessed" },
-                new List<QuizMode> { QuizMode.Timed, QuizMode.RandomlySelected, QuizMode.Standard, QuizMode.TriviaExpansion }),
+                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                ),
             };
 
             var quizResults = new List<QuizResult>()
@@ -187,12 +89,28 @@ namespace QuizaphBackend.EntityFramework
                 new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 10, TimeSpan.FromMinutes(10)),
             };
 
+            var quizRules = new List<QuizRule>
+            {
+                new QuizRule
+                {
+                    Id = 1,
+                    QuizId = 1,
+                    Rule = "Abbreviations dont count for many countries."
+                },
+                new QuizRule
+                {
+                    Id = 2,
+                    QuizId = 1,
+                    Rule = "Micro nations or small island nations are not included in this quiz"
+                }
+            };
+
             var users = new List<User>()
             {
                 new User
                 {
                     Id = 1,
-                    DateRegistered = DateTime.Now,
+                    RegisteredAt = DateTime.Now,
                     Email = "examplemail@gmail.com",
                     Name = "Isak",
                 }

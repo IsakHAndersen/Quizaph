@@ -1,6 +1,4 @@
-﻿using GeoQuiz.Models.QuizModels.QuizStructures;
-
-namespace GeoQuiz.Models
+﻿namespace GeoQuiz.Models
 {
     public static class Mappings
     {

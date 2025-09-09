@@ -16,7 +16,7 @@
 
             <!-- Category -->
             <MudText Style="color: #ffffff;" Typo="Typo.body2">
-                @FormatQuizCategory()
+                @HelperMethods.SplitByCamelCase(QuizInfo.QuizCategory.ToString())
             </MudText>
         </MudStack>
         <!-- Info Row -->
@@ -55,8 +55,8 @@
 
 
 @code {
-    [Parameter] 
-    public Quiz QuizInfo { get; set; }
+    [Parameter]
+    public Quiz QuizInfo { get; set; } = new();
 
     protected override void OnInitialized()
     {
@@ -65,7 +65,8 @@
 
     public string StyleQuizElement()
     {
-        return $"background-color: {QuizInfo.CategoryColor}; padding: 12px 20px; border-radius: 10px; opacity: 0.9;";
+        var categoryColor = StaticQuizDataRetrievalService.CategoryColorMap[QuizInfo.QuizCategory];
+        return $"background-color: {categoryColor}; padding: 12px 20px; border-radius: 10px; opacity: 0.7;";
 
     }
 
@@ -81,14 +82,13 @@
         };
     }
 
-    private string FormatQuizCategory()
+    // Splits camel case
+    private string FormatQuizCategory(string input)
     {
-        return QuizInfo.QuizCategory switch
-        {
-            QuizCategory.GeneralKnowledge => "General Knowledge",
-            _ => QuizInfo.QuizCategory.ToString()
-        };
+        return HelperMethods.SplitByCamelCase(input);
     }
+
+
 
     void NavigateToQuiz()
     {
