@@ -29,7 +29,7 @@
 
                         if (modes.Count() > 1)
                         {
-                            <MudMenu Label="Select Mode" Variant="Variant.Filled" Color="Color.Tertiary" Size="Size.Medium" Dense>
+                            <MudMenu Label=@HelperMethods.SplitByCamelCase(selectedMode.ToString()) Variant="Variant.Filled" Color="Color.Tertiary" Size="Size.Medium" Dense>
                                 @foreach (var mode in modes)
                                 {
                                     <MudMenuItem Label="@HelperMethods.SplitByCamelCase(mode.ToString())" OnClick="@(() => SelectMode(mode))" />

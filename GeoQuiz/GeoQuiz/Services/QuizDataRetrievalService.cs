@@ -175,7 +175,7 @@ namespace QuizaphFrontend.Services
                     {
                         CountryName = "Azerbaijan",
                         Continent = Continent.Asia,
-                        ValidNames = new List<string> { "Azerbaijan", "Republic of Azerbaijan", "Azərbaycan" },
+                        ValidNames = new List<string> { "Azerbaijan", "Republic of Azerbaijan", "Azərbaycan", "Azerbajan" },
                         Id = "az",
                         Guessed = false
                     },
@@ -215,7 +215,7 @@ namespace QuizaphFrontend.Services
                     {
                         CountryName = "Cambodia",
                         Continent = Continent.Asia,
-                        ValidNames = new List<string> { "Cambodia", "Kingdom of Cambodia", "Kampuchea", "ព្រះរាជាណាចក្រ​កម្ពុជា" },
+                        ValidNames = new List<string> { "Kingdom of Cambodia", "Kampuchea", "ព្រះរាជាណាចក្រ​កម្ពុជា", "Cambodia"},
                         Id = "kh",
                         Guessed = false
                     },
@@ -303,7 +303,7 @@ namespace QuizaphFrontend.Services
                     {
                         CountryName = "Kazakhstan",
                         Continent = Continent.Asia,
-                        ValidNames = new List<string> { "Kazakhstan", "Republic of Kazakhstan", "Қазақстан" },
+                        ValidNames = new List<string> { "Kazakhstan", "Republic of Kazakhstan", "Қазақстан", "kazakstan" },
                         Id = "kz",
                         Guessed = false
                     },
@@ -319,7 +319,7 @@ namespace QuizaphFrontend.Services
                     {
                         CountryName = "Kyrgyzstan",
                         Continent = Continent.Asia,
-                        ValidNames = new List<string> { "Kyrgyzstan", "Kyrgyz Republic", "Кыргызстан" },
+                        ValidNames = new List<string> { "Kyrgyzstan", "Kyrgyz Republic", "Кыргызстан", "kyrgystan" },
                         Id = "kg",
                         Guessed = false
                     },
@@ -389,6 +389,14 @@ namespace QuizaphFrontend.Services
                     },
                     new Country
                     {
+                        CountryName = "Taiwan",
+                        Continent = Continent.Asia,
+                        ValidNames = new List<string> { "Taiwan", "Republic of China", "ROC", "Taipei", "Chinese Taipei","Formosa" },
+                        Id = "TW",
+                        Guessed = false
+                    },
+                    new Country
+                    {
                         CountryName = "Oman",
                         Continent = Continent.Asia,
                         ValidNames = new List<string> { "Oman", "Sultanate of Oman", "سلطنة عمان‎" },
@@ -407,7 +415,7 @@ namespace QuizaphFrontend.Services
                     {
                         CountryName = "Palestine",
                         Continent = Continent.Asia,
-                        ValidNames = new List<string> { "Palestine", "State of Palestine", "فلسطين" },
+                        ValidNames = new List<string> { "Palestine", "State of Palestine", "فلسطين", "Palestina" },
                         Id = "ps",
                         Guessed = false
                     },
@@ -415,7 +423,7 @@ namespace QuizaphFrontend.Services
                     {
                         CountryName = "Philippines",
                         Continent = Continent.Asia,
-                        ValidNames = new List<string> { "Philippines", "Republic of the Philippines", "Pilipinas" },
+                        ValidNames = new List<string> { "Philippines", "Republic of the Philippines", "Pilipinas", "Philipines"},
                         Id = "ph",
                         Guessed = false
                     },
@@ -583,7 +591,7 @@ namespace QuizaphFrontend.Services
                     {
                         CountryName = "Bosnia and Herzegovina",
                         Continent = Continent.Europe,
-                        ValidNames = new List<string> { "Bosnia and Herzegovina", "Bosnia‑Herzegovina", "BiH" },
+                        ValidNames = new List<string> { "Bosnia and Herzegovina", "Bosnia‑Herzegovina", "BiH", "Bosnia", "Herzegovina"},
                         Id = "ba",
                         Guessed = false
                     },
@@ -727,7 +735,7 @@ namespace QuizaphFrontend.Services
                     {
                         CountryName = "Luxembourg",
                         Continent = Continent.Europe,
-                        ValidNames = new List<string> { "Luxembourg", "Grand Duchy of Luxembourg" },
+                        ValidNames = new List<string> { "Luxembourg", "Grand Duchy of Luxembourg", "Luxemburg" },
                         Id = "lu",
                         Guessed = false
                     },
@@ -1015,7 +1023,7 @@ namespace QuizaphFrontend.Services
                     {
                         CountryName = "Trinidad and Tobago",
                         Continent = Continent.NorthAmerica,
-                        ValidNames = new List<string> { "Trinidad and Tobago", "Republic of Trinidad and Tobago" },
+                        ValidNames = new List<string> { "Trinidad and Tobago", "Republic of Trinidad and Tobago", "Trinidad" },
                         Id = "tt",
                         Guessed = false
                     },
@@ -1495,7 +1503,7 @@ namespace QuizaphFrontend.Services
                     {
                         CountryName = "Sao Tome and Principe",
                         Continent = Continent.Africa,
-                        ValidNames = new List<string> { "Sao Tome and Principe", "São Tomé and Príncipe", "Democratic Republic of São Tomé and Príncipe" },
+                        ValidNames = new List<string> { "Sao Tome and Principe", "São Tomé and Príncipe", "Democratic Republic of São Tomé and Príncipe", "Sao Tome" },
                         Id = "st",
                         Guessed = false
                     },

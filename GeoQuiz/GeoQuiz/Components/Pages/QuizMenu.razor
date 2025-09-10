@@ -74,13 +74,16 @@
                         <MudText Style="font-weight: 500">
                             Found (@(filteredQuizzesList?.Count() ?? 0)) Quizzes
                         </MudText>
-                        <MudTextField Value="@search"
-                                      Placeholder="Search for quiz"
-                                      Variant="Variant.Outlined"
-                                      Adornment="Adornment.End"
-                                      AdornmentIcon="@Icons.Material.Filled.Search"
-                                      AdornmentColor="Color.Dark"
-                                      Style="height: 40px;" />
+                        <MudTextField 
+                        Value="@search"
+                        Placeholder="Search for quiz"
+                        Variant="Variant.Outlined"
+                        Adornment="Adornment.End"
+                        AdornmentIcon="@Icons.Material.Filled.Search"
+                        AdornmentColor="Color.Dark"
+                        Style="height: 40px;"
+                        Immediate="true"
+                        ValueChanged="@(async (string newValue) => { search = newValue; await ApplyFilters(); })" />
                     </MudStack>
 
                     <!-- Scrollable quiz list -->

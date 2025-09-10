@@ -47,9 +47,9 @@ namespace Models.Enums
         Alphabetical = 1 << 0,    
         Random = 1 << 1,          
         Standard = 1 << 2,        
-        RandomlySelected = 1 << 3,
-        Timed = 1 << 4,           
-        TriviaExpansion = 1 << 5  
+        Timed = 1 << 3,           
+        TriviaExpansion = 1 << 4,
+        RandomWithLives = 1 << 5
     }
 
     public enum Continent

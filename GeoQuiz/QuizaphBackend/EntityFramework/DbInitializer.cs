@@ -20,7 +20,7 @@ namespace QuizaphBackend.EntityFramework
                 4, 
                 1634, 
                 1, 
-                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
                 ),
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
                 QuizCategory.Science,
@@ -29,7 +29,7 @@ namespace QuizaphBackend.EntityFramework
                 4,
                 5000,
                 1,
-                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
                 ),
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
                 QuizCategory.Geography,
@@ -38,7 +38,7 @@ namespace QuizaphBackend.EntityFramework
                 4,
                 1634,
                 1,
-                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
                 ),
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
                 QuizCategory.Geography,
@@ -47,7 +47,7 @@ namespace QuizaphBackend.EntityFramework
                 4,
                 1634,
                 1,
-                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
                 ),
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
                 QuizCategory.Geography,
@@ -56,7 +56,7 @@ namespace QuizaphBackend.EntityFramework
                 5,
                 2000,
                 3,
-                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
                 ),
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
                 QuizCategory.History,
@@ -65,7 +65,7 @@ namespace QuizaphBackend.EntityFramework
                 5,
                 3000,
                 2,
-                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
                 ),
                 new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
                 QuizCategory.GeneralKnowledge,
@@ -74,7 +74,7 @@ namespace QuizaphBackend.EntityFramework
                 4,
                 1634,
                 1,
-                QuizMode.Timed | QuizMode.RandomlySelected | QuizMode.Standard | QuizMode.TriviaExpansion
+                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
                 ),
             };
 

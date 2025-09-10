@@ -57,4 +57,5 @@ namespace QuizaphBackend.Models
             QuizModes = quizModes;
         }
     }
+
 }
