@@ -14,6 +14,18 @@
             const svg = svgDoc?.querySelector("svg");
             if (!svg) return;
 
+
+            // Add hover effect to all <g> elements
+            const countries = svg.querySelectorAll("g");
+            countries.forEach(country => {
+                country.addEventListener("mouseenter", () => {
+                    country.style.fill = "#00CFC1"; // hover color
+                });
+                country.addEventListener("mouseleave", () => {
+                    country.style.fill = ""; // reset to original
+                });
+            });
+
             let scale = 1.0;
             let translateX = 0;
             let translateY = 0;
@@ -93,4 +105,5 @@
             objectElement.svgState.scale = Math.max(objectElement.svgState.scale - 0.2, 0.2);
         }
     }
+
 };

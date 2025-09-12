@@ -51,3 +51,27 @@ function resetSvg() {
         path.style.stroke = ""; 
     });
 }
+
+function registerSvgClickHandlers(dotNetHelper) {
+    const svgObject = document.getElementById('svg-map');
+    if (!svgObject) {
+        console.warn('SVG object element not found');
+        return;
+    }
+
+    svgObject.addEventListener("load", () => {
+        const svgDoc = svgObject.contentDocument;
+        if (!svgDoc) {
+            console.warn('SVG document not loaded yet');
+            return;
+        }
+
+        const groups = svgDoc.querySelectorAll("g[id]");
+        groups.forEach(g => {
+            g.addEventListener("click", () => {
+                console.log("Clicked country: " + g.id);
+                dotNetHelper.invokeMethodAsync("OnCountryClicked", g.id);
+            });
+        });
+    });
+}
