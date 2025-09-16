@@ -1,4 +1,9 @@
-﻿function highlightSvgElementById(countryId, fillColor = "#81ef73", strokeColor = "#26ae14", flash = false) {
+﻿function highlightSvgElementById(
+    countryId,
+    fillColor = "#81ef73",
+    strokeColor = "#26ae14",
+    flash = false
+) {
     const svgObject = document.getElementById('svg-map');
     if (!svgObject) return;
 
@@ -8,20 +13,21 @@
     const group = svgDoc.getElementById(countryId);
     if (!group) return;
 
-    const paths = group.querySelectorAll('path');
-    if (paths.length === 0) return;
+    // Select both <path> and <circle> inside the group
+    const shapes = group.querySelectorAll('path, circle');
+    if (shapes.length === 0) return;
 
-    paths.forEach(path => {
-        const originalFill = path.style.fill;
-        const originalStroke = path.style.stroke;
+    shapes.forEach(shape => {
+        const originalFill = shape.getAttribute("fill") || shape.style.fill;
+        const originalStroke = shape.getAttribute("stroke") || shape.style.stroke;
 
-        path.style.fill = fillColor;
-        path.style.stroke = strokeColor;
+        shape.style.fill = fillColor;
+        shape.style.stroke = strokeColor;
 
         if (flash) {
             setTimeout(() => {
-                path.style.fill = originalFill;
-                path.style.stroke = originalStroke;
+                shape.style.fill = originalFill;
+                shape.style.stroke = originalStroke;
             }, 1000); // 1 sec flash
         }
     });
@@ -34,18 +40,31 @@ function resetSvg() {
         console.warn('SVG object element not found');
         return;
     }
+
     const svgDoc = svgObject.contentDocument;
     if (!svgDoc) {
         console.warn('SVG document not loaded yet');
         return;
     }
+
     const paths = svgDoc.querySelectorAll('path');
-    if (paths.length === 0) {
-        console.warn('No paths found in SVG document');
+    const circles = svgDoc.querySelectorAll('circle');
+
+    if (paths.length === 0 && circles.length === 0) {
+        console.warn('No paths or circles found in SVG document');
         return;
     }
+
+    // Reset all paths
     paths.forEach(path => {
         path.style.fill = "";
-        path.style.stroke = ""; 
+        path.style.stroke = "";
+    });
+
+    // Reset all circles
+    circles.forEach(circle => {
+        circle.style.fill = "";
+        circle.style.stroke = "";
     });
 }
+

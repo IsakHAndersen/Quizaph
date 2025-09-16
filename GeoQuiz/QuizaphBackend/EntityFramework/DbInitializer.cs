@@ -13,69 +13,69 @@ namespace QuizaphBackend.EntityFramework
 
             var quizzes = new List<Quiz>
             {
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg", 
-                QuizCategory.Religion, 
+                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries. Try various modes to test different areas or start with practice mode to get going.", "/QuizImages/world_resized.jpg", 
+                QuizCategory.Geography, 
                 QuizType.WorldCountriesQuiz, 
                 1, 
                 4, 
                 1634, 
-                1, 
-                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
+                1,
+                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.Practice
                 ),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Science,
-                QuizType.WorldCountriesQuiz,
-                1,
-                4,
-                5000,
-                1,
-                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
-                ),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Geography,
-                QuizType.WorldCountriesQuiz,
-                1,
-                4,
-                1634,
-                1,
-                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
-                ),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Geography,
-                QuizType.WorldCountriesQuiz,
-                1,
-                4,
-                1634,
-                1,
-                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
-                ),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.Geography,
-                QuizType.WorldCountriesQuiz,
-                1,
-                5,
-                2000,
-                3,
-                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
-                ),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.History,
-                QuizType.MultipleChoiceQuiz,
-                1,
-                5,
-                3000,
-                2,
-                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
-                ),
-                new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
-                QuizCategory.GeneralKnowledge,
-                QuizType.MultipleChoiceQuiz,
-                1,
-                4,
-                1634,
-                1,
-                QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
-                ),
+                //new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
+                //QuizCategory.Science,
+                //QuizType.WorldCountriesQuiz,
+                //1,
+                //4,
+                //5000,
+                //1,
+                //QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
+                //),
+                //new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
+                //QuizCategory.Geography,
+                //QuizType.WorldCountriesQuiz,
+                //1,
+                //4,
+                //1634,
+                //1,
+                //QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
+                //),
+                //new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
+                //QuizCategory.Geography,
+                //QuizType.WorldCountriesQuiz,
+                //1,
+                //4,
+                //1634,
+                //1,
+                //QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
+                //),
+                //new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
+                //QuizCategory.Geography,
+                //QuizType.WorldCountriesQuiz,
+                //1,
+                //5,
+                //2000,
+                //3,
+                //QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
+                //),
+                //new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
+                //QuizCategory.History,
+                //QuizType.MultipleChoiceQuiz,
+                //1,
+                //5,
+                //3000,
+                //2,
+                //QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
+                //),
+                //new Quiz(1, "World Countries Quiz", "Test your knowledge of world countries.", "/QuizImages/world_resized.jpg",
+                //QuizCategory.GeneralKnowledge,
+                //QuizType.MultipleChoiceQuiz,
+                //1,
+                //4,
+                //1634,
+                //1,
+                //QuizMode.Timed | QuizMode.RandomWithLives | QuizMode.Standard | QuizMode.TriviaExpansion
+                //),
             };
 
             var quizResults = new List<QuizResult>()
@@ -95,14 +95,20 @@ namespace QuizaphBackend.EntityFramework
                 {
                     Id = 1,
                     QuizId = 1,
-                    Rule = "Abbreviations dont count for many countries."
+                    Rule = "Abbreviations are not included for most countries."
                 },
                 new QuizRule
                 {
                     Id = 2,
                     QuizId = 1,
-                    Rule = "Micro nations or small island nations are not included in this quiz"
-                }
+                    Rule = "Guess all the countries to complete the quiz and earn the corresponding badge."
+                },
+                new QuizRule
+                {
+                    Id = 3,
+                    QuizId = 1,
+                    Rule = "Blue circles represent small countries or island nations."
+                },
             };
 
             var users = new List<User>()
@@ -116,6 +122,7 @@ namespace QuizaphBackend.EntityFramework
                 }
             };
 
+            context.QuizRules.AddRange(quizRules);
             context.QuizResults.AddRange(quizResults);
             context.Users.AddRange(users);
             context.Quizzes.AddRange(quizzes);

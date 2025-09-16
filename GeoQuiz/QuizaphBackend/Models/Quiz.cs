@@ -16,7 +16,7 @@ namespace QuizaphBackend.Models
         public string Description { get; set; } = string.Empty;
         public int? MinPlayers { get; set; }
         public int? MaxPlayers { get; set; }
-        public List<QuizRule> Rules { get; set; } = new();
+        public List<QuizRule>? QuizRules { get; set; } = new();
         [Required]
         public string ImagePath { get; set; } = string.Empty;
         [Required]

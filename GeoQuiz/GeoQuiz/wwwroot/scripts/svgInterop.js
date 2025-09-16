@@ -1,4 +1,6 @@
-﻿window.svgInterop = {
+﻿
+let practiceMode = false;
+window.svgInterop = {
     init: (objectId, dotNetHelper) => {
         console.log("svgInterop.init triggered:", objectId);
 
@@ -14,7 +16,7 @@
             const svg = svgDoc?.querySelector("svg");
             if (!svg) return;
 
-            // Hover + Click Handlers
+            // Hover + Click Handlers for Countries
             const countries = svg.querySelectorAll("g");
             countries.forEach(country => {
                 country.style.cursor = "pointer";
@@ -22,9 +24,17 @@
                 let mouseDownX, mouseDownY, isMouseDown = false;
 
                 country.addEventListener("mouseenter", () => {
+                    if (dotNetHelper) {
+                        const id = country.getAttribute("id");
+                        dotNetHelper.invokeMethodAsync("OnCountryHovered", id);
+                    }
                     country.style.fill = "#00CFC1";
                 });
+
                 country.addEventListener("mouseleave", () => {
+                    if (dotNetHelper) {
+                        dotNetHelper.invokeMethodAsync("OnCountryHoverLeave");
+                    }
                     country.style.fill = "";
                 });
 
@@ -51,8 +61,34 @@
                         }
                     }
                 });
-            });
 
+                // Add click handler for circles within this country
+                const circles = country.querySelectorAll("circle.clickable");
+                circles.forEach(circle => {
+                    circle.style.cursor = "pointer";
+                    circle.addEventListener("click", (e) => {
+                        e.stopPropagation(); // Prevent bubbling to SVG or other elements
+                        const parentGroup = circle.closest("g");
+                        if (parentGroup) {
+                            // Dispatch a click event to the parent <g>
+                            const clickEvent = new MouseEvent("click", {
+                                bubbles: true,
+                                cancelable: true,
+                                clientX: e.clientX,
+                                clientY: e.clientY
+                            });
+                            parentGroup.dispatchEvent(clickEvent);
+                        }
+                    });
+                    // Optional: Apply hover effects to circle
+                    circle.addEventListener("mouseenter", () => {
+                        country.style.fill = "#00CFC1"; // Match country hover effect
+                    });
+                    circle.addEventListener("mouseleave", () => {
+                        country.style.fill = "";
+                    });
+                });
+            });
 
             // Trigger country click manually
             objectElement.svgApi = {
@@ -66,13 +102,12 @@
                 }
             };
 
-            // Zoom + Drag Support
+            // Zoom + Drag Support (unchanged)
             let scale = 1.0;
             let translateX = 0;
             let translateY = 0;
             let isDragging = false, startX, startY;
 
-            // Wrap contents in <g> for transforms
             let contentGroup = svg.querySelector("g#viewport");
             if (!contentGroup) {
                 contentGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -91,7 +126,6 @@
                 );
             };
 
-            // Expose state globally
             objectElement.svgState = {
                 applyTransform,
                 get scale() { return scale; },
@@ -102,7 +136,6 @@
                 set translateY(v) { translateY = v; applyTransform(); }
             };
 
-            // Dragging
             svg.addEventListener("mousedown", (e) => {
                 isDragging = true;
                 startX = e.clientX;
@@ -133,7 +166,9 @@
         }
     },
 
-    // Zoom helpers
+    enablePracticeHover: () => { practiceMode = true; },
+    disablePracticeHover: () => { practiceMode = false; },
+
     zoomIn: (objectId) => {
         const objectElement = document.getElementById(objectId);
         if (objectElement?.svgState) {
@@ -148,7 +183,6 @@
         }
     },
 
-    // External trigger
     triggerCountryClick: (objectId, countryId) => {
         const objectElement = document.getElementById(objectId);
         if (objectElement?.svgApi) {

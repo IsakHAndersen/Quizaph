@@ -4,13 +4,15 @@
 @inject IDialogService DialogService
 @inject CurrentQuizStateService QuizState
 @inject IJSRuntime JS
+@inject HttpService HttpService
 @using QuizaphFrontend.Components.ChildComponents
 @using QuizaphFrontend.Services
 @using global::Models.Enums
 @using QuizaphFrontend.Components.MudblazorDialogComponents
 
 <MudPaper Square="true" MaxWidth="MaxWidth.Large"
-          Style="padding: 0px 120px 0px 120px; background-color: #f1f8fa; min-height: 100vh;" Elevation="0">
+          Style="padding: 0px 120px 0px 120px; background: #F5F8FC url('/SVGS/squaresPattern.svg') repeat;  min-height: 100vh;"
+          Elevation="0">
     <MudStack Spacing="7">
 
         <!-- Header + Image + Buttons -->
@@ -52,7 +54,7 @@
                 </MudStack>
 
                 <MudStack Row="true" Spacing="4" AlignItems="AlignItems.Center">
-                    @if (QuizState.CurrentQuizInfo?.Rules?.Any() == true)
+                    @if (QuizState.CurrentQuizInfo?.QuizRules?.Any() == true)
                     {
                         <MudButton @onclick="() => OpenDialogAsync(DialogType.Rules)"
                                    Variant="Variant.Text" Color="Color.Dark"
@@ -61,17 +63,6 @@
                             Rules
                         </MudButton>
                     }
-
-                    @if (QuizState.CurrentQuizInfo != null)
-                    {
-                        <MudButton @onclick="() => OpenDialogAsync(DialogType.Ranking)"
-                                   Variant="Variant.Text" Color="Color.Dark"
-                                   EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
-                                   Style="text-transform: none;" Size="Size.Small">
-                            Rankings
-                        </MudButton>
-                    }
-
                     @if (!string.IsNullOrWhiteSpace(QuizState.CurrentQuizInfo?.Description))
                     {
                         <MudButton @onclick="() => OpenDialogAsync(DialogType.Information)"
@@ -116,6 +107,13 @@
 @code {
 
     private QuizMode selectedMode = QuizMode.Standard;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var rules = await HttpService.GetQuizRules(QuizState.CurrentQuizInfo.Id);
+        QuizState.CurrentQuizInfo.QuizRules = rules;
+    }
+
     private async Task OpenDialogAsync(DialogType type)
     {
         var dialogData = new Dialog
@@ -123,7 +121,7 @@
             Title = type.ToString(),
             DialogContent = type switch
             {
-                DialogType.Rules => QuizState.CurrentQuizInfo?.Rules?.Select(r => r.Rule).ToList()?? new List<string>(){ "No rules."},
+                DialogType.Rules => QuizState.CurrentQuizInfo?.QuizRules?.Select(r => r.Rule).ToList()?? new List<string>(){ "No rules."},
                 DialogType.Information => !string.IsNullOrWhiteSpace(QuizState.CurrentQuizInfo?.Description)
                                           ? new List<string> { QuizState.CurrentQuizInfo.Description }
                                           : new List<string>(),

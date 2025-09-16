@@ -78,5 +78,15 @@ namespace QuizaphFrontend.Services
 
             return await response.Content.ReadFromJsonAsync<QuizStatistic>();
         }
+
+        public async Task<List<QuizRule>?> GetQuizRules(int quizId)
+        {
+            var response = await _httpClient.GetAsync($"api/quizzes/quiz/{quizId}/rules");
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return null;
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<List<QuizRule>>();
+        }
     }
 }

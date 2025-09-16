@@ -78,6 +78,16 @@
             </MudText>
         </MudStack>
     }
+    @if (SelectedMode == QuizMode.Practice)
+    {
+        <MudStack Style="position: absolute; margin-top: 15px; left: 50%; transform: translateX(-50%);
+                             background-color: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 10px;"
+                  AlignItems="AlignItems.Center" Spacing="2">
+            <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Primary">
+                @PracticeModeHoveredCountry
+            </MudText>
+        </MudStack>
+    }
 
         <div id="svg-zoom-container" style="width: 100%; height: 100%; overflow: hidden; touch-action: none;" @ref="_svgContainer">
                 <object id="svg-map"
@@ -133,22 +143,9 @@
     private DotNetObjectReference<CountriesOfTheWorldComponent>? objRef;
     private MudTextField<string> _searchField;
     private string searchText = string.Empty;
-    private List<string> microNations = new List<string> {
-    "Vatican City",
-    "Monaco",
-    "San Marino",
-    "Liechtenstein",
-    "Andorra",
-    "Maldives",
-    "Nauru",
-    "Tuvalu",
-    "Palau",
-    "Marshall Islands",
-    "Micronesia",
-    "Kiribati",
-    "Tonga",
-    "Seychelles",
-    };
+    private bool fullScreenMode = false;
+    private string PracticeModeHoveredCountry = "Hover over a country to show name";
+
     // Timer mode specific
     private bool timerPaused = false;
     private CancellationTokenSource? _timerCts;
@@ -183,12 +180,26 @@
     private void RetrieveQuizData()
     {
         CountryQuizData = StaticQuizDataRetrievalService.GetCountryQuizData();
-
-        CountryQuizData.Countries = CountryQuizData.Countries
-       .Where(c => !microNations.Contains(c.CountryName))
-       .ToList();
     }
     #region Mode Specific Methods
+
+    [JSInvokable]
+    public void OnCountryHovered(string countryId)
+    {
+        var country = CountryQuizData.Countries.FirstOrDefault(a => a.Id == countryId);
+        if (country != null && !string.IsNullOrEmpty(country.CountryName))
+            PracticeModeHoveredCountry = country.CountryName;
+        else
+            PracticeModeHoveredCountry = string.Empty;
+        StateHasChanged();
+    }
+
+    [JSInvokable]
+    public void OnCountryHoverLeave()
+    {
+        PracticeModeHoveredCountry = string.Empty;
+        StateHasChanged();
+    }
 
     [JSInvokable]
     public void OnCountryClicked(string countryId)
@@ -280,8 +291,7 @@
             _ = ShowEndScreen();
         }
     }
-    #endregion
-   
+    #endregion 
     #region UI Interaction Methods and standard mode methods
 
     public void Dispose()
@@ -315,6 +325,12 @@
 
         if (SelectedMode == QuizMode.RandomWithLives)
             RandomModeNextCountry();
+
+        if (SelectedMode == QuizMode.Practice)
+            await JS.InvokeVoidAsync("svgInterop.enablePracticeHover");
+        else
+            await JS.InvokeVoidAsync("svgInterop.disablePracticeHover");
+            
         await Reset();
     }
     public async void RandomModeNextCountry()
@@ -336,6 +352,10 @@
 
     private async Task ShowEndScreen()
     {
+        if (fullScreenMode)
+        {
+            await ToggleFullScreen();
+        }
         var result = new QuizResult
         {
             QuizType = QuizInfo.QuizType,
@@ -343,29 +363,27 @@
             Score = GuessedAnswers,
             MaxScore = TotalAnswers,
         };
-
-
         var parameters = new DialogParameters
-            {
-                { nameof(EndScreenDialog.QuizResult), result },
-            };
+        {
+            { nameof(EndScreenDialog.QuizResult), result },
+        };
 
         var options = new DialogOptions { MaxWidth = MaxWidth.Medium, CloseButton = true };
         var dialog = await DialogService.ShowAsync<EndScreenDialog>("", parameters, options);
         var dialogResult = await dialog.Result;
 
+        // Retry or route to quiz menu based of result.
         if (dialogResult != null)
         {
-            if (dialogResult.Canceled && dialogResult.Data?.ToString() == "retry")
+            if (dialogResult.Data?.ToString() == "retry" || dialogResult.Canceled)
             {
                 await Reset();
             }
-            if (dialogResult.Canceled && dialogResult.Data?.ToString() == "menu")
+            else if (dialogResult.Data?.ToString() == "menu")
             {
                 navigation.NavigateTo("Quizzes");
             }
         }
-
     }
     private void TogglePanel()
     {
@@ -384,6 +402,7 @@
 
     private async Task ToggleFullScreen()
     {
+        fullScreenMode = !fullScreenMode;
         fullScreen = !fullScreen;
         await JS.InvokeVoidAsync("toggleFullScreen", "container");
     }

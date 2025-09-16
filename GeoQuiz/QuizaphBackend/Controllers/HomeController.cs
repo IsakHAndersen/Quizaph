@@ -108,10 +108,21 @@ namespace QuizaphBackend.Controllers
         #endregion
 
         #region Quiz Data Endpoints
-        [HttpGet("/data/{quizType}/{dataset}")]
+        [HttpGet("data/{quizType}/{dataset}")]
         public IActionResult GetQuizData(QuizType quizType, string dataset)
         {
             return null!;
+        }
+        #endregion
+
+        #region QuizRules Endpoints
+        [HttpGet("quiz/{quizId}/rules")]
+        public IActionResult GetQuizRules(int quizId)
+        {
+            var result = _context.QuizRules.Where(a => a.QuizId == quizId).ToList();
+            if (result == null)
+                return NotFound($"No quiz rules found for QuizId {quizId}.");
+            return Ok(result);
         }
         #endregion
     }

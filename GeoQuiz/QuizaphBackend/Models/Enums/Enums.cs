@@ -44,12 +44,14 @@ namespace Models.Enums
     public enum QuizMode
     {
         None = 0,
-        Alphabetical = 1 << 0,    
-        Random = 1 << 1,          
-        Standard = 1 << 2,        
-        Timed = 1 << 3,           
-        TriviaExpansion = 1 << 4,
-        RandomWithLives = 1 << 5
+        Standard = 1 << 0,
+        Alphabetical = 1 << 1,
+        Practice = 1 << 2,
+        Random = 1 << 3,          
+        Timed = 1 << 4,           
+        TriviaExpansion = 1 << 5,
+        RandomWithLives = 1 << 6,
+      
     }
 
     public enum Continent

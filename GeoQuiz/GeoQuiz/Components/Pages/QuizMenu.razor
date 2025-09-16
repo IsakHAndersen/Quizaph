@@ -143,8 +143,6 @@
         quizzes = await HttpService.GetAllQuizzes();
         userId = await UserClaimsService.GetUserIdAsync();
         await ApplyFilters(); // Populate filtered and visible quizzes
-
-
     }
 
     #region Filter logic

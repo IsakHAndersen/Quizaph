@@ -57,7 +57,7 @@
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Retry">
                     Retry
                 </MudButton>
-                <MudButton Variant="Variant.Text" Color="Color.Dark" OnClick="CloseDialog" EndIcon="@Icons.Material.Filled.ArrowForward">
+                <MudButton Variant="Variant.Text" Color="Color.Dark" OnClick="GoToQuizMenu" EndIcon="@Icons.Material.Filled.ArrowForward">
                     Menu
                 </MudButton>
             </MudStack>
@@ -103,5 +103,5 @@
     }
 
     private void Retry() => MudDialog.Close(DialogResult.Ok("retry"));
-    private void CloseDialog() => MudDialog.Close(DialogResult.Ok("menu"));
+    private void GoToQuizMenu() => MudDialog.Close(DialogResult.Ok("menu"));
 }                                                                                                                                                                                                                                                                                           

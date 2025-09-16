@@ -42,9 +42,6 @@ namespace GeoQuizBackend.EntityFramework
                 .WithMany(u => u.QuizResults)
                 .HasForeignKey(q => q.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Quiz>()
-            .OwnsMany(q => q.Rules);
         }
     }
 
