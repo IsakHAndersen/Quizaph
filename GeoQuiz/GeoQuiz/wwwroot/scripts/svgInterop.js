@@ -1,5 +1,5 @@
 ﻿window.svgInterop = {
-    init: (objectId) => {
+    init: (objectId, dotNetHelper) => {
         console.log("svgInterop.init triggered:", objectId);
 
         const objectElement = document.getElementById(objectId);
@@ -14,18 +14,59 @@
             const svg = svgDoc?.querySelector("svg");
             if (!svg) return;
 
-
-            // Add hover effect to all <g> elements
+            // Hover + Click Handlers
             const countries = svg.querySelectorAll("g");
             countries.forEach(country => {
+                country.style.cursor = "pointer";
+
+                let mouseDownX, mouseDownY, isMouseDown = false;
+
                 country.addEventListener("mouseenter", () => {
-                    country.style.fill = "#00CFC1"; // hover color
+                    country.style.fill = "#00CFC1";
                 });
                 country.addEventListener("mouseleave", () => {
-                    country.style.fill = ""; // reset to original
+                    country.style.fill = "";
+                });
+
+                country.addEventListener("mousedown", (e) => {
+                    isMouseDown = true;
+                    mouseDownX = e.clientX;
+                    mouseDownY = e.clientY;
+                });
+
+                country.addEventListener("mouseup", (e) => {
+                    if (!isMouseDown) return;
+                    isMouseDown = false;
+
+                    const dx = e.clientX - mouseDownX;
+                    const dy = e.clientY - mouseDownY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    // Only trigger click if mouse didn't move much
+                    if (distance < 5) {
+                        const id = country.getAttribute("id");
+                        if (id) {
+                            console.log("Clicked country:", id);
+                            dotNetHelper.invokeMethodAsync("OnCountryClicked", id);
+                        }
+                    }
                 });
             });
 
+
+            // Trigger country click manually
+            objectElement.svgApi = {
+                triggerCountryClick: (countryId) => {
+                    const target = svg.querySelector(`g#${countryId}`);
+                    if (target) {
+                        target.dispatchEvent(new Event("click"));
+                    } else {
+                        console.warn(`Country with ID "${countryId}" not found.`);
+                    }
+                }
+            };
+
+            // Zoom + Drag Support
             let scale = 1.0;
             let translateX = 0;
             let translateY = 0;
@@ -50,7 +91,7 @@
                 );
             };
 
-            // Store state globally so we can call from Blazor
+            // Expose state globally
             objectElement.svgState = {
                 applyTransform,
                 get scale() { return scale; },
@@ -92,6 +133,7 @@
         }
     },
 
+    // Zoom helpers
     zoomIn: (objectId) => {
         const objectElement = document.getElementById(objectId);
         if (objectElement?.svgState) {
@@ -104,6 +146,13 @@
         if (objectElement?.svgState) {
             objectElement.svgState.scale = Math.max(objectElement.svgState.scale - 0.2, 0.2);
         }
-    }
+    },
 
+    // External trigger
+    triggerCountryClick: (objectId, countryId) => {
+        const objectElement = document.getElementById(objectId);
+        if (objectElement?.svgApi) {
+            objectElement.svgApi.triggerCountryClick(countryId);
+        }
+    }
 };

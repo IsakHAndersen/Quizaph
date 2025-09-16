@@ -61,14 +61,21 @@
     }
     @if (SelectedMode == QuizMode.RandomWithLives)
     {
-        <MudStack Style="position: absolute; margin-top: 15px; left: 50%; transform: translateX(-50%); background-color: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 10px;" Row="true" AlignItems="AlignItems.Center" Spacing="3">
+        <MudStack Style="position: absolute; margin-top: 15px; left: 50%; transform: translateX(-50%);
+                         background-color: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 10px;"
+                  AlignItems="AlignItems.Center" Spacing="2">
 
-            @foreach (var life in quizLives)
-            {
-                <MudIcon 
-                         Icon="@(life.IsLost ? Icons.Material.Filled.FavoriteBorder : Icons.Material.Filled.Favorite)"
-                         Color="@(life.IsLost ? Color.Default : Color.Error)" />
-            }
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3">
+                @foreach (var life in quizLives)
+                {
+                    <MudIcon Icon="@(life.IsLost? Icons.Material.Filled.FavoriteBorder : Icons.Material.Filled.Favorite)"
+                             Color="@(life.IsLost ? Color.Default : Color.Error)" />
+                }
+            </MudStack>
+
+            <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Primary">
+                @RandomModeCountryToGuess?.CountryName
+            </MudText>
         </MudStack>
     }
 
@@ -88,6 +95,9 @@
             <MudFab Size="Size.Small" Color="Color.Primary" OnClick="@SvgZoomOut" Style="min-width: 36px; min-height: 36px; background: #C92447; opacity: 0.7;" EndIcon="@Icons.Material.Filled.Remove">
             </MudFab>
         </div>
+
+    @if (SelectedMode != QuizMode.RandomWithLives)
+    {
         <MudTextField T="string"
                       @bind-Value="searchText"
                       Immediate="true"
@@ -97,34 +107,18 @@
                       AdornmentIcon="@Icons.Material.Filled.Search"
                       AdornmentColor="Color.Dark"
                       Style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-                         width: 300px; height: 40px; background-color: white;"
+                             width: 300px; height: 40px; background-color: white;"
                       OnKeyUp="@OnSearchKeyUp"
                       @ref="_searchField" />
-            <MudFab StartIcon="@(fullScreen? Icons.Material.Filled.FullscreenExit : Icons.Material.Filled.Fullscreen)"
+    }
+ 
+
+        <MudFab StartIcon="@(fullScreen? Icons.Material.Filled.FullscreenExit : Icons.Material.Filled.Fullscreen)"
                     Color="Color.Primary"
                     Style="position: absolute; bottom: 16px; right: 16px;"
                     Size="Size.Small"
                     OnClick="@ToggleFullScreen" />
     </MudPaper>
-
-<script>
-    const svgObject = document.getElementById('svg-map');
-
-    svgObject.addEventListener('load', () => {
-        const svgDoc = svgObject.contentDocument; // access inner SVG
-        const countries = svgDoc.querySelectorAll('g'); // all <g> elements
-
-        countries.forEach(country => {
-            country.addEventListener('mouseenter', () => {
-                country.style.fill = '#f00'; // hover color
-            });
-            country.addEventListener('mouseleave', () => {
-                country.style.fill = ''; // reset to original
-            });
-        });
-    });
-</script>
-
 
 @code {
     [CascadingParameter] private Quiz QuizInfo { get; set; } = default!;
@@ -136,18 +130,37 @@
     private CountryQuizData CountryQuizData { get; set; } = new CountryQuizData();
     private bool fullScreen = false;
     private ElementReference _svgContainer;
-    private int QuizTimer = 900; // 15 minutes
-    private bool timerPaused = false;
-    private CancellationTokenSource? _timerCts;
     private DotNetObjectReference<CountriesOfTheWorldComponent>? objRef;
-
-    private List<QuizLife> quizLives = new List<QuizLife>()
-    {
-        new QuizLife(), new QuizLife(), new QuizLife()
-    };
-
     private MudTextField<string> _searchField;
     private string searchText = string.Empty;
+    private List<string> microNations = new List<string> {
+    "Vatican City",
+    "Monaco",
+    "San Marino",
+    "Liechtenstein",
+    "Andorra",
+    "Maldives",
+    "Nauru",
+    "Tuvalu",
+    "Palau",
+    "Marshall Islands",
+    "Micronesia",
+    "Kiribati",
+    "Tonga",
+    "Seychelles",
+    };
+    // Timer mode specific
+    private bool timerPaused = false;
+    private CancellationTokenSource? _timerCts;
+    private int QuizTimer = 900; // 15 minutes
+
+    // Random mode specific
+    private Country? RandomModeCountryToGuess;
+    private Random random = new Random();
+    private List<QuizLife> quizLives = new List<QuizLife>()
+    {
+        new QuizLife(), new QuizLife(), new QuizLife(), new QuizLife(), new QuizLife()
+    };
 
     protected override void OnInitialized()
     {
@@ -163,31 +176,10 @@
         if (firstRender)
         {
             await Task.Delay(100);
-            await JS.InvokeVoidAsync("svgInterop.init", "svg-map");
-            await JS.InvokeVoidAsync("registerSvgClickHandlers", objRef);
+            objRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("svgInterop.init", "svg-map", objRef);
         }
     }
-
-
-    [JSInvokable]
-    public void OnCountryClicked(string countryId)
-    {
-        Console.WriteLine($"Clicked country: {countryId}");
-
-        // call your quiz logic here
-        SelectCountryAsAnswer(countryId);
-    }
-
-    private void SelectCountryAsAnswer(string country)
-    {
-        var life = quizLives.FirstOrDefault(l => !l.IsLost);
-        if (life != null)
-        {
-            life.IsLost = true;
-            life.NameOfError = "Wrong answer on France"; // example
-        }
-    }
-
     private void RetrieveQuizData()
     {
         CountryQuizData = StaticQuizDataRetrievalService.GetCountryQuizData();
@@ -196,25 +188,51 @@
        .Where(c => !microNations.Contains(c.CountryName))
        .ToList();
     }
+    #region Mode Specific Methods
 
-    private List<string> microNations = new List<string> { 
-    "Vatican City", 
-    "Monaco", 
-    "San Marino", 
-    "Liechtenstein", 
-    "Andorra", 
-    "Maldives",  
-    "Nauru",
-    "Tuvalu",
-    "Palau",
-    "Marshall Islands",
-    "Micronesia",
-    "Kiribati", 
-    "Tonga",
-    "Seychelles",
-    };
+    [JSInvokable]
+    public void OnCountryClicked(string countryId)
+    {
+        SelectCountryAsAnswer(countryId);
+    }
 
+    private async void SelectCountryAsAnswer(string countryId)
+    {
+        if (SelectedMode != QuizMode.RandomWithLives)
+            return;
 
+        // Correct guess
+        if (RandomModeCountryToGuess != null &&
+            countryId.Equals(RandomModeCountryToGuess.Id, StringComparison.OrdinalIgnoreCase))
+        {
+            RandomModeCountryToGuess.Guessed = true;
+            await JS.InvokeVoidAsync("highlightSvgElementById", RandomModeCountryToGuess.Id);
+            GuessedAnswers++;
+            RandomModeNextCountry();
+            await InvokeAsync(StateHasChanged);
+        }
+        // Wrong guess
+        else
+        {
+            var wrongCountry = CountryQuizData.Countries
+                .FirstOrDefault(c => c.Id.Equals(countryId, StringComparison.OrdinalIgnoreCase));
+
+            if (wrongCountry != null)
+            {
+                await JS.InvokeVoidAsync("highlightSvgElementById", wrongCountry.Id, "#f87171", "#dc2626", true);
+            }
+
+            if (RandomModeCountryToGuess != null)
+            {
+                RandomModeCountryToGuess.Guessed = true;
+                await JS.InvokeVoidAsync("highlightSvgElementById", RandomModeCountryToGuess.Id, "#fbbf24", "#d97706"); // orange
+            }
+
+            LoseLife(wrongCountry?.CountryName ?? countryId);
+            RandomModeNextCountry();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
     private async void StartTimer()
     {
         _timerCts = new CancellationTokenSource();
@@ -248,7 +266,107 @@
     {
         timerPaused = !timerPaused;
     }
+    private void LoseLife(string countryName)
+    {
+        var life = quizLives.FirstOrDefault(l => !l.IsLost);
+        if (life != null)
+        {
+            life.IsLost = true;
+            StateHasChanged();
+        }
+        if (quizLives.All(l => l.IsLost))
+        {
+            // All lives lost, end the quiz
+            _ = ShowEndScreen();
+        }
+    }
+    #endregion
+   
+    #region UI Interaction Methods and standard mode methods
 
+    public void Dispose()
+    {
+        QuizState.OnResetRequested -= Reset;
+        QuizState.OnShowEndScreen -= ShowEndScreen;
+        QuizState.OnCurrentModeChanged -= OnModeChanged;
+        _timerCts?.Cancel();
+    }
+
+    public async Task Reset()
+    {
+        GuessedAnswers = 0;
+        CountryQuizData.ResetQuiz();
+        QuizTimer = 900;
+        quizLives.ForEach(a =>
+        {
+            a.IsLost = false;
+            a.NameOfError = string.Empty;
+        });
+        RandomModeNextCountry();
+        await JS.InvokeVoidAsync("resetSvg");
+    }
+
+    public async Task OnModeChanged(QuizMode mode)
+    {
+        SelectedMode = mode;
+
+        if (SelectedMode == QuizMode.Timed)
+            StartTimer();
+
+        if (SelectedMode == QuizMode.RandomWithLives)
+            RandomModeNextCountry();
+        await Reset();
+    }
+    public async void RandomModeNextCountry()
+    {
+        var unguessed = CountryQuizData.Countries
+            .Where(c => !c.Guessed)
+            .ToList();
+
+        if (unguessed.Count == 0)
+        {
+            Console.WriteLine("Random mode finished!");
+            await ShowEndScreen();
+            return;
+        }
+
+        RandomModeCountryToGuess = unguessed[random.Next(unguessed.Count)];
+        Console.WriteLine($"Next country to guess: {RandomModeCountryToGuess.CountryName} ({RandomModeCountryToGuess.Id})");
+    }
+
+    private async Task ShowEndScreen()
+    {
+        var result = new QuizResult
+        {
+            QuizType = QuizInfo.QuizType,
+            QuizMode = SelectedMode,
+            Score = GuessedAnswers,
+            MaxScore = TotalAnswers,
+        };
+
+
+        var parameters = new DialogParameters
+            {
+                { nameof(EndScreenDialog.QuizResult), result },
+            };
+
+        var options = new DialogOptions { MaxWidth = MaxWidth.Medium, CloseButton = true };
+        var dialog = await DialogService.ShowAsync<EndScreenDialog>("", parameters, options);
+        var dialogResult = await dialog.Result;
+
+        if (dialogResult != null)
+        {
+            if (dialogResult.Canceled && dialogResult.Data?.ToString() == "retry")
+            {
+                await Reset();
+            }
+            if (dialogResult.Canceled && dialogResult.Data?.ToString() == "menu")
+            {
+                navigation.NavigateTo("Quizzes");
+            }
+        }
+
+    }
     private void TogglePanel()
     {
         showPanel = !showPanel;
@@ -321,68 +439,5 @@
         }
     }
 
-
-
-
-    public void Dispose()
-    {
-        QuizState.OnResetRequested -= Reset;
-        QuizState.OnShowEndScreen -= ShowEndScreen;
-        QuizState.OnCurrentModeChanged -= OnModeChanged;
-        _timerCts?.Cancel();
-    }
-
-
-
-    public async Task Reset()
-    {
-        GuessedAnswers = 0;
-        CountryQuizData.ResetQuiz();
-        QuizTimer = 900;
-        await JS.InvokeVoidAsync("resetSvg");
-    }
-
-    public async Task OnModeChanged(QuizMode mode)
-    {
-        SelectedMode = mode;
-        if (SelectedMode == QuizMode.Timed)
-        {
-            StartTimer();
-        }
-        await Reset();
-    }
-
-    private async Task ShowEndScreen()
-    {
-        var result = new QuizResult
-            {
-                QuizType = QuizInfo.QuizType,
-                QuizMode = SelectedMode,
-                Score = GuessedAnswers,
-                MaxScore = TotalAnswers,
-            };
-
-
-        var parameters = new DialogParameters
-            {
-                { nameof(EndScreenDialog.QuizResult), result },
-            };
-
-        var options = new DialogOptions { MaxWidth = MaxWidth.Medium, CloseButton = true };
-        var dialog = await DialogService.ShowAsync<EndScreenDialog>("", parameters, options);
-        var dialogResult = await dialog.Result;
-
-        if (dialogResult != null)
-        {
-            if (dialogResult.Canceled && dialogResult.Data?.ToString() == "retry")
-            {
-                await Reset();
-            }
-            if (dialogResult.Canceled && dialogResult.Data?.ToString() == "menu")
-            {
-                navigation.NavigateTo("Quizzes");
-            }
-        }
-      
-    }
+    #endregion
 }
