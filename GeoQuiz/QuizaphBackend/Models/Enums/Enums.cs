@@ -69,9 +69,10 @@ namespace Models.Enums
     public enum QuizType
     {
         WorldCountriesQuiz,
+        TriviaQuiz,
         ImageQuiz,
         TextQuiz,
         MultipleChoiceQuiz,
-        TrueFalseQuiz
+        TrueFalseQuiz      
     }
 }

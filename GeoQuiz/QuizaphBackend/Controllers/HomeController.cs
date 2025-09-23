@@ -125,5 +125,48 @@ namespace QuizaphBackend.Controllers
             return Ok(result);
         }
         #endregion
+
+        #region Quiz Dataset Endpoints
+        [HttpGet("quiz/{quizId}/datasets")]
+        public IActionResult GetQuizDataSets(int quizId)
+        {
+            var datasets = _context.QuizDatasets
+                .Where(ds => ds.QuizId == quizId)
+                .ToList(); // returns the full entity objects
+
+            if (!datasets.Any())
+                return NotFound($"No datasets found for QuizId {quizId}.");
+
+            return Ok(datasets);
+        }
+
+        [HttpGet("quiz/{quizId}/datasets/{datasetId}")]
+        public IActionResult GetQuizDataSet(int quizId, int datasetId)
+        {
+            var dataset = _context.QuizDatasets
+                .Include(ds => ds.Questions)
+                .FirstOrDefault(ds => ds.QuizId == quizId && ds.Id == datasetId);
+
+            if (dataset == null)
+                return NotFound($"No dataset {datasetId} found for QuizId {quizId}.");
+
+            return Ok(dataset);
+        }
+
+        [HttpGet("quiz/{quizId}/datasets/{datasetId}/questions")]
+        public IActionResult GetQuizQuestions(int quizId, int datasetId)
+        {
+            var datasetExists = _context.QuizDatasets
+                .Any(ds => ds.QuizId == quizId && ds.Id == datasetId);
+
+            if (!datasetExists)
+                return NotFound($"No dataset {datasetId} found for QuizId {quizId}.");
+            var questions = _context.QuizQuestions
+                .Where(q => q.QuizDataSetId == datasetId)
+                .ToList();
+
+            return Ok(questions);
+        }
+        #endregion
     }
 }

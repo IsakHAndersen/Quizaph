@@ -62,15 +62,17 @@ window.svgInterop = {
                     }
                 });
 
-                // Add click handler for circles within this country
                 const circles = country.querySelectorAll("circle.clickable");
                 circles.forEach(circle => {
                     circle.style.cursor = "pointer";
+
+                    // Save the original radius
+                    const originalRadius = circle.getAttribute("r");
+
                     circle.addEventListener("click", (e) => {
-                        e.stopPropagation(); // Prevent bubbling to SVG or other elements
+                        e.stopPropagation(); // Prevent bubbling
                         const parentGroup = circle.closest("g");
                         if (parentGroup) {
-                            // Dispatch a click event to the parent <g>
                             const clickEvent = new MouseEvent("click", {
                                 bubbles: true,
                                 cancelable: true,
@@ -80,14 +82,23 @@ window.svgInterop = {
                             parentGroup.dispatchEvent(clickEvent);
                         }
                     });
-                    // Optional: Apply hover effects to circle
+
+                    // Hover effects
                     circle.addEventListener("mouseenter", () => {
-                        country.style.fill = "#00CFC1"; // Match country hover effect
+                        // Enlarge circle
+                        circle.setAttribute("r", parseFloat(originalRadius) * 1.5); // 1.5x larger
+                        // Optional: change color to indicate hover
+                        circle.setAttribute("fill", "#00CFC1");
                     });
+
                     circle.addEventListener("mouseleave", () => {
-                        country.style.fill = "";
+                        // Restore original size
+                        circle.setAttribute("r", originalRadius);
+                        // Restore original fill (if any)
+                        circle.setAttribute("fill", "#0000FF");
                     });
                 });
+
             });
 
             // Trigger country click manually

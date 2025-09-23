@@ -1,0 +1,167 @@
+﻿@using QuizaphFrontend.Components.MudblazorDialogComponents
+@using QuizaphFrontend.Services
+@inject CurrentQuizStateService QuizState
+@inject IDialogService DialogService
+@inject HttpService HttpService
+@inject NavigationManager navigation
+@implements IDisposable
+
+<MudPaper Square="true"
+          Class="quiz-container"
+          Elevation="0"
+          Style="min-height: calc(100vh -70px); background-color: #E9F4F7; overflow: hidden; border-radius: 20px; display: flex; flex-direction: column; padding: 20px;">
+        @if (QuizQuestions != null)
+        {
+            <MudGrid Class="mt-5" Spacing="2">
+                @foreach (var question in QuizQuestions)
+                {
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudPaper Class="pa-5"
+                                  Elevation="0"
+                                  Style="background-color: white; border-radius: 10px;">
+                            <!-- Question text -->
+                            <MudText Typo="Typo.body1" Class="mb-3">
+                                @question.Question
+                            </MudText>
+
+                            <MudText Typo="Typo.body2"
+                                     Color="Color.Secondary"
+                                     Class="italic">
+                                @(question.IsGuessed == true
+                                                    ? question.CorrectAnswers.FirstOrDefault()
+                                                    : "—")
+                            </MudText>
+                        </MudPaper>
+                    </MudItem>
+                }
+            </MudGrid>
+            <MudStack Row="false"
+                      Justify="Justify.Center"
+                      AlignItems="AlignItems.Center"
+                      Class="mt-6">
+                <MudTextField T="string"
+                              @bind-Value="searchText"
+                              Immediate="true"
+                              Placeholder="Guess here"
+                              Variant="Variant.Outlined"
+                              Adornment="Adornment.End"
+                              AdornmentIcon="@Icons.Material.Filled.Search"
+                              AdornmentColor="Color.Dark"
+                              Style="width: 300px; height: 40px; background-color: white;"
+                              OnKeyUp="@OnSearchKeyUp"
+                              @ref="_searchField" />
+            </MudStack>
+        }
+</MudPaper>
+
+@code {
+    [CascadingParameter] private Quiz QuizInfo { get; set; } = default!;
+    private MudTextField<string> _searchField;
+    private string searchText = string.Empty;
+    private QuizDataset? SelectedDataset = default!;
+    private List<QuizQuestion>? QuizQuestions;
+    private int TotalQuestions;
+    private int TotalGuessed;
+
+    protected override void OnInitialized()
+    {
+        QuizState.OnResetRequested += Reset;
+        QuizState.OnShowEndScreen += ShowEndScreen;
+        QuizState.OnCurrentDatasetChanged += OnDatasetChanged;
+    }
+
+    private async Task OnSearchKeyUp(KeyboardEventArgs args)
+    {
+        if (string.IsNullOrWhiteSpace(searchText)) return;
+        var guess = searchText.Trim().ToLowerInvariant();
+        foreach (var q in QuizQuestions!.Where(q => q.IsGuessed != true))
+        {
+            if (q.CorrectAnswers.Any(ans => ans.ToLowerInvariant() == guess))
+            {
+                q.IsGuessed = true;
+                TotalGuessed++;
+                searchText = "";
+                if (_searchField != null)
+                {
+                    await _searchField.BlurAsync();
+                    await _searchField.SetText("");
+                    await _searchField.FocusAsync();
+                }
+                StateHasChanged();
+                if (TotalGuessed == TotalQuestions)
+                {
+                    await ShowEndScreen();
+                }
+            }
+        }
+    }
+
+    private async Task OnDatasetChanged(QuizDataset dataset)
+    {
+        SelectedDataset = dataset;
+        var questions = await HttpService.GetQuizQuestions(QuizInfo.Id, dataset.Id);
+
+        if (questions == null || !questions.Any())
+            return;
+        QuizQuestions = questions;
+        TotalQuestions = QuizQuestions.Count;
+        TotalGuessed = QuizQuestions.Count(q => q.IsGuessed == true);
+        await Reset();
+    }
+
+    public void Dispose()
+    {
+        QuizState.OnResetRequested -= Reset;
+        QuizState.OnShowEndScreen -= ShowEndScreen;
+    }
+
+    public async Task Reset()
+    {
+        TotalGuessed = 0;
+        if (QuizQuestions != null && QuizQuestions.Count() != 0)
+        {
+            TotalQuestions = QuizQuestions.Count;
+            foreach (var q in QuizQuestions)
+                q.IsGuessed = false;
+        }  
+        searchText = string.Empty;
+        if (_searchField != null)
+        {
+            await _searchField.BlurAsync();
+            await _searchField.SetText("");
+            await _searchField.FocusAsync();
+        }
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task ShowEndScreen()
+    {
+        var result = new QuizResult
+        {
+            QuizType = QuizInfo.QuizType,
+            Score = TotalGuessed,
+            MaxScore = TotalQuestions
+        };
+
+        var parameters = new DialogParameters
+        {
+            { nameof(EndScreenDialog.QuizResult), result },
+        };
+
+        var options = new DialogOptions { MaxWidth = MaxWidth.Medium, CloseButton = true };
+        var dialog = await DialogService.ShowAsync<EndScreenDialog>("Quiz Complete", parameters, options);
+        var dialogResult = await dialog.Result;
+
+        if (dialogResult != null)
+        {
+            if (dialogResult.Data?.ToString() == "retry" || dialogResult.Canceled)
+            {
+                await Reset();
+            }
+            else if (dialogResult.Data?.ToString() == "menu")
+            {
+                navigation.NavigateTo("Quizzes");
+            }
+        }
+    }
+}

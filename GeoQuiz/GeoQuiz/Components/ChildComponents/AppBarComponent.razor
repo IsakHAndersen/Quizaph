@@ -1,7 +1,9 @@
-﻿@inject NavigationManager navigation
+﻿@using QuizaphFrontend.Services
+@inject NavigationManager navigation
+@inject UserClaimsService UserClaimsService
 
-<MudAppBar Fixed="true" Elevation="1"
-           Style="background-color: #F5F8FC; color: #2C2C2E; height: 64px;">
+<MudAppBar Fixed="true" Elevation="0"
+           Style="background-color: #ffffff; color: #2C2C2E; height: 70px;">
     <MudContainer MaxWidth="MaxWidth.Large"
                   Class="d-flex justify-space-between align-center"
                   Style="height: 100%; padding: 0 16px;">
@@ -22,9 +24,20 @@
                     {
                         <MudButton Variant="Variant.Text"
                                    Class="@(currentRoute == tab.Route ? "nav-tab nav-tab-active" : "nav-tab")"
-                                   OnClick="@(() => Navigate(tab.Route))" style="margin-left: 8px; margin-right: 8px; border-radius: 0px; font-weight: 350;">
+                                   OnClick="@(() => Navigate(tab.Route))" style="margin-left: 8px; margin-right: 8px; border-radius: 0px; font-weight: 400;">
 
                             @tab.Label
+                        </MudButton>
+                    }
+                    @if (isPrivilegedUser)
+                    {
+                        <MudButton Variant="Variant.Text"
+                                   Class="@(currentRoute == "/create-quiz" ? "nav-tab nav-tab-active" : "nav-tab")"
+                                   OnClick="@(() => Navigate("/Create-quiz"))"
+                                   StartIcon="@Icons.Material.Filled.Add"
+                                   IconColor="Color.Info"
+                                   style="margin-left: 8px; margin-right: 8px; border-radius: 0px; font-weight: 400;">
+                            Create Quiz
                         </MudButton>
                     }
                 </div>
@@ -105,7 +118,7 @@
     private bool isLoggedIn = true;
     private bool isDarkMode = false;
     private string currentRoute;
-
+    private bool isPrivilegedUser;
 
     private List<(string Label, string Route)> tabs = new()
     {
@@ -114,9 +127,13 @@
         ("About", "/About")
     };
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         currentRoute = navigation.Uri.Replace(navigation.BaseUri, "/");
+        var isAdmin = await UserClaimsService.IsInRoleAsync("Admin");
+        var isMember = await UserClaimsService.IsInRoleAsync("Membership");
+
+        isPrivilegedUser = isAdmin || isMember;
     }
 
     private void Navigate(string route)

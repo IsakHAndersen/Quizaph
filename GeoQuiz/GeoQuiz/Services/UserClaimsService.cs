@@ -25,5 +25,24 @@ namespace QuizaphFrontend.Services
             }
             return null;
         }
+
+        public async Task<List<string>> GetUserRolesAsync()
+        {
+            var authState = await _authStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity?.IsAuthenticated ?? false)
+            {
+                return user.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList();
+            }
+            return new List<string>();
+        }
+
+        public async Task<bool> IsInRoleAsync(string role)
+        {
+            //var roles = await GetUserRolesAsync();
+            var roles = new List<string> { "Admin" };   
+            return roles.Contains(role);
+        }
     }
 }

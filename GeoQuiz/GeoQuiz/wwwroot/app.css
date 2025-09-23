@@ -4,6 +4,7 @@ html, body, button, input, textarea, select {
 }
 
 
+
 .highlightedSvgPath {
     fill: orange !important;
     stroke: red !important;

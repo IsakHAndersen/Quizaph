@@ -10,6 +10,8 @@ namespace GeoQuizBackend.EntityFramework
         public DbSet<QuizResult> QuizResults { get; set; } = default!;
         public DbSet<QuizRule> QuizRules { get; set; } = default!;
         public DbSet<QuizRating> QuizRatings { get; set; } = default!;
+        public DbSet<QuizDataset> QuizDatasets { get; set; } = default!;
+        public DbSet<QuizQuestion> QuizQuestions { get; set; } = default!;
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
         }
@@ -28,21 +30,22 @@ namespace GeoQuizBackend.EntityFramework
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            // QuizResult: use Id as primary key
             modelBuilder.Entity<QuizResult>()
                 .HasKey(q => q.Id);
 
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
-
             modelBuilder.Entity<QuizResult>()
                 .HasOne(q => q.User)
                 .WithMany(u => u.QuizResults)
                 .HasForeignKey(q => q.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<QuizQuestion>()
+                .HasOne(q => q.QuizDataset)
+                .WithMany(ds => ds.Questions)
+                .HasForeignKey(q => q.QuizDataSetId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
-
 }

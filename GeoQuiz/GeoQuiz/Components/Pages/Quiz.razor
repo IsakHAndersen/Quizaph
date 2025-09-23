@@ -13,15 +13,15 @@
 <MudPaper Square="true" MaxWidth="MaxWidth.Large"
           Style="padding: 0px 120px 0px 120px; background: #F5F8FC url('/SVGS/squaresPattern.svg') repeat;  min-height: 100vh;"
           Elevation="0">
-    <MudStack Spacing="7">
+    <MudStack Spacing="7" Class="pt-12">
 
         <!-- Header + Image + Buttons -->
         <MudItem>
             <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
-                <MudStack Row="true" Spacing="6" AlignItems="AlignItems.Center">
-                    <MudText Typo="Typo.h5" Style="font-family: 'Roboto Condensed'">
-                        @QuizState.CurrentQuizInfo?.Title
-                    </MudText>
+                <MudText Typo="Typo.h5" Style="font-family: 'Roboto Condensed'">
+                    @QuizState.CurrentQuizInfo?.Title
+                </MudText>
+                <MudStack Row="true" Spacing="6" AlignItems="AlignItems.Center" style="border-radius: 10px; background: white; padding: 12px 18px;">
 
                     @if (QuizState.CurrentQuizInfo is not null)
                     {
@@ -40,20 +40,33 @@
                         }
                     }
 
-                    <MudButton Variant="Variant.Text" Color="Color.Inherit" Size="Size.Small"
+
+                    @if (availableDatasets?.Any() == true)
+                    {
+                        <MudSelect T="QuizDataset"
+                                   Value="@selectedDataset"
+                                   ValueChanged="SelectDataset"
+                                   Label="Select dataset"
+                                   Dense="true"
+                                   Style="min-width:200px">
+                            @foreach (var ds in availableDatasets)
+                            {
+                                <MudSelectItem T="QuizDataset" Value="@ds">@ds.Name</MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
+
+                    <MudButton Variant="Variant.Filled" Color="Color.Warning" Size="Size.Small"
                                OnClick="Reset" StartIcon="@Icons.Material.Filled.RestartAlt"
                                Style="text-transform: none;">
                         Restart
                     </MudButton>
 
-                    <MudButton Variant="Variant.Text" Color="Color.Inherit" Size="Size.Small"
+                    <MudButton Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
                                OnClick="ShowEndScreen" StartIcon="@Icons.Material.Filled.Output"
                                Style="text-transform: none;">
                         End Quiz
                     </MudButton>
-                </MudStack>
-
-                <MudStack Row="true" Spacing="4" AlignItems="AlignItems.Center">
                     @if (QuizState.CurrentQuizInfo?.QuizRules?.Any() == true)
                     {
                         <MudButton @onclick="() => OpenDialogAsync(DialogType.Rules)"
@@ -72,27 +85,31 @@
                             Info
                         </MudButton>
                     }
-
-                    @if (!string.IsNullOrWhiteSpace(QuizState.CurrentQuizInfo?.ImagePath))
-                    {
-                        <MudImage Src="@QuizState.CurrentQuizInfo.ImagePath"
-                                  Elevation="25"
-                                  Class="rounded-lg"
-                                  Style="border-radius: 20px;" />
-                    }
                 </MudStack>
+                @if (!string.IsNullOrWhiteSpace(QuizState.CurrentQuizInfo?.ImagePath))
+                {
+                    <MudImage Src="@QuizState.CurrentQuizInfo.ImagePath"
+                              Elevation="25"
+                              Class="rounded-lg"
+                              Style="border-radius: 20px; width: 50px; height: 50px;" />
+                }
             </MudStack>
         </MudItem>
 
         <!-- Main quiz content -->
         @if (QuizState.CurrentQuizInfo != null)
         {
-            <MudPaper Square="true" Style="position: relative; padding: 0; background-color: transparent;" Elevation="0">
+            <MudPaper Square="true" Style="position: relative; padding: 0; background-color: transparent; border-radius: 5px;" Elevation="0">
                 @switch (QuizState.CurrentQuizInfo.QuizType)
                 {
                     case QuizType.WorldCountriesQuiz:
                         <CascadingValue Value="QuizState.CurrentQuizInfo">
                             <CountriesOfTheWorldComponent />
+                        </CascadingValue>
+                        break;
+                    case QuizType.TriviaQuiz:
+                        <CascadingValue Value="QuizState.CurrentQuizInfo">
+                            <TriviaQuizComponent />
                         </CascadingValue>
                         break;
                     default:
@@ -107,10 +124,16 @@
 @code {
 
     private QuizMode selectedMode = QuizMode.Standard;
-
+    private List<QuizDataset>? availableDatasets;
+    private QuizDataset? selectedDataset;
     protected override async Task OnInitializedAsync()
     {
         var rules = await HttpService.GetQuizRules(QuizState.CurrentQuizInfo.Id);
+        var availableDatasets = await HttpService.GetQuizDataSets(QuizState.CurrentQuizInfo.Id);
+        if (availableDatasets != null)
+        {
+            this.availableDatasets = availableDatasets;
+        }
         QuizState.CurrentQuizInfo.QuizRules = rules;
     }
 
@@ -130,15 +153,21 @@
             }
         };
         var parameters = new DialogParameters
-    {
-        { "Dialog", dialogData }
-    };
+        {
+            { "Dialog", dialogData }
+        };
 
         // Set options
         var options = new DialogOptions { CloseOnEscapeKey = true };
 
         await DialogService.ShowAsync<BasicDialog>(dialogData.Title, parameters, options);
     }
+    async Task SelectDataset(QuizDataset quizDataset)
+    {
+        selectedDataset = quizDataset;
+        await QuizState.InvokeDatasetChanged(quizDataset);
+    }
+
     async Task SelectMode(QuizMode mode)
     {
         selectedMode = mode;

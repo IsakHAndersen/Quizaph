@@ -3,6 +3,8 @@ build_property.MudDebugAnalyzer =
 build_property.MudAllowedAttributePattern = 
 build_property.MudAllowedAttributeList = 
 build_property.TargetFramework = net8.0
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v8.0
 build_property.TargetPlatformMinVersion = 
 build_property.UsingMicrosoftNETSdkWeb = true
 build_property.ProjectTypeGuids = 
@@ -39,6 +41,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDaGlsZENvbXBvbmVudHNcUXVpekluZm9MYWJlbENvbXBvbmVudC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/ChildComponents/TriviaQuizComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDaGlsZENvbXBvbmVudHNcVHJpdmlhUXVpekNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Layout/EmptyLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRW1wdHlMYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -49,6 +55,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/MudblazorDialogComponents/EndScreenDialog.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNdWRibGF6b3JEaWFsb2dDb21wb25lbnRzXEVuZFNjcmVlbkRpYWxvZy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/CreateQuiz.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDcmVhdGVRdWl6LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/Error.razor]

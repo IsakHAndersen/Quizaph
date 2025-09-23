@@ -1,0 +1,178 @@
+﻿@inject HttpService HttpService
+@page "/Create-quiz"
+@using QuizaphFrontend.Services
+@using global::Models.Enums
+@using Microsoft.AspNetCore.Components.Authorization
+@using MudBlazor
+
+<MudPaper Square="true" Elevation="0" Class="pt-12" Style="background-color: #f5f6fa; min-height:100vh;">
+    <MudContainer MaxWidth="MaxWidth.Large">
+
+
+        <MudGrid Spacing="3">
+
+            <!-- Left: Quiz Type Selector -->
+            <MudItem xs="12" md="3">
+                <MudPaper Outlined="true" Style="background-color:#ffffff; border-radius:20px; padding:20px; box-shadow:0px 4px 12px rgba(0,0,0,0.05);">
+                    <MudSelect T="QuizType"
+                               Label="Quiz Type"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Size="Size.Medium"
+                               Dense
+                               StartIcon="@Icons.Material.Filled.ListAlt"
+                               @bind-Value="selectedQuizType">
+                        @foreach (QuizType type in AvailableQuizTypes)
+                        {
+                            <MudSelectItem T="QuizType" Value="@type">
+                                @HelperMethods.SplitByCamelCase(type.ToString())
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudPaper>
+            </MudItem>
+
+            <!-- Right: Quiz Form -->
+            <MudItem xs="12" md="9">
+                <MudPaper Style="background-color:#ffffff; border-radius:20px; padding:30px; box-shadow:0px 8px 24px rgba(0,0,0,0.08);">
+                    <MudStack Spacing="4">
+                        <!-- Quiz Info -->
+                        <MudText Typo="Typo.h4" Align="Align.Center" Class="mb-6" Style="font-weight:600; color:#3b3f5c;">
+                            <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-2" /> Create Quiz
+                        </MudText>
+
+                        <!-- Title -->
+                        <MudTextField @bind-Value="QuizTitle" Variant="Variant.Outlined" Label="Quiz Title" Placeholder="Enter quiz title"
+                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Title" />
+
+                        <!-- Category -->
+                        <MudSelect T="QuizCategory" @bind-Value="SelectedCategory" Label="Subject" Variant="Variant.Outlined"
+                                   StartIcon="@Icons.Material.Filled.Category">
+                            @foreach (QuizCategory category in Enum.GetValues(typeof(QuizCategory)))
+                            {
+                                <MudSelectItem T="QuizCategory" Value="@category">@category.ToString()</MudSelectItem>
+                            }
+                        </MudSelect>
+
+                        <!-- Mode -->
+                        <MudSelect T="string" @bind-Value="ModeSelection" Label="Creation Mode" Variant="Variant.Outlined"
+                                   StartIcon="@Icons.Material.Filled.Mode">
+                            @foreach (var mode in QuizCreationModes)
+                            {
+                                <MudSelectItem Value="@mode">@mode</MudSelectItem>
+                            }
+                        </MudSelect>
+
+                        @if (ModeSelection == "Prompt")
+                        {
+                            <!-- Prompt-driven fields -->
+                            <MudTextField @bind-Value="PromptQuestionAmount" Variant="Variant.Outlined" Label="Number of Questions" Placeholder="Max 50"
+                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.FormatListNumbered" />
+                            <MudTextField @bind-Value="PromptDifficulty" Variant="Variant.Outlined" Label="Difficulty" Placeholder="Easy, Medium, Hard"
+                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.BarChart" />
+                            <MudTextField @bind-Value="PromptContext" Variant="Variant.Outlined" Label="Additional Context" Placeholder="Optional extra info"
+                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Info" />
+                        }
+                        @if (ModeSelection == "Manual")
+                        {
+                            <MudText Typo="Typo.subtitle1" Class="mb-2" Style="font-weight:500;">
+                                Enter Questions
+                            </MudText>
+
+                            <MudGrid Spacing="3">
+                                @foreach (var question in ManualQuestions.Select((value, index) => new { value, index }))
+                                {
+                                    <MudItem xs="12" md="6" Class="d-flex align-center">
+                                        <MudTextField @bind-Value="ManualQuestions[question.index]"
+                                                      Variant="Variant.Outlined"
+                                                      Placeholder=@($"Question {question.index + 1}")
+                                                      Adornment="Adornment.Start"
+                                                      AdornmentIcon="@Icons.Material.Filled.QuestionAnswer"
+                                                      Class="mb-2 flex-grow-1" />
+
+                                        @if (ManualQuestions.Count > 1)
+                                        {
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                                           Color="Color.Error"
+                                                           OnClick="@(() => RemoveQuestion(question.index))"
+                                                           Style="margin-left: 8px;" />
+                                        }
+                                    </MudItem>
+                                }
+                            </MudGrid>
+
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.Filled.Add"
+                                       OnClick="AddQuestion"
+                                       Class="mt-2">
+                                Add Question
+                            </MudButton>
+                        }
+
+
+                        <!-- Submit -->
+                        <MudButton Variant="Variant.Filled" Color="Color.Success" Class="mt-4" StartIcon="@Icons.Material.Filled.CheckCircle">
+                            Create Quiz
+                        </MudButton>
+
+                    </MudStack>
+                </MudPaper>
+            </MudItem>
+
+        </MudGrid>
+    </MudContainer>
+</MudPaper>
+
+@code {
+    private QuizType selectedQuizType = QuizType.TriviaQuiz;
+    private List<QuizType> AvailableQuizTypes = new List<QuizType> { QuizType.TriviaQuiz, QuizType.TrueFalseQuiz };
+
+    private string QuizTitle { get; set; } = string.Empty;
+    private List<string> QuizCreationModes = new() { "Prompt", "Manual" };
+    private QuizCategory SelectedCategory { get; set; } = QuizCategory.GeneralKnowledge;
+
+    private string ModeSelection { get; set; } = "Prompt";
+
+    private string PromptQuestionAmount { get; set; } = string.Empty;
+    private string PromptDifficulty { get; set; } = string.Empty;
+    private string PromptContext { get; set; } = string.Empty;
+
+    private List<string> ManualQuestions { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        if (ManualQuestions.Count == 0)
+        {
+            for (int i = 0; i < 5; i++)
+                ManualQuestions.Add(string.Empty);
+        }
+    }
+
+    private void EnsureManualQuestions()
+    {
+        if (ModeSelection == "Manual" && ManualQuestions.Count < 5)
+        {
+            int toAdd = 5 - ManualQuestions.Count;
+            for (int i = 0; i < toAdd; i++)
+                ManualQuestions.Add(string.Empty);
+        }
+    }
+
+    private void SelectType(QuizType type)
+    {
+        selectedQuizType = type;
+    }
+
+    private void AddQuestion()
+    {
+        ManualQuestions.Add(string.Empty);
+    }
+
+    private void RemoveQuestion(int index)
+    {
+        if (index >= 0 && index < ManualQuestions.Count)
+            ManualQuestions.RemoveAt(index);
+    }
+}
+

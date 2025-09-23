@@ -10,6 +10,7 @@ namespace QuizaphFrontend.Services
         public event Func<Task>? OnResetRequested;
         public event Func<Task>? OnShowEndScreen;
         public event Func<QuizMode, Task>? OnCurrentModeChanged;
+        public event Func<QuizDataset, Task>? OnCurrentDatasetChanged;
 
         public async Task InvokeRequestReset()
         {
@@ -28,6 +29,14 @@ namespace QuizaphFrontend.Services
             if (OnCurrentModeChanged is not null)
             {
                 await OnCurrentModeChanged.Invoke(mode);
+            }
+        }
+
+        public async Task InvokeDatasetChanged(QuizDataset dataset)
+        {
+            if (OnCurrentDatasetChanged is not null)
+            {
+                await OnCurrentDatasetChanged.Invoke(dataset);
             }
         }
     }

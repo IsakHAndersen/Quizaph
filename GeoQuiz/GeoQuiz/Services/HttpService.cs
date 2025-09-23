@@ -88,5 +88,40 @@ namespace QuizaphFrontend.Services
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<List<QuizRule>>();
         }
+
+        public async Task<List<QuizDataset>?> GetQuizDataSets(int quizId)
+        {
+            var response = await _httpClient.GetAsync($"api/quizzes/quiz/{quizId}/datasets");
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return null;
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<List<QuizDataset>>();
+        }
+
+        public async Task<QuizDataset?> GetQuizDataSet(int quizId, int datasetId)
+        {
+            var response = await _httpClient.GetAsync($"api/quizzes/quiz/{quizId}/datasets/{datasetId}");
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return null;
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<QuizDataset>();
+        }
+        public async Task<List<QuizQuestion>?> GetQuizQuestions(int quizId, int datasetId)
+        {
+            var response = await _httpClient.GetAsync($"api/quizzes/quiz/{quizId}/datasets/{datasetId}/questions");
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return null;
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<List<QuizQuestion>>();
+        }
     }
 }

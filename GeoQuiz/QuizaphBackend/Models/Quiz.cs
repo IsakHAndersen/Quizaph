@@ -26,6 +26,7 @@ namespace QuizaphBackend.Models
         public QuizMode QuizModes { get; set; } = QuizMode.None;
         public QuizType QuizType { get; set; }
         public int StarRating { get; set; }
+        public List<QuizDataset> QuizDataSets { get; set; } = new();
         public Quiz()
         {
             
@@ -42,7 +43,8 @@ namespace QuizaphBackend.Models
         int? maxPlayers,
         int timesTaken,
         int starRating,
-        QuizMode quizModes) 
+        QuizMode quizModes,
+        List<QuizDataset> dataSets) 
         {
             UserId = userId;
             Title = title;
@@ -55,6 +57,7 @@ namespace QuizaphBackend.Models
             TimesTaken = timesTaken;
             StarRating = starRating;
             QuizModes = quizModes;
+            QuizDataSets = dataSets;
         }
     }
 
