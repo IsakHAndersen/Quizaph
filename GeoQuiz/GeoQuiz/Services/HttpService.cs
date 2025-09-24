@@ -10,24 +10,15 @@ namespace QuizaphFrontend.Services
     public class HttpService
     {
         private readonly HttpClient _httpClient;
+        private readonly AuthService _authService;
 
-        public HttpService(HttpClient httpClient)
+        public HttpService(HttpClient httpClient, AuthService authService)
         {
             _httpClient = httpClient;
+            _authService = authService;
         }
 
-        public async Task LoginAsync(string returnUrl = "/")
-        {
-            var url = $"/account/login?returnUrl={Uri.EscapeDataString(returnUrl)}";
-            // For login, usually you want to redirect the browser, not fetch
-            //var absoluteUrl = new Uri(_httpClient.BaseAddress, url).ToString();
-            //_navigationManager.NavigateTo(absoluteUrl, forceLoad: true);
-        }
-
-        public async Task LogoutAsync()
-        {
-            //await _httpClient.GetAsync("/account/logout");
-        }
+        // Quiz related methods
 
         public async Task<List<Quiz>> GetAllQuizzes()
         {
@@ -122,6 +113,24 @@ namespace QuizaphFrontend.Services
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadFromJsonAsync<List<QuizQuestion>>();
+        }
+
+        public async Task<bool> CreateTriviaQuizPrompt(TriviaQuizStructurePrompt triviaQuizStructure)
+        {
+            var response = await _httpClient.PostAsJsonAsync(
+                "api/quizzes/create/trivia-quiz/prompt",
+                triviaQuizStructure
+            );
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> CreateTriviaQuizManual(TriviaQuizStructureManual triviaQuizStructure)
+        {
+            var response = await _httpClient.PostAsJsonAsync(
+                "api/quizzes/create/trivia-quiz/manual",
+                triviaQuizStructure
+            );
+            return response.IsSuccessStatusCode;
         }
     }
 }

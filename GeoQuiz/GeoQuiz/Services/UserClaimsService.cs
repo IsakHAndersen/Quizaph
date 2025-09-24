@@ -14,7 +14,6 @@ namespace QuizaphFrontend.Services
 
         public async Task<int?> GetUserIdAsync()
         {
-            return 1;
             var authState = await _authStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
 

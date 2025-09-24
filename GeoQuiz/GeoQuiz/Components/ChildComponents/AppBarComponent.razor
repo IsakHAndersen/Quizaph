@@ -1,6 +1,8 @@
-﻿@using QuizaphFrontend.Services
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using QuizaphFrontend.Services
 @inject NavigationManager navigation
 @inject UserClaimsService UserClaimsService
+@inject AuthenticationStateProvider AuthStateProvider
 
 <MudAppBar Fixed="true" Elevation="0"
            Style="background-color: #ffffff; color: #2C2C2E; height: 70px;">
@@ -23,9 +25,10 @@
                     @foreach (var tab in tabs)
                     {
                         <MudButton Variant="Variant.Text"
+                                   StartIcon="@tab.Icon"
                                    Class="@(currentRoute == tab.Route ? "nav-tab nav-tab-active" : "nav-tab")"
-                                   OnClick="@(() => Navigate(tab.Route))" style="margin-left: 8px; margin-right: 8px; border-radius: 0px; font-weight: 400;">
-
+                                   OnClick="@(() => Navigate(tab.Route))"
+                                   style="margin-left: 8px; margin-right: 8px; border-radius: 0px; font-weight: 400;">
                             @tab.Label
                         </MudButton>
                     }
@@ -47,8 +50,14 @@
                 <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" AnchorOrigin="Origin.TopLeft" TransformOrigin="Origin.TopLeft">
                     @foreach (var tab in tabs)
                     {
-                        <MudMenuItem OnClick="@(() => Navigate(tab.Route))">
+                        <MudMenuItem Icon="@tab.Icon" OnClick="@(() => Navigate(tab.Route))">
                             @tab.Label
+                        </MudMenuItem>
+                    }
+                    @if (isPrivilegedUser)
+                    {
+                        <MudMenuItem Icon="@Icons.Material.Filled.Add" OnClick="@(() => Navigate("/Create-quiz"))">
+                            Create Quiz
                         </MudMenuItem>
                     }
                 </MudMenu>
@@ -60,9 +69,9 @@
             @if (!isLoggedIn)
             {
                 <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                    <MudButton Variant="Variant.Text" OnClick="@SignIn">Login</MudButton>
+                    <MudButton Variant="Variant.Text" OnClick="@SignIn" Style="text-transform: none; font-weight: 400;">Login</MudButton>
                     <MudButton OnClick="@SignUp" Variant="Variant.Filled"
-                               Style="background-color: black; border-radius: 20px; color: #ebebeb;">
+                               Style="background-color: black; border-radius: 20px; color: #ebebeb; text-transform: none; font-weight: 400;">
                         Sign Up
                     </MudButton>
                 </MudHidden>
@@ -115,25 +124,44 @@
 </style>
 
 @code {
-    private bool isLoggedIn = true;
     private bool isDarkMode = false;
     private string currentRoute;
     private bool isPrivilegedUser;
+    bool isLoggedIn = false;
 
-    private List<(string Label, string Route)> tabs = new()
+
+
+    private List<(string Label, string Route, string Icon)> tabs = new()
     {
-        ("Discover", "/"),
-        ("Quizzes", "/Quizzes"),
-        ("About", "/About")
+        ("Home", "/", Icons.Material.Filled.Home),
+        ("Quizzes", "/Quizzes", Icons.Material.Filled.Apps),
+        ("Profile", "/Profile", Icons.Material.Filled.Person)
     };
 
     protected override async Task OnInitializedAsync()
     {
         currentRoute = navigation.Uri.Replace(navigation.BaseUri, "/");
+
+        // Check roles for privileged user
         var isAdmin = await UserClaimsService.IsInRoleAsync("Admin");
         var isMember = await UserClaimsService.IsInRoleAsync("Membership");
-
         isPrivilegedUser = isAdmin || isMember;
+
+        // Check if user is authenticated
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        isLoggedIn = user.Identity?.IsAuthenticated ?? false;
+    }
+
+    protected override void OnInitialized()
+    {
+        AuthStateProvider.AuthenticationStateChanged += async (task) =>
+        {
+            var authState = await task;
+            var user = authState.User;
+            isLoggedIn = user.Identity?.IsAuthenticated ?? false;
+            await InvokeAsync(StateHasChanged);
+        };
     }
 
     private void Navigate(string route)

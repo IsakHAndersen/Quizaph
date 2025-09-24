@@ -1,0 +1,20 @@
+﻿@page "/login-callback"
+@using Microsoft.AspNetCore.WebUtilities
+@using QuizaphFrontend.Services
+@inject NavigationManager Navigation 
+@inject AuthService AuthService
+
+@code{
+
+    protected override void OnInitialized()
+    {
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("token", out var token))
+        { 
+            AuthService.SetToken(token);
+            Navigation.NavigateTo("/");
+        }
+    }
+
+        
+}

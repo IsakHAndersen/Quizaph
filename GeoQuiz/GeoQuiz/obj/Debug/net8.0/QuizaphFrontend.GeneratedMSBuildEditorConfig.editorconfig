@@ -57,6 +57,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNdWRibGF6b3JEaWFsb2dDb21wb25lbnRzXEVuZFNjcmVlbkRpYWxvZy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/Auth.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBdXRoLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/dudis/source/repos/Quizaph/GeoQuiz/GeoQuiz/Components/Pages/CreateQuiz.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDcmVhdGVRdWl6LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 

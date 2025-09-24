@@ -12,6 +12,6 @@ namespace QuizaphBackend.Models
         public List<string> CorrectAnswers { get; set; } = new();
         public bool? IsGuessed { get; set; }
         public string? ImagePath { get; set; }
-        public int DifficultyLevel { get; set; } = 1; // 1 (easy) to 5 (hard)
+        public int? DifficultyLevel { get; set; } = 1; // 1 (easy) to 5 (hard)
     }
 }
