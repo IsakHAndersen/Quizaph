@@ -1,5 +1,0 @@
-C:\Users\dudis\source\repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\dudis\source\repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.AssemblyInfoInputs.cache
-C:\Users\dudis\source\repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.AssemblyInfo.cs
-C:\Users\dudis\source\repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.csproj.CoreCompileInputs.cache
-C:\Users\dudis\source\repos\Quizaph\GeoQuiz\CommonModels\obj\Debug\net8.0\CommonModels.sourcelink.json
