@@ -1,10 +1,7 @@
 ﻿using GeoQuizBackend.EntityFramework;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
 using Models.Enums;
 using QuizaphBackend.Models;
-using QuizaphBackend.Models.Dictionaries;
 using System.Data.Entity;
 
 namespace QuizaphBackend.Controllers

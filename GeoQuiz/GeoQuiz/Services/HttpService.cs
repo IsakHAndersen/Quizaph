@@ -115,15 +115,6 @@ namespace QuizaphFrontend.Services
             return await response.Content.ReadFromJsonAsync<List<QuizQuestion>>();
         }
 
-        public async Task<bool> CreateTriviaQuizPrompt(TriviaQuizStructurePrompt triviaQuizStructure)
-        {
-            var response = await _httpClient.PostAsJsonAsync(
-                "api/quizzes/create/trivia-quiz/prompt",
-                triviaQuizStructure
-            );
-            return response.IsSuccessStatusCode;
-        }
-
         public async Task<bool> CreateTriviaQuizManual(TriviaQuizStructureManual triviaQuizStructure)
         {
             var response = await _httpClient.PostAsJsonAsync(
@@ -131,6 +122,21 @@ namespace QuizaphFrontend.Services
                 triviaQuizStructure
             );
             return response.IsSuccessStatusCode;
+        }
+
+        public async Task<TriviaQuizStructurePrompt?> CreateTriviaQuizPrompt(TriviaQuizStructurePrompt triviaQuizStructure)
+        {
+            var response = await _httpClient.PostAsJsonAsync(
+                "api/QuizCreation/create-quiz",
+                triviaQuizStructure
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<TriviaQuizStructurePrompt>();
+            }
+
+            return null;
         }
     }
 }

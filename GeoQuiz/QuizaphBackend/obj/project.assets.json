@@ -2,6 +2,41 @@
   "version": 3,
   "targets": {
     "net8.0": {
+      "Azure.AI.OpenAI/2.3.0-beta.2": {
+        "type": "package",
+        "dependencies": {
+          "Azure.Core": "1.47.3",
+          "OpenAI": "2.3.0"
+        },
+        "compile": {
+          "lib/net8.0/Azure.AI.OpenAI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Azure.AI.OpenAI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Azure.Core/1.47.3": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
+          "System.ClientModel": "1.6.1",
+          "System.Memory.Data": "8.0.1"
+        },
+        "compile": {
+          "lib/net8.0/Azure.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Azure.Core.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "EntityFramework/6.5.1": {
         "type": "package",
         "dependencies": {
@@ -30,40 +65,29 @@
           "buildTransitive/net6.0/EntityFramework.targets": {}
         }
       },
-      "Microsoft.AspNetCore.Authentication.Google/8.0.17": {
+      "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
         "type": "package",
         "compile": {
-          "lib/net8.0/Microsoft.AspNetCore.Authentication.Google.dll": {
+          "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net8.0/Microsoft.AspNetCore.Authentication.Google.dll": {
+          "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
             "related": ".xml"
           }
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       },
-      "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.20": {
+      "Microsoft.Bcl.HashCode/1.1.1": {
         "type": "package",
-        "dependencies": {
-          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "7.1.2"
-        },
         "compile": {
-          "lib/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {
-            "related": ".xml"
-          }
+          "ref/netcoreapp2.1/Microsoft.Bcl.HashCode.dll": {}
         },
         "runtime": {
-          "lib/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {
+          "lib/netcoreapp2.1/Microsoft.Bcl.HashCode.dll": {
             "related": ".xml"
           }
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       },
       "Microsoft.EntityFrameworkCore/9.0.6": {
         "type": "package",
@@ -117,6 +141,52 @@
         },
         "runtime": {
           "lib/net8.0/Microsoft.EntityFrameworkCore.InMemory.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.Extensions.AI/9.9.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.AI.Abstractions": "9.9.0"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.Extensions.AI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.AI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.Extensions.AI.Abstractions/9.9.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/Microsoft.Extensions.AI.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.AI.Abstractions.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.Extensions.AI.OpenAI/9.9.0-preview.1.25458.4": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.AI.Abstractions": "9.9.0",
+          "OpenAI": "2.4.0"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.Extensions.AI.OpenAI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.AI.OpenAI.dll": {
             "related": ".xml"
           }
         }
@@ -286,97 +356,18 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.IdentityModel.Abstractions/8.14.0": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/Microsoft.IdentityModel.Abstractions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.IdentityModel.Abstractions.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.IdentityModel.JsonWebTokens/7.1.2": {
+      "Microsoft.Extensions.VectorData.Abstractions/9.7.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.IdentityModel.Tokens": "7.1.2"
+          "Microsoft.Extensions.AI.Abstractions": "9.5.0"
         },
         "compile": {
-          "lib/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll": {
+          "lib/net8.0/Microsoft.Extensions.VectorData.Abstractions.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.IdentityModel.Logging/8.14.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.IdentityModel.Abstractions": "8.14.0"
-        },
-        "compile": {
-          "lib/net8.0/Microsoft.IdentityModel.Logging.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.IdentityModel.Logging.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.IdentityModel.Protocols/7.1.2": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.IdentityModel.Logging": "7.1.2",
-          "Microsoft.IdentityModel.Tokens": "7.1.2"
-        },
-        "compile": {
-          "lib/net8.0/Microsoft.IdentityModel.Protocols.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.IdentityModel.Protocols.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.IdentityModel.Protocols.OpenIdConnect/7.1.2": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.IdentityModel.Protocols": "7.1.2",
-          "System.IdentityModel.Tokens.Jwt": "7.1.2"
-        },
-        "compile": {
-          "lib/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.IdentityModel.Tokens/8.14.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.IdentityModel.Logging": "8.14.0"
-        },
-        "compile": {
-          "lib/net8.0/Microsoft.IdentityModel.Tokens.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.IdentityModel.Tokens.dll": {
+          "lib/net8.0/Microsoft.Extensions.VectorData.Abstractions.dll": {
             "related": ".xml"
           }
         }
@@ -391,6 +382,94 @@
         "runtime": {
           "lib/netstandard2.0/Microsoft.OpenApi.dll": {
             "related": ".pdb;.xml"
+          }
+        }
+      },
+      "Microsoft.SemanticKernel/1.65.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.65.0",
+          "Microsoft.SemanticKernel.Core": "1.65.0"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.SemanticKernel.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.SemanticKernel.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.SemanticKernel.Abstractions/1.65.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Bcl.HashCode": "1.1.1",
+          "Microsoft.Extensions.AI": "9.9.0",
+          "Microsoft.Extensions.VectorData.Abstractions": "9.7.0"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.SemanticKernel.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.SemanticKernel.Abstractions.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.65.0": {
+        "type": "package",
+        "dependencies": {
+          "Azure.AI.OpenAI": "[2.3.0-beta.2]",
+          "Microsoft.SemanticKernel.Connectors.OpenAI": "1.65.0",
+          "Microsoft.SemanticKernel.Core": "1.65.0"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.SemanticKernel.Connectors.OpenAI/1.65.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.AI.OpenAI": "9.9.0-preview.1.25458.4",
+          "Microsoft.SemanticKernel.Core": "1.65.0",
+          "OpenAI": "[2.4.0]"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.SemanticKernel.Connectors.OpenAI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.SemanticKernel.Connectors.OpenAI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.SemanticKernel.Core/1.65.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.SemanticKernel.Abstractions": "1.65.0",
+          "System.Numerics.Tensors": "9.0.8"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.SemanticKernel.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.SemanticKernel.Core.dll": {
+            "related": ".xml"
           }
         }
       },
@@ -413,6 +492,22 @@
           "runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
             "assetType": "runtime",
             "rid": "win"
+          }
+        }
+      },
+      "OpenAI/2.4.0": {
+        "type": "package",
+        "dependencies": {
+          "System.ClientModel": "1.6.1"
+        },
+        "compile": {
+          "lib/net8.0/OpenAI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/OpenAI.dll": {
+            "related": ".xml"
           }
         }
       },
@@ -513,6 +608,22 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "System.ClientModel/1.6.1": {
+        "type": "package",
+        "dependencies": {
+          "System.Memory.Data": "8.0.1"
+        },
+        "compile": {
+          "lib/net8.0/System.ClientModel.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/System.ClientModel.dll": {
+            "related": ".xml"
+          }
+        }
       },
       "System.CodeDom/6.0.0": {
         "type": "package",
@@ -621,21 +732,36 @@
           }
         }
       },
-      "System.IdentityModel.Tokens.Jwt/7.1.2": {
+      "System.Memory.Data/8.0.1": {
         "type": "package",
-        "dependencies": {
-          "Microsoft.IdentityModel.JsonWebTokens": "7.1.2",
-          "Microsoft.IdentityModel.Tokens": "7.1.2"
-        },
         "compile": {
-          "lib/net8.0/System.IdentityModel.Tokens.Jwt.dll": {
+          "lib/net8.0/System.Memory.Data.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net8.0/System.IdentityModel.Tokens.Jwt.dll": {
+          "lib/net8.0/System.Memory.Data.dll": {
             "related": ".xml"
           }
+        },
+        "build": {
+          "buildTransitive/net6.0/_._": {}
+        }
+      },
+      "System.Numerics.Tensors/9.0.8": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/System.Numerics.Tensors.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/System.Numerics.Tensors.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net8.0/_._": {}
         }
       },
       "System.Security.Cryptography.ProtectedData/6.0.0": {
@@ -704,6 +830,46 @@
     }
   },
   "libraries": {
+    "Azure.AI.OpenAI/2.3.0-beta.2": {
+      "sha512": "0E4l6JY/yrEGcWoTkp531aEp0gLQ7QGSgrZLMt83xcPhK1BOEfN3hK+puewAqQ++gTKH/iKKEEnmPSt2mXaZwA==",
+      "type": "package",
+      "path": "azure.ai.openai/2.3.0-beta.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "CHANGELOG.md",
+        "README.md",
+        "azure.ai.openai.2.3.0-beta.2.nupkg.sha512",
+        "azure.ai.openai.nuspec",
+        "azureicon.png",
+        "lib/net8.0/Azure.AI.OpenAI.dll",
+        "lib/net8.0/Azure.AI.OpenAI.xml",
+        "lib/netstandard2.0/Azure.AI.OpenAI.dll",
+        "lib/netstandard2.0/Azure.AI.OpenAI.xml"
+      ]
+    },
+    "Azure.Core/1.47.3": {
+      "sha512": "u/uCNtUWT+Q/Is7/PAMy3KP9kq5vY5klRnyAvRxO/kEa5OnV3/X5lHlCajNANC7vmej6jAqceqLBJNO/VyCKzg==",
+      "type": "package",
+      "path": "azure.core/1.47.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "CHANGELOG.md",
+        "README.md",
+        "azure.core.1.47.3.nupkg.sha512",
+        "azure.core.nuspec",
+        "azureicon.png",
+        "lib/net462/Azure.Core.dll",
+        "lib/net462/Azure.Core.xml",
+        "lib/net472/Azure.Core.dll",
+        "lib/net472/Azure.Core.xml",
+        "lib/net8.0/Azure.Core.dll",
+        "lib/net8.0/Azure.Core.xml",
+        "lib/netstandard2.0/Azure.Core.dll",
+        "lib/netstandard2.0/Azure.Core.xml"
+      ]
+    },
     "EntityFramework/6.5.1": {
       "sha512": "sQRP2lWg1i3aAGWqdliAM8zrGx7LHMUk+9/MoxUjwfTZYGMXvZ2JYZTlyTm1PqDxvn3c9E3U76TWDON7Y5+CVA==",
       "type": "package",
@@ -766,34 +932,56 @@
         "tools/net6.0/any/ef6.runtimeconfig.json"
       ]
     },
-    "Microsoft.AspNetCore.Authentication.Google/8.0.17": {
-      "sha512": "wNF9d1s//OzqDmERyxLFnlos6mDIGVNqS1Iaxhxh9/XHKPUBmraGCVhJIn+v2qGdd5pi98XgtFCXszvBeLMZWQ==",
+    "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
+      "sha512": "3WA9q9yVqJp222P3x1wYIGDAkpjAku0TMUaaQV22g6L67AI0LdOIrVS7Ht2vJfLHGSPVuqN94vIr15qn+HEkHw==",
       "type": "package",
-      "path": "microsoft.aspnetcore.authentication.google/8.0.17",
+      "path": "microsoft.bcl.asyncinterfaces/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
+        "LICENSE.TXT",
+        "PACKAGE.md",
         "THIRD-PARTY-NOTICES.TXT",
-        "lib/net8.0/Microsoft.AspNetCore.Authentication.Google.dll",
-        "lib/net8.0/Microsoft.AspNetCore.Authentication.Google.xml",
-        "microsoft.aspnetcore.authentication.google.8.0.17.nupkg.sha512",
-        "microsoft.aspnetcore.authentication.google.nuspec"
+        "buildTransitive/net461/Microsoft.Bcl.AsyncInterfaces.targets",
+        "buildTransitive/net462/_._",
+        "lib/net462/Microsoft.Bcl.AsyncInterfaces.dll",
+        "lib/net462/Microsoft.Bcl.AsyncInterfaces.xml",
+        "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+        "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.xml",
+        "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
+        "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.xml",
+        "microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
+        "microsoft.bcl.asyncinterfaces.nuspec",
+        "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.20": {
-      "sha512": "ojfy39qaCtNOrXOut4Jreqj5WYSRJMqvQif46KzMtaJiZcByAbZtO+QDM9JQvQAzPtWnzWSCz5DcZJ/82IeOFQ==",
+    "Microsoft.Bcl.HashCode/1.1.1": {
+      "sha512": "MalY0Y/uM/LjXtHfX/26l2VtN4LDNZ2OE3aumNOHDLsT4fNYy2hiHXI4CXCqKpNUNm7iJ2brrc4J89UdaL56FA==",
       "type": "package",
-      "path": "microsoft.aspnetcore.authentication.jwtbearer/8.0.20",
+      "path": "microsoft.bcl.hashcode/1.1.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
+        "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
-        "lib/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll",
-        "lib/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.xml",
-        "microsoft.aspnetcore.authentication.jwtbearer.8.0.20.nupkg.sha512",
-        "microsoft.aspnetcore.authentication.jwtbearer.nuspec"
+        "lib/net461/Microsoft.Bcl.HashCode.dll",
+        "lib/net461/Microsoft.Bcl.HashCode.xml",
+        "lib/netcoreapp2.1/Microsoft.Bcl.HashCode.dll",
+        "lib/netcoreapp2.1/Microsoft.Bcl.HashCode.xml",
+        "lib/netstandard2.0/Microsoft.Bcl.HashCode.dll",
+        "lib/netstandard2.0/Microsoft.Bcl.HashCode.xml",
+        "lib/netstandard2.1/Microsoft.Bcl.HashCode.dll",
+        "lib/netstandard2.1/Microsoft.Bcl.HashCode.xml",
+        "microsoft.bcl.hashcode.1.1.1.nupkg.sha512",
+        "microsoft.bcl.hashcode.nuspec",
+        "ref/net461/Microsoft.Bcl.HashCode.dll",
+        "ref/netcoreapp2.1/Microsoft.Bcl.HashCode.dll",
+        "ref/netstandard2.0/Microsoft.Bcl.HashCode.dll",
+        "ref/netstandard2.1/Microsoft.Bcl.HashCode.dll",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
     "Microsoft.EntityFrameworkCore/9.0.6": {
@@ -854,6 +1042,69 @@
         "lib/net8.0/Microsoft.EntityFrameworkCore.InMemory.xml",
         "microsoft.entityframeworkcore.inmemory.9.0.6.nupkg.sha512",
         "microsoft.entityframeworkcore.inmemory.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.AI/9.9.0": {
+      "sha512": "McRW8unhIw3kJ6F1Yd09L+YwhPUn+EO7LeM4fC9MbDZDFfVkd0ngUkq649nGsnmM0alc7pBGpj+jMKAxFomD0w==",
+      "type": "package",
+      "path": "microsoft.extensions.ai/9.9.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "README.md",
+        "lib/net462/Microsoft.Extensions.AI.dll",
+        "lib/net462/Microsoft.Extensions.AI.xml",
+        "lib/net8.0/Microsoft.Extensions.AI.dll",
+        "lib/net8.0/Microsoft.Extensions.AI.xml",
+        "lib/net9.0/Microsoft.Extensions.AI.dll",
+        "lib/net9.0/Microsoft.Extensions.AI.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.AI.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.AI.xml",
+        "microsoft.extensions.ai.9.9.0.nupkg.sha512",
+        "microsoft.extensions.ai.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.AI.Abstractions/9.9.0": {
+      "sha512": "wzE8iwSl/I+oHf4hgMhwTL+6kOYqFaAGIUt1gp9SrYUgTs48KrDbgJMtL4jbuYt6gFLXXOMcVSiGNqHEdyLoBg==",
+      "type": "package",
+      "path": "microsoft.extensions.ai.abstractions/9.9.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "README.md",
+        "lib/net462/Microsoft.Extensions.AI.Abstractions.dll",
+        "lib/net462/Microsoft.Extensions.AI.Abstractions.xml",
+        "lib/net8.0/Microsoft.Extensions.AI.Abstractions.dll",
+        "lib/net8.0/Microsoft.Extensions.AI.Abstractions.xml",
+        "lib/net9.0/Microsoft.Extensions.AI.Abstractions.dll",
+        "lib/net9.0/Microsoft.Extensions.AI.Abstractions.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.AI.Abstractions.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.AI.Abstractions.xml",
+        "microsoft.extensions.ai.abstractions.9.9.0.nupkg.sha512",
+        "microsoft.extensions.ai.abstractions.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.AI.OpenAI/9.9.0-preview.1.25458.4": {
+      "sha512": "RzcYc2TQbr5nMslrLiQvtVwrQrHmppZVnKGCTExynnon7/hGLSxGxGM2Npq5fIjwn4mjIFwExH3+zmJ4noTlWw==",
+      "type": "package",
+      "path": "microsoft.extensions.ai.openai/9.9.0-preview.1.25458.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "README.md",
+        "lib/net462/Microsoft.Extensions.AI.OpenAI.dll",
+        "lib/net462/Microsoft.Extensions.AI.OpenAI.xml",
+        "lib/net8.0/Microsoft.Extensions.AI.OpenAI.dll",
+        "lib/net8.0/Microsoft.Extensions.AI.OpenAI.xml",
+        "lib/net9.0/Microsoft.Extensions.AI.OpenAI.dll",
+        "lib/net9.0/Microsoft.Extensions.AI.OpenAI.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.AI.OpenAI.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.AI.OpenAI.xml",
+        "microsoft.extensions.ai.openai.9.9.0-preview.1.25458.4.nupkg.sha512",
+        "microsoft.extensions.ai.openai.nuspec"
       ]
     },
     "Microsoft.Extensions.ApiDescription.Server/6.0.5": {
@@ -1377,145 +1628,25 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.IdentityModel.Abstractions/8.14.0": {
-      "sha512": "iwbCpSjD3ehfTwBhtSNEtKPK0ICun6ov7Ibx6ISNA9bfwIyzI2Siwyi9eJFCJBwxowK9xcA1mj+jBWiigeqgcQ==",
+    "Microsoft.Extensions.VectorData.Abstractions/9.7.0": {
+      "sha512": "Vth/omSCX2vR0JabzSRU/hdPhr0CvUVZlaS2lJPWHrEwvak8ntrQLDtLMtMiWKSvviGBe/WmjUW8gA3qqn9tjw==",
       "type": "package",
-      "path": "microsoft.identitymodel.abstractions/8.14.0",
+      "path": "microsoft.extensions.vectordata.abstractions/9.7.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "README.md",
-        "lib/net462/Microsoft.IdentityModel.Abstractions.dll",
-        "lib/net462/Microsoft.IdentityModel.Abstractions.xml",
-        "lib/net472/Microsoft.IdentityModel.Abstractions.dll",
-        "lib/net472/Microsoft.IdentityModel.Abstractions.xml",
-        "lib/net6.0/Microsoft.IdentityModel.Abstractions.dll",
-        "lib/net6.0/Microsoft.IdentityModel.Abstractions.xml",
-        "lib/net8.0/Microsoft.IdentityModel.Abstractions.dll",
-        "lib/net8.0/Microsoft.IdentityModel.Abstractions.xml",
-        "lib/net9.0/Microsoft.IdentityModel.Abstractions.dll",
-        "lib/net9.0/Microsoft.IdentityModel.Abstractions.xml",
-        "lib/netstandard2.0/Microsoft.IdentityModel.Abstractions.dll",
-        "lib/netstandard2.0/Microsoft.IdentityModel.Abstractions.xml",
-        "microsoft.identitymodel.abstractions.8.14.0.nupkg.sha512",
-        "microsoft.identitymodel.abstractions.nuspec"
-      ]
-    },
-    "Microsoft.IdentityModel.JsonWebTokens/7.1.2": {
-      "sha512": "cloLGeZolXbCJhJBc5OC05uhrdhdPL6MWHuVUnkkUvPDeK7HkwThBaLZ1XjBQVk9YhxXE2OvHXnKi0PLleXxDg==",
-      "type": "package",
-      "path": "microsoft.identitymodel.jsonwebtokens/7.1.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net461/Microsoft.IdentityModel.JsonWebTokens.dll",
-        "lib/net461/Microsoft.IdentityModel.JsonWebTokens.xml",
-        "lib/net462/Microsoft.IdentityModel.JsonWebTokens.dll",
-        "lib/net462/Microsoft.IdentityModel.JsonWebTokens.xml",
-        "lib/net472/Microsoft.IdentityModel.JsonWebTokens.dll",
-        "lib/net472/Microsoft.IdentityModel.JsonWebTokens.xml",
-        "lib/net6.0/Microsoft.IdentityModel.JsonWebTokens.dll",
-        "lib/net6.0/Microsoft.IdentityModel.JsonWebTokens.xml",
-        "lib/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll",
-        "lib/net8.0/Microsoft.IdentityModel.JsonWebTokens.xml",
-        "lib/netstandard2.0/Microsoft.IdentityModel.JsonWebTokens.dll",
-        "lib/netstandard2.0/Microsoft.IdentityModel.JsonWebTokens.xml",
-        "microsoft.identitymodel.jsonwebtokens.7.1.2.nupkg.sha512",
-        "microsoft.identitymodel.jsonwebtokens.nuspec"
-      ]
-    },
-    "Microsoft.IdentityModel.Logging/8.14.0": {
-      "sha512": "eqqnemdW38CKZEHS6diA50BV94QICozDZEvSrsvN3SJXUFwVB9gy+/oz76gldP7nZliA16IglXjXTCTdmU/Ejg==",
-      "type": "package",
-      "path": "microsoft.identitymodel.logging/8.14.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "lib/net462/Microsoft.IdentityModel.Logging.dll",
-        "lib/net462/Microsoft.IdentityModel.Logging.xml",
-        "lib/net472/Microsoft.IdentityModel.Logging.dll",
-        "lib/net472/Microsoft.IdentityModel.Logging.xml",
-        "lib/net6.0/Microsoft.IdentityModel.Logging.dll",
-        "lib/net6.0/Microsoft.IdentityModel.Logging.xml",
-        "lib/net8.0/Microsoft.IdentityModel.Logging.dll",
-        "lib/net8.0/Microsoft.IdentityModel.Logging.xml",
-        "lib/net9.0/Microsoft.IdentityModel.Logging.dll",
-        "lib/net9.0/Microsoft.IdentityModel.Logging.xml",
-        "lib/netstandard2.0/Microsoft.IdentityModel.Logging.dll",
-        "lib/netstandard2.0/Microsoft.IdentityModel.Logging.xml",
-        "microsoft.identitymodel.logging.8.14.0.nupkg.sha512",
-        "microsoft.identitymodel.logging.nuspec"
-      ]
-    },
-    "Microsoft.IdentityModel.Protocols/7.1.2": {
-      "sha512": "SydLwMRFx6EHPWJ+N6+MVaoArN1Htt92b935O3RUWPY1yUF63zEjvd3lBu79eWdZUwedP8TN2I5V9T3nackvIQ==",
-      "type": "package",
-      "path": "microsoft.identitymodel.protocols/7.1.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net461/Microsoft.IdentityModel.Protocols.dll",
-        "lib/net461/Microsoft.IdentityModel.Protocols.xml",
-        "lib/net462/Microsoft.IdentityModel.Protocols.dll",
-        "lib/net462/Microsoft.IdentityModel.Protocols.xml",
-        "lib/net472/Microsoft.IdentityModel.Protocols.dll",
-        "lib/net472/Microsoft.IdentityModel.Protocols.xml",
-        "lib/net6.0/Microsoft.IdentityModel.Protocols.dll",
-        "lib/net6.0/Microsoft.IdentityModel.Protocols.xml",
-        "lib/net8.0/Microsoft.IdentityModel.Protocols.dll",
-        "lib/net8.0/Microsoft.IdentityModel.Protocols.xml",
-        "lib/netstandard2.0/Microsoft.IdentityModel.Protocols.dll",
-        "lib/netstandard2.0/Microsoft.IdentityModel.Protocols.xml",
-        "microsoft.identitymodel.protocols.7.1.2.nupkg.sha512",
-        "microsoft.identitymodel.protocols.nuspec"
-      ]
-    },
-    "Microsoft.IdentityModel.Protocols.OpenIdConnect/7.1.2": {
-      "sha512": "6lHQoLXhnMQ42mGrfDkzbIOR3rzKM1W1tgTeMPLgLCqwwGw0d96xFi/UiX/fYsu7d6cD5MJiL3+4HuI8VU+sVQ==",
-      "type": "package",
-      "path": "microsoft.identitymodel.protocols.openidconnect/7.1.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net461/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll",
-        "lib/net461/Microsoft.IdentityModel.Protocols.OpenIdConnect.xml",
-        "lib/net462/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll",
-        "lib/net462/Microsoft.IdentityModel.Protocols.OpenIdConnect.xml",
-        "lib/net472/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll",
-        "lib/net472/Microsoft.IdentityModel.Protocols.OpenIdConnect.xml",
-        "lib/net6.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll",
-        "lib/net6.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.xml",
-        "lib/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll",
-        "lib/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.xml",
-        "lib/netstandard2.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll",
-        "lib/netstandard2.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.xml",
-        "microsoft.identitymodel.protocols.openidconnect.7.1.2.nupkg.sha512",
-        "microsoft.identitymodel.protocols.openidconnect.nuspec"
-      ]
-    },
-    "Microsoft.IdentityModel.Tokens/8.14.0": {
-      "sha512": "lKIZiBiGd36k02TCdMHp1KlNWisyIvQxcYJvIkz7P4gSQ9zi8dgh6S5Grj8NNG7HWYIPfQymGyoZ6JB5d1Lo1g==",
-      "type": "package",
-      "path": "microsoft.identitymodel.tokens/8.14.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "lib/net462/Microsoft.IdentityModel.Tokens.dll",
-        "lib/net462/Microsoft.IdentityModel.Tokens.xml",
-        "lib/net472/Microsoft.IdentityModel.Tokens.dll",
-        "lib/net472/Microsoft.IdentityModel.Tokens.xml",
-        "lib/net6.0/Microsoft.IdentityModel.Tokens.dll",
-        "lib/net6.0/Microsoft.IdentityModel.Tokens.xml",
-        "lib/net8.0/Microsoft.IdentityModel.Tokens.dll",
-        "lib/net8.0/Microsoft.IdentityModel.Tokens.xml",
-        "lib/net9.0/Microsoft.IdentityModel.Tokens.dll",
-        "lib/net9.0/Microsoft.IdentityModel.Tokens.xml",
-        "lib/netstandard2.0/Microsoft.IdentityModel.Tokens.dll",
-        "lib/netstandard2.0/Microsoft.IdentityModel.Tokens.xml",
-        "microsoft.identitymodel.tokens.8.14.0.nupkg.sha512",
-        "microsoft.identitymodel.tokens.nuspec"
+        "NUGET.md",
+        "PACKAGE.md",
+        "icon.png",
+        "lib/net462/Microsoft.Extensions.VectorData.Abstractions.dll",
+        "lib/net462/Microsoft.Extensions.VectorData.Abstractions.xml",
+        "lib/net8.0/Microsoft.Extensions.VectorData.Abstractions.dll",
+        "lib/net8.0/Microsoft.Extensions.VectorData.Abstractions.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.VectorData.Abstractions.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.VectorData.Abstractions.xml",
+        "microsoft.extensions.vectordata.abstractions.9.7.0.nupkg.sha512",
+        "microsoft.extensions.vectordata.abstractions.nuspec",
+        "neticon.png"
       ]
     },
     "Microsoft.OpenApi/1.6.14": {
@@ -1531,6 +1662,91 @@
         "lib/netstandard2.0/Microsoft.OpenApi.xml",
         "microsoft.openapi.1.6.14.nupkg.sha512",
         "microsoft.openapi.nuspec"
+      ]
+    },
+    "Microsoft.SemanticKernel/1.65.0": {
+      "sha512": "G0pnrlZjmcx9napJ3jLbDxE6NWDhkmqibQSokYlzmzqHMTgsMloyOn/452HtSiZgX58Byf9RV8mzQ4Wa3jUK6g==",
+      "type": "package",
+      "path": "microsoft.semantickernel/1.65.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NUGET.md",
+        "icon.png",
+        "lib/net8.0/Microsoft.SemanticKernel.dll",
+        "lib/net8.0/Microsoft.SemanticKernel.xml",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.dll",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.xml",
+        "microsoft.semantickernel.1.65.0.nupkg.sha512",
+        "microsoft.semantickernel.nuspec"
+      ]
+    },
+    "Microsoft.SemanticKernel.Abstractions/1.65.0": {
+      "sha512": "WnwNCY83+k6ohnZuF/vdBeME0/QF2L+HP8NVqSnGjREYRj2l9e545rf6qTUZqJ+sLizHWAz3GnA5a4IYl2cpWw==",
+      "type": "package",
+      "path": "microsoft.semantickernel.abstractions/1.65.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NUGET.md",
+        "icon.png",
+        "lib/net8.0/Microsoft.SemanticKernel.Abstractions.dll",
+        "lib/net8.0/Microsoft.SemanticKernel.Abstractions.xml",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Abstractions.dll",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Abstractions.xml",
+        "microsoft.semantickernel.abstractions.1.65.0.nupkg.sha512",
+        "microsoft.semantickernel.abstractions.nuspec"
+      ]
+    },
+    "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.65.0": {
+      "sha512": "JUKoACsBmaz49I+VYkeQIhyry4+XBK8VQRiocjfkLracv0CWheUOmPxHVkaMvZ2muVZMm0p4LluJXr0uykUt3A==",
+      "type": "package",
+      "path": "microsoft.semantickernel.connectors.azureopenai/1.65.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NUGET.md",
+        "icon.png",
+        "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll",
+        "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.xml",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.xml",
+        "microsoft.semantickernel.connectors.azureopenai.1.65.0.nupkg.sha512",
+        "microsoft.semantickernel.connectors.azureopenai.nuspec"
+      ]
+    },
+    "Microsoft.SemanticKernel.Connectors.OpenAI/1.65.0": {
+      "sha512": "EX8kA14tNNKMRzcDuyC9cUr/VG9alA2UQTps0re/fr+zGZAs2vmwcVK0Sl7DObET44F2HW81SYtDlTA5BkumZA==",
+      "type": "package",
+      "path": "microsoft.semantickernel.connectors.openai/1.65.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NUGET.md",
+        "icon.png",
+        "lib/net8.0/Microsoft.SemanticKernel.Connectors.OpenAI.dll",
+        "lib/net8.0/Microsoft.SemanticKernel.Connectors.OpenAI.xml",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.OpenAI.dll",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.OpenAI.xml",
+        "microsoft.semantickernel.connectors.openai.1.65.0.nupkg.sha512",
+        "microsoft.semantickernel.connectors.openai.nuspec"
+      ]
+    },
+    "Microsoft.SemanticKernel.Core/1.65.0": {
+      "sha512": "f5Nb2yEaGXA7vGs7byIbp9RLhT3eCFYbk4QYq1h10DYkVwUPVFDDoBSyvkv+Q2o+qUWceRoj82yIeitIby5RjA==",
+      "type": "package",
+      "path": "microsoft.semantickernel.core/1.65.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NUGET.md",
+        "icon.png",
+        "lib/net8.0/Microsoft.SemanticKernel.Core.dll",
+        "lib/net8.0/Microsoft.SemanticKernel.Core.xml",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Core.dll",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Core.xml",
+        "microsoft.semantickernel.core.1.65.0.nupkg.sha512",
+        "microsoft.semantickernel.core.nuspec"
       ]
     },
     "Microsoft.Win32.SystemEvents/6.0.0": {
@@ -1560,6 +1776,24 @@
         "runtimes/win/lib/netcoreapp3.1/Microsoft.Win32.SystemEvents.dll",
         "runtimes/win/lib/netcoreapp3.1/Microsoft.Win32.SystemEvents.xml",
         "useSharedDesignerContext.txt"
+      ]
+    },
+    "OpenAI/2.4.0": {
+      "sha512": "hHPAIR84Q1w52YcFSbp/yT8+BuPn1w16fY/pX22kyi8SKcVSfcKCQrBC5Fi5aH7WY2uWDB3xQOF9sI0lBB/a3g==",
+      "type": "package",
+      "path": "openai/2.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "CHANGELOG.md",
+        "OpenAI.png",
+        "README.md",
+        "lib/net8.0/OpenAI.dll",
+        "lib/net8.0/OpenAI.xml",
+        "lib/netstandard2.0/OpenAI.dll",
+        "lib/netstandard2.0/OpenAI.xml",
+        "openai.2.4.0.nupkg.sha512",
+        "openai.nuspec"
       ]
     },
     "runtime.native.System.Data.SqlClient.sni/4.7.0": {
@@ -1725,6 +1959,25 @@
         "package-readme.md",
         "swashbuckle.aspnetcore.swaggerui.6.6.2.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggerui.nuspec"
+      ]
+    },
+    "System.ClientModel/1.6.1": {
+      "sha512": "xcHHhDqB5MnOOY8yIn64Vzp6gtBEs6k5J1hluG04CrShSvQNXOx4PSDs7wJiXLDidlY/FZJmxJdKTKskyJwjvw==",
+      "type": "package",
+      "path": "system.clientmodel/1.6.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "CHANGELOG.md",
+        "DotNetPackageIcon.png",
+        "README.md",
+        "analyzers/dotnet/cs/System.ClientModel.SourceGeneration.dll",
+        "lib/net8.0/System.ClientModel.dll",
+        "lib/net8.0/System.ClientModel.xml",
+        "lib/netstandard2.0/System.ClientModel.dll",
+        "lib/netstandard2.0/System.ClientModel.xml",
+        "system.clientmodel.1.6.1.nupkg.sha512",
+        "system.clientmodel.nuspec"
       ]
     },
     "System.CodeDom/6.0.0": {
@@ -1927,27 +2180,62 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.IdentityModel.Tokens.Jwt/7.1.2": {
-      "sha512": "Thhbe1peAmtSBFaV/ohtykXiZSOkx59Da44hvtWfIMFofDA3M3LaVyjstACf2rKGn4dEDR2cUpRAZ0Xs/zB+7Q==",
+    "System.Memory.Data/8.0.1": {
+      "sha512": "BVYuec3jV23EMRDeR7Dr1/qhx7369dZzJ9IWy2xylvb4YfXsrUxspWc4UWYid/tj4zZK58uGZqn2WQiaDMhmAg==",
       "type": "package",
-      "path": "system.identitymodel.tokens.jwt/7.1.2",
+      "path": "system.memory.data/8.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/net461/System.IdentityModel.Tokens.Jwt.dll",
-        "lib/net461/System.IdentityModel.Tokens.Jwt.xml",
-        "lib/net462/System.IdentityModel.Tokens.Jwt.dll",
-        "lib/net462/System.IdentityModel.Tokens.Jwt.xml",
-        "lib/net472/System.IdentityModel.Tokens.Jwt.dll",
-        "lib/net472/System.IdentityModel.Tokens.Jwt.xml",
-        "lib/net6.0/System.IdentityModel.Tokens.Jwt.dll",
-        "lib/net6.0/System.IdentityModel.Tokens.Jwt.xml",
-        "lib/net8.0/System.IdentityModel.Tokens.Jwt.dll",
-        "lib/net8.0/System.IdentityModel.Tokens.Jwt.xml",
-        "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.dll",
-        "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.xml",
-        "system.identitymodel.tokens.jwt.7.1.2.nupkg.sha512",
-        "system.identitymodel.tokens.jwt.nuspec"
+        "Icon.png",
+        "LICENSE.TXT",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/System.Memory.Data.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net6.0/_._",
+        "buildTransitive/netcoreapp2.0/System.Memory.Data.targets",
+        "lib/net462/System.Memory.Data.dll",
+        "lib/net462/System.Memory.Data.xml",
+        "lib/net6.0/System.Memory.Data.dll",
+        "lib/net6.0/System.Memory.Data.xml",
+        "lib/net7.0/System.Memory.Data.dll",
+        "lib/net7.0/System.Memory.Data.xml",
+        "lib/net8.0/System.Memory.Data.dll",
+        "lib/net8.0/System.Memory.Data.xml",
+        "lib/netstandard2.0/System.Memory.Data.dll",
+        "lib/netstandard2.0/System.Memory.Data.xml",
+        "system.memory.data.8.0.1.nupkg.sha512",
+        "system.memory.data.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
+    "System.Numerics.Tensors/9.0.8": {
+      "sha512": "vnT3XBwytt8pYM25+lEHzR19F4GTkA9YA1E6wLOb55fiyY0wIaTVhlLrWAurvXcsgUdtNn0Ihw4qwWlsK6Wljg==",
+      "type": "package",
+      "path": "system.numerics.tensors/9.0.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/System.Numerics.Tensors.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net8.0/_._",
+        "buildTransitive/netcoreapp2.0/System.Numerics.Tensors.targets",
+        "lib/net462/System.Numerics.Tensors.dll",
+        "lib/net462/System.Numerics.Tensors.xml",
+        "lib/net8.0/System.Numerics.Tensors.dll",
+        "lib/net8.0/System.Numerics.Tensors.xml",
+        "lib/net9.0/System.Numerics.Tensors.dll",
+        "lib/net9.0/System.Numerics.Tensors.xml",
+        "lib/netstandard2.0/System.Numerics.Tensors.dll",
+        "lib/netstandard2.0/System.Numerics.Tensors.xml",
+        "system.numerics.tensors.9.0.8.nupkg.sha512",
+        "system.numerics.tensors.nuspec",
+        "useSharedDesignerContext.txt"
       ]
     },
     "System.Security.Cryptography.ProtectedData/6.0.0": {
@@ -2041,10 +2329,8 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "EntityFramework >= 6.5.1",
-      "Microsoft.AspNetCore.Authentication.Google >= 8.0.17",
-      "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.20",
       "Microsoft.EntityFrameworkCore.InMemory >= 9.0.6",
-      "Microsoft.IdentityModel.Tokens >= 8.14.0",
+      "Microsoft.SemanticKernel >= 1.65.0",
       "Swashbuckle.AspNetCore >= 6.6.2"
     ]
   },
@@ -2102,21 +2388,13 @@
             "target": "Package",
             "version": "[6.5.1, )"
           },
-          "Microsoft.AspNetCore.Authentication.Google": {
-            "target": "Package",
-            "version": "[8.0.17, )"
-          },
-          "Microsoft.AspNetCore.Authentication.JwtBearer": {
-            "target": "Package",
-            "version": "[8.0.20, )"
-          },
           "Microsoft.EntityFrameworkCore.InMemory": {
             "target": "Package",
             "version": "[9.0.6, )"
           },
-          "Microsoft.IdentityModel.Tokens": {
+          "Microsoft.SemanticKernel": {
             "target": "Package",
-            "version": "[8.14.0, )"
+            "version": "[1.65.0, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",

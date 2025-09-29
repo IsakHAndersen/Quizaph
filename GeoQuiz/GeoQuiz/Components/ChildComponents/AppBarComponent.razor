@@ -64,6 +64,7 @@
             </MudHidden>
         </div>
 
+
         <!-- Right side -->
         <div class="d-flex align-center">
             @if (!isLoggedIn)
@@ -82,11 +83,28 @@
                          EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
                          StartIcon="@Icons.Material.Filled.Person"
                          Color="Color.Inherit" Dense Class="profile-menu">
-                    <MudMenuItem Icon="@Icons.Material.Filled.Person" Label="Edit profile" />
+                    <MudMenuItem Icon="@Icons.Material.Filled.Person" Label="Profile Stats" />
                     <MudMenuItem Icon="@Icons.Material.Filled.Logout" Label="Logout" OnClick="Logout" />
-                    <MudMenuItem Icon="@((isDarkMode) ? Icons.Material.Filled.WbSunny : Icons.Material.Filled.NightsStay)"
+                    <MudMenuItem Icon="@((isDarkMode) ? Icons.Material.Filled.WbSunny : Icons.Material.Filled.NightsStay)" IconColor="@((isDarkMode) ? Color.Warning : Color.Dark)" )"
                                  Label="Dark Mode" OnClick="ToggleDarkMode" />
                 </MudMenu>
+            }
+            @if (isLoggedIn)
+            {
+                <AuthorizeView>
+                    <Authorized>
+                        <div class="d-flex align-center ml-4">
+                            <MudText Style="font-size: 14px; font-weight: 500; margin-right: 12px;">
+                                @context.User.Identity.Name
+                            </MudText>
+                            <MudAvatar 
+                                       Size="Size.Medium"
+                                       Class="elevation-1">
+                                <MudImage Src="@context.User.Claims.Where(p => p.Type == "picture").FirstOrDefault()?.Value"></MudImage>
+                            </MudAvatar>
+                        </div>
+                    </Authorized>
+                </AuthorizeView>
             }
         </div>
     </MudContainer>
@@ -135,7 +153,6 @@
     {
         ("Home", "/", Icons.Material.Filled.Home),
         ("Quizzes", "/Quizzes", Icons.Material.Filled.Apps),
-        ("Profile", "/Profile", Icons.Material.Filled.Person)
     };
 
     protected override async Task OnInitializedAsync()

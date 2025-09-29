@@ -1,1 +1,270 @@
-[]
+[
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizCreationController",
+    "Method": "CreateQuiz",
+    "RelativePath": "api/QuizCreation/create-quiz",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "QuizaphBackend.Models.TriviaQuizStructurePrompt",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizzesController",
+    "Method": "GetAllQuizzes",
+    "RelativePath": "api/Quizzes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizzesController",
+    "Method": "GetQuizById",
+    "RelativePath": "api/Quizzes/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizzesController",
+    "Method": "GetCompletedQuizzes",
+    "RelativePath": "api/Quizzes/{userId}/completed-quizzes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizzesController",
+    "Method": "GetAllResults",
+    "RelativePath": "api/Quizzes/{userId}/quiz-results",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizzesController",
+    "Method": "GetBestQuizResult",
+    "RelativePath": "api/Quizzes/{userId}/quiz-results/{quizType}/{quizMode}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "quizType",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "quizMode",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizzesController",
+    "Method": "GetQuizData",
+    "RelativePath": "api/Quizzes/data/{quizType}/{dataset}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "quizType",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "dataset",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizzesController",
+    "Method": "CreateTriviaQuizManual",
+    "RelativePath": "api/Quizzes/manual",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "triviaQuizStructure",
+        "Type": "QuizaphBackend.Models.TriviaQuizStructureManual",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizzesController",
+    "Method": "CreateTriviaQuizPrompt",
+    "RelativePath": "api/Quizzes/prompt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "triviaQuizStructure",
+        "Type": "QuizaphBackend.Models.TriviaQuizStructurePrompt",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizzesController",
+    "Method": "GetQuizStatistics",
+    "RelativePath": "api/Quizzes/quiz-stats/{quizType}/{quizMode}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "quizType",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "quizMode",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizzesController",
+    "Method": "GetQuizDataSets",
+    "RelativePath": "api/Quizzes/quiz/{quizId}/datasets",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "quizId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizzesController",
+    "Method": "GetQuizDataSet",
+    "RelativePath": "api/Quizzes/quiz/{quizId}/datasets/{datasetId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "quizId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "datasetId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizzesController",
+    "Method": "GetQuizQuestions",
+    "RelativePath": "api/Quizzes/quiz/{quizId}/datasets/{datasetId}/questions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "quizId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "datasetId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphBackend.Controllers.QuizzesController",
+    "Method": "GetQuizRules",
+    "RelativePath": "api/Quizzes/quiz/{quizId}/rules",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "quizId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphFrontend.AuthController",
+    "Method": "Google",
+    "RelativePath": "Auth/google-login",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuizaphFrontend.AuthController",
+    "Method": "Logout",
+    "RelativePath": "Auth/logout",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
