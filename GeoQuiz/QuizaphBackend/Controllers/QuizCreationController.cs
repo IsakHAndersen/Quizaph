@@ -27,7 +27,6 @@ namespace QuizaphBackend.Controllers
 
             try
             {
-                // Call SK to generate quiz JSON
                 var quizJson = await _semanticKernelService.CreateQuizAsync(
                     "QuizPromptFormats/TriviaQuizPrompt.json.txt",
                     new Dictionary<string, object>
@@ -41,7 +40,6 @@ namespace QuizaphBackend.Controllers
                     }
                 );
 
-                // Deserialize JSON into your model
                 var quiz = JsonSerializer.Deserialize<TriviaQuizStructurePrompt>(quizJson,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 

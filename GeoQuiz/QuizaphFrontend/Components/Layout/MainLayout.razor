@@ -1,0 +1,63 @@
+﻿@using QuizaphFrontend.Components.ChildComponents
+@inherits LayoutComponentBase
+@inject NavigationManager navigation
+
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <AppBarComponent />
+    <MudMainContent Style="background-color: #f1f8fa; min-height: 100vh; padding-top: 60px;">
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
+
+@code
+{
+    public bool isDarkMode = true;
+    private int selectedTab = 1; // Dummy tab with no content
+
+    private void MainIconClick()
+    {
+        selectedTab = 1;
+        navigation.NavigateTo("/");
+    }
+
+    private void Logout()
+    {
+        
+    }
+
+    private void SignIn()
+    {
+        navigation.NavigateTo("Login");
+    }
+
+    private void SignUp()
+    {
+        navigation.NavigateTo("SignUp");
+    }
+
+    private void PanelChanged(int index)
+    {
+        selectedTab = index; 
+        var route = index switch
+        {
+            0 => "/",
+            1 => "/",
+            2 => "/Quizes",
+            3 => "/",
+            _ => "/"
+        };
+        navigation.NavigateTo(route);
+    }
+}

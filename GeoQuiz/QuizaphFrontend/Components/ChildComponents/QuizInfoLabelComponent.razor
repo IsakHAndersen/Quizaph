@@ -1,0 +1,98 @@
+﻿@using QuizaphFrontend.Services
+@using global::Models.Enums
+@inject NavigationManager navigation
+@inject CurrentQuizStateService QuizState
+
+<MudPaper Style="@StyleQuizElement()" 
+          Class="mt-4" Elevation="0" @onclick="() => NavigateToQuiz()">
+    <MudStack Row="false" Spacing="1">
+        <MudStack Row="true" AlignItems="AlignItems.Center">
+            <!-- Title -->
+            <MudText Style="color: #ffffff; font-size: 14px; font-weight: 600;">
+                @QuizInfo.Title
+            </MudText>
+
+            <MudSpacer />
+
+            <!-- Category -->
+            <MudText Style="color: #ffffff;" Typo="Typo.body2">
+                @HelperMethods.SplitByCamelCase(QuizInfo.QuizCategory.ToString())
+            </MudText>
+        </MudStack>
+        <!-- Info Row -->
+        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+
+            <!-- Left side: Players + Times Taken -->
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="4">
+                <!-- Players group -->
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                    <MudIcon Icon="@Icons.Material.Filled.Group" Style="color: #ffffff;" />
+                    <MudText Style="color: #ffffff;" Typo="Typo.body2">
+                        @FormatPlayersRange(QuizInfo.MinPlayers, QuizInfo.MaxPlayers)
+                    </MudText>
+                </MudStack>
+
+                <!-- Times Taken group -->
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                    <MudIcon Icon="@Icons.Material.Filled.History" Style="color: #ffffff;" />
+                    <MudText Style="color: #ffffff;" Typo="Typo.body2">
+                        Taken @QuizInfo.TimesTaken times
+                    </MudText>
+                </MudStack>
+            </MudStack>
+
+
+            <!-- Right side: Rating -->
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                <MudText Style="color: #ffffff;" Typo="Typo.body2">
+                    @QuizInfo.StarRating
+                </MudText>
+                <MudIcon Icon="@Icons.Material.Filled.Star" Style="color: gold;" />
+            </MudStack>
+        </MudStack>
+    </MudStack>
+</MudPaper>
+
+
+@code {
+    [Parameter]
+    public Quiz QuizInfo { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    public string StyleQuizElement()
+    {
+        var categoryColor = StaticQuizDataRetrievalService.CategoryColorMap[QuizInfo.QuizCategory];
+        return $"background-color: {categoryColor}; padding: 12px 20px; border-radius: 10px; opacity: 0.7;";
+
+    }
+
+    private string FormatPlayersRange(int? min, int? max)
+    {
+        return (min, max) switch
+        {
+            (not null, not null) when min != max => $"{min}-{max}",
+            (not null, not null) => $"{min}",
+            (not null, null) => $"{min}",
+            (null, not null) => $"{max}",
+            _ => "N/A"
+        };
+    }
+
+    // Splits camel case
+    private string FormatQuizCategory(string input)
+    {
+        return HelperMethods.SplitByCamelCase(input);
+    }
+
+
+
+    void NavigateToQuiz()
+    {
+        QuizState.CurrentQuizInfo = QuizInfo;
+        navigation.NavigateTo($"/Quiz");
+    }
+}

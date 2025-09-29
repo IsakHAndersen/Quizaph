@@ -1,0 +1,76 @@
+﻿@page "/"
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-12 pb-5">
+
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">
+        Welcome to Quizaph 🎓
+    </MudText>
+
+    <MudText Typo="Typo.subtitle1" Align="Align.Center" Class="mb-6">
+        Learn faster. Challenge yourself. Track your progress.
+    </MudText>
+
+    <MudGrid Class="mt-5">
+        <!-- Learn Fast Card -->
+        <MudItem xs="12" sm="6" md="4">
+            <MudCard style="border-radius: 10px; padding: 20px; min-height: 500px;" Outlined="true">
+                <MudCardHeader>
+                    <MudText Typo="Typo.h6">Learn Fast 🚀</MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText>
+                        Learn through multiple methods:
+                    </MudText>
+                    <MudList T="string" Dense="true" Class="mt-2">
+                        <MudListItem Icon="@Icons.Material.Filled.Circle" IconSize="Size.Small" IconColor="Color.Primary">Flashcards</MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.Circle" IconSize="Size.Small" IconColor="Color.Primary">Multiple Choice</MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.Circle" IconSize="Size.Small" IconColor="Color.Primary">Timed Challenges</MudListItem>
+                    </MudList>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <!-- Socials Card -->
+        <MudItem xs="12" sm="6" md="4">
+            <MudCard style="border-radius: 10px; padding: 20px; min-height: 500px;" Outlined="true">
+                <MudCardHeader>
+                    <MudText Typo="Typo.h6">Stay Connected 🌍</MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText>
+                        Follow us on social media for daily quiz challenges and learning tips.
+                    </MudText>
+                    <MudStack Spacing="2" Class="mt-3" Row=true>     
+                        <MudIcon Icon="@("fab fa-facebook-f")" Color="Color.Primary" />
+                        <MudIcon Icon="@("fab fa-twitter")" Color="Color.Info" />
+                        <MudIcon Icon="@("fab fa-instagram")" Color="Color.Error" />
+                    </MudStack>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <!-- Paid Plan Card -->
+        <MudItem xs="12" sm="12" md="4">
+            <MudCard style="border-radius: 10px; padding: 20px; min-height: 500px;" Outlined="true">
+                <MudCardHeader>
+                    <MudText Typo="Typo.h6">Pro Plan ⭐</MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText>Unlock advanced features:</MudText>
+                    <MudList T="string" Dense="true" Class="mt-2">
+                        <MudListItem Icon="@Icons.Material.Filled.Circle" IconSize="Size.Small" IconColor="Color.Primary">Track quiz completions</MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.Circle" IconSize="Size.Small" IconColor="Color.Primary">Advanced performance stats</MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.Circle" IconSize="Size.Small" IconColor="Color.Primary">Personalized study paths</MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.Circle" IconSize="Size.Small" IconColor="Color.Primary">Early access to new quizzes</MudListItem>
+                    </MudList>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Style="border-radius: 10px;">
+                        Upgrade Now
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+
+</MudContainer>
