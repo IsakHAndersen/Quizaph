@@ -29,7 +29,7 @@ namespace QuizaphBackend.Controllers
             {
                 // Call SK to generate quiz JSON
                 var quizJson = await _semanticKernelService.CreateQuizAsync(
-                    "Prompts/TriviaQuizPrompt.txt",
+                    "QuizPromptFormats/TriviaQuizPrompt.json.txt",
                     new Dictionary<string, object>
                     {
                         ["quizType"] = request.QuizType.ToString(),
@@ -39,7 +39,6 @@ namespace QuizaphBackend.Controllers
                         ["questionAmount"] = request.QuestionAmount,
                         ["instructions"] = request.AdditionalInstructions
                     }
-
                 );
 
                 // Deserialize JSON into your model
@@ -48,10 +47,7 @@ namespace QuizaphBackend.Controllers
 
                 if (quiz == null)
                     return StatusCode(500, "Failed to parse quiz JSON");
-
-                // (Optional) Save to DB if you want persistence
-                // _context.TriviaQuizzes.Add(quiz);
-                // await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
                 // Return to frontend
                 return Ok(quiz);

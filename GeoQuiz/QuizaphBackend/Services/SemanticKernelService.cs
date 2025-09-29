@@ -50,9 +50,7 @@ namespace QuizaphBackend.Services
         {
             var prompt = File.ReadAllText(promptPath);
             var func = kernel.CreateFunctionFromPrompt(prompt);
-
             var result = await kernel.InvokeAsync(func, new KernelArguments(args));
-
             return result.ToString();
         }
     }

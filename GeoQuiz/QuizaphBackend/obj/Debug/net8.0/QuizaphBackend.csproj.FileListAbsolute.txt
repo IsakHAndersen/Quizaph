@@ -128,7 +128,6 @@ C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\stat
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\swae.build.ex.cache
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\QuizaphB.6DCF30FC.Up2Date
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\QuizaphBackend.dll

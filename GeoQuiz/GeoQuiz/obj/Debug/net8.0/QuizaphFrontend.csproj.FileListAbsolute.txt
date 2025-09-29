@@ -161,7 +161,6 @@ C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz\obj\Debug\net8.0\staticwebas
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz\obj\Debug\net8.0\swae.build.ex.cache
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz\obj\Debug\net8.0\QuizaphF.0C44CA7E.Up2Date
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz\obj\Debug\net8.0\QuizaphFrontend.dll
@@ -186,3 +185,11 @@ C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz\bin\Debug\net8.0\OpenAI.dll
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz\bin\Debug\net8.0\System.ClientModel.dll
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz\bin\Debug\net8.0\System.Memory.Data.dll
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\GeoQuiz\bin\Debug\net8.0\System.Numerics.Tensors.dll
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuiz\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuiz\bin\Debug\net8.0\Microsoft.AspNetCore.Components.dll
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuiz\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Forms.dll
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuiz\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Web.dll
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuiz\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuiz\bin\Debug\net8.0\Microsoft.Extensions.Localization.dll
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuiz\bin\Debug\net8.0\Microsoft.Extensions.Localization.Abstractions.dll
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\GeoQuiz\bin\Debug\net8.0\Microsoft.JSInterop.dll
