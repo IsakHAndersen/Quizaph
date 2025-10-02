@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.35906.104
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizaphFrontend", "GeoQuiz\QuizaphFrontend.csproj", "{E22040F8-F9E4-4A3A-9888-9CD2F7866571}"
-	ProjectSection(ProjectDependencies) = postProject
-		{CF875FB3-4D05-44F1-89B9-A42DB13DB884} = {CF875FB3-4D05-44F1-89B9-A42DB13DB884}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizaphBackend", "QuizaphBackend\QuizaphBackend.csproj", "{CF875FB3-4D05-44F1-89B9-A42DB13DB884}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
@@ -17,16 +12,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonModels", "CommonModels\CommonModels.csproj", "{81FE9CD6-23FD-43DA-93BA-4AC94BBD9FBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizaphFrontend", "QuizaphFrontend\QuizaphFrontend.csproj", "{ED56DB55-CA2F-CFFF-2EBD-D142F9C435FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E22040F8-F9E4-4A3A-9888-9CD2F7866571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E22040F8-F9E4-4A3A-9888-9CD2F7866571}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E22040F8-F9E4-4A3A-9888-9CD2F7866571}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E22040F8-F9E4-4A3A-9888-9CD2F7866571}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CF875FB3-4D05-44F1-89B9-A42DB13DB884}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CF875FB3-4D05-44F1-89B9-A42DB13DB884}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF875FB3-4D05-44F1-89B9-A42DB13DB884}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,6 +28,10 @@ Global
 		{81FE9CD6-23FD-43DA-93BA-4AC94BBD9FBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81FE9CD6-23FD-43DA-93BA-4AC94BBD9FBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81FE9CD6-23FD-43DA-93BA-4AC94BBD9FBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED56DB55-CA2F-CFFF-2EBD-D142F9C435FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED56DB55-CA2F-CFFF-2EBD-D142F9C435FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED56DB55-CA2F-CFFF-2EBD-D142F9C435FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED56DB55-CA2F-CFFF-2EBD-D142F9C435FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
