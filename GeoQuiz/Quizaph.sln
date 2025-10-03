@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.35906.104
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizaphFrontend", "GeoQuiz\QuizaphFrontend.csproj", "{E22040F8-F9E4-4A3A-9888-9CD2F7866571}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizaphFrontend", "QuizaphFrontend\QuizaphFrontend.csproj", "{E22040F8-F9E4-4A3A-9888-9CD2F7866571}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CF875FB3-4D05-44F1-89B9-A42DB13DB884} = {CF875FB3-4D05-44F1-89B9-A42DB13DB884}
 	EndProjectSection

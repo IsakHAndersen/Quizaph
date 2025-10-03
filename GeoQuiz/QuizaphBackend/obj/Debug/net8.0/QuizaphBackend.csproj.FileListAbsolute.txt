@@ -152,3 +152,4 @@ C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Open
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\System.ClientModel.dll
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\System.Memory.Data.dll
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\System.Numerics.Tensors.dll
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\swae.build.ex.cache
