@@ -24,7 +24,7 @@ namespace QuizaphFrontend
         {
             var properties = new Microsoft.AspNetCore.Authentication.AuthenticationProperties
             {
-                RedirectUri = "/" // where to go after logout
+                RedirectUri = "/"
             };
 
             // Sign out of the cookie authentication scheme

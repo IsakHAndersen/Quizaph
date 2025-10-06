@@ -3,6 +3,7 @@
 @inject NavigationManager navigation
 @inject UserClaimsService UserClaimsService
 @inject AuthenticationStateProvider AuthStateProvider
+@inject HttpService HttpService
 
 <MudAppBar Fixed="true" Elevation="0"
            Style="background-color: #ffffff; color: #2C2C2E; height: 70px;">
@@ -187,9 +188,9 @@
         navigation.NavigateTo(route);
     }
 
-    private void Logout()
+    private async Task Logout()
     {
-        // your logout logic
+        navigation.NavigateTo("logout", forceLoad: true);
     }
 
     private void ToggleDarkMode()
