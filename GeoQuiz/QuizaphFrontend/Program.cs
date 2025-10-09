@@ -12,6 +12,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddControllers();
 
+
+builder.Configuration.AddUserSecrets<Program>();
+
 // Authentication and Authorization 
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>
