@@ -11,7 +11,7 @@
         "projectName": "CommonModels",
         "projectPath": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\CommonModels\\CommonModels.csproj",
         "packagesPath": "C:\\Users\\dudis\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\CommonModels\\obj\\",
+        "outputPath": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\CommonModels\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,4 +1,4 @@
-﻿using Models.Enums;
+﻿using CommonModels.Enums;
 using QuizaphFrontend.Models.Interfaces;
 
 namespace QuizaphFrontend.Models.Quizes

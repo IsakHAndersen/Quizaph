@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration.UserSecrets;
-using Models.Enums;
+﻿using CommonModels.Enums;
 
 namespace QuizaphBackend.Models
 {

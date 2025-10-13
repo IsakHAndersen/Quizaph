@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommonModels.QuizCreationModels.BaseModels
+namespace CommonModels.QuizModels
 {
-    public class CreateQuizByPromptBaseClass
+    public class TriviaQuiz
     {
     }
 }

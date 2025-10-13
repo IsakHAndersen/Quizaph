@@ -1,7 +1,9 @@
 ﻿@inject HttpService HttpService
 @page "/Create-quiz"
+@using CommonModels.Enums
+@using CommonModels.QuizCreationModels.QuizManual
+@using CommonModels.QuizCreationModels.QuizPrompt
 @using QuizaphFrontend.Services
-@using global::Models.Enums
 @using Microsoft.AspNetCore.Components.Authorization
 @using MudBlazor
 
@@ -95,7 +97,7 @@
                                     <MudItem xs="12" md="6" Class="d-flex flex-column mb-4">
                                         <!-- Question -->
                                         <MudTextField T="string"
-                                                      @bind-Value="question.Text"
+                                                      @bind-Value="question.Question"
                                                       Variant="Variant.Outlined"
                                                       Placeholder="Enter question"
                                                       Adornment="Adornment.Start"
@@ -104,12 +106,12 @@
                                                       Class="mb-2" />
 
                                         <!-- Answers -->
-                                        @for (int i = 0; i < question.Answers.Count; i++)
+                                        @for (int i = 0; i < question.CorrectAnswers.Count; i++)
                                         {
                                             var idx = i;
                                             <div class="d-flex align-center mb-2">
                                                 <MudTextField T="string"
-                                                              @bind-Value="question.Answers[idx]"
+                                                              @bind-Value="question.CorrectAnswers[idx]"
                                                               Variant="Variant.Outlined"
                                                               Placeholder=@($"Answer {idx + 1}")
                                                               Adornment="Adornment.Start"
@@ -172,60 +174,60 @@
     private string PromptContext { get; set; } = string.Empty;
 
     // Manual questions
-    private List<Question> ManualQuestions { get; set; } = new();
+    private List<QuizQuestion> ManualQuestions { get; set; } = new();
 
     protected override void OnInitialized()
     {
         if (!ManualQuestions.Any())
         {
             for (int i = 0; i < 5; i++)
-                ManualQuestions.Add(new Question { Text = "", Answers = new List<string> { "" } });
+                ManualQuestions.Add(new QuizQuestion { Question = "", CorrectAnswers = new List<string> { "" } });
         }
     }
 
     private void AddQuestion()
     {
-        ManualQuestions.Add(new Question { Text = "", Answers = new List<string> { "" } });
+        ManualQuestions.Add(new QuizQuestion { Question = "", CorrectAnswers = new List<string> { "" } });
     }
 
-    private void RemoveQuestion(Question question)
+    private void RemoveQuestion(QuizQuestion question)
     {
         ManualQuestions.Remove(question);
     }
 
-    private void AddAnswer(Question question)
+    private void AddAnswer(QuizQuestion question)
     {
-        question.Answers.Add("");
+        question.CorrectAnswers.Add("");
     }
 
-    private void RemoveAnswer(Question question, int index)
+    private void RemoveAnswer(QuizQuestion question, int index)
     {
-        if (index >= 0 && index < question.Answers.Count)
-            question.Answers.RemoveAt(index);
+        if (index >= 0 && index < question.CorrectAnswers.Count)
+            question.CorrectAnswers.RemoveAt(index);
     }
 
     private async Task SubmitQuizCreation()
     {
         if (ModeSelection == "Manual")
         {
-            var quiz = new TriviaQuizStructureManual
+            var quiz = new CreateTriviaQuiz
             {
                 QuizType = selectedQuizType,
                 Title = QuizTitle,
                 Category = SelectedCategory,
                 Questions = ManualQuestions
             };
-            await HttpService.CreateTriviaQuizManual(quiz);
+            await HttpService.CreateTriviaQuiz(quiz);
         }
         else if (ModeSelection == "Prompt")
         {
-            var quiz = new TriviaQuizStructurePrompt
+            var quiz = new CreateTriviaQuizPrompt
             {
                 QuizType = selectedQuizType,
                 Title = QuizTitle,
                 Category = SelectedCategory,
                 Difficulty = PromptDifficulty,
-                QuestionAmount = PromptQuestionAmount,
+                NumberOfQuestions = PromptQuestionAmount,
                 AdditionalInstructions = PromptContext
             };
             await HttpService.CreateTriviaQuizPrompt(quiz);

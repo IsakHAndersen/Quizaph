@@ -1,6 +1,5 @@
-﻿using GeoQuizBackend.EntityFramework;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Models.Enums;
+﻿using CommonModels.Enums;
+using GeoQuizBackend.EntityFramework;
 using QuizaphBackend.Models;
 
 namespace QuizaphBackend.EntityFramework

@@ -1,4 +1,5 @@
 ﻿using CommonModels.QuizCreationModels.BaseModels;
+using QuizaphBackend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,6 @@ namespace CommonModels.QuizCreationModels.QuizManual
 {
     public class CreateTriviaQuiz : CreateQuizBaseClass
     {
-        public List<TriviaQuizQuestion> Questions { get; set; } = new();
-    }
-
-    public class TriviaQuizQuestion
-    {
-        public string Question { get; set; } = "";
-        public List<string> ValidAnswers { get; set; } = new();
+        public List<QuizQuestion> Questions { get; set; } = new();
     }
 }

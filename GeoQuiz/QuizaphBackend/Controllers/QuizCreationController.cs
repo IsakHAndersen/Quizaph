@@ -1,4 +1,7 @@
-﻿using GeoQuizBackend.EntityFramework;
+﻿using CommonModels.QuizCreationModels.QuizManual;
+using CommonModels.QuizCreationModels.QuizPrompt;
+using CommonModels.QuizModels;
+using GeoQuizBackend.EntityFramework;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizaphBackend.Models;
@@ -19,8 +22,33 @@ namespace QuizaphBackend.Controllers
             _semanticKernelService = semanticKernelService;
         }
 
-        [HttpPost("create-quiz")]
-        public async Task<IActionResult> CreateQuiz([FromBody] TriviaQuizStructurePrompt request)
+        [HttpPost("create-trivia-quiz")]
+        public async Task<IActionResult> CreateTriviaQuiz([FromBody] CreateTriviaQuiz createTriviaQuiz)
+        {
+            var quiz = new TriviaQuiz
+            {
+      
+            };
+            //// Convert manual structure to QuizQuestion entities
+            //var correspondingQuizId = DictionariesStaticData.QuizTypeIdValuePairs[QuizType.TriviaQuiz];
+            //foreach (var manualQuestion in triviaQuizStructure.Questions)
+            //{
+            //    var quizQuestion = new QuizQuestion
+            //    {
+            //        QuizId = triviaQuizStructure.QuizId,
+            //        QuestionText = manualQuestion.QuestionText,
+            //        Options = manualQuestion.Options,  // Assuming Options is a property
+            //        CorrectAnswer = manualQuestion.CorrectAnswer
+            //    };
+            //    createdQuestions.Add(quizQuestion);
+            //    _context.QuizQuestions.Add(quizQuestion);
+            //}
+            //await _context.SaveChangesAsync();
+            return Ok(quiz);
+        }
+
+        [HttpPost("create-trivia-quiz-prompt")]
+        public async Task<IActionResult> CreateTriviaQuiz([FromBody] CreateTriviaQuizPrompt request)
         {
             if (request == null)
                 return BadRequest("Invalid request");
@@ -34,13 +62,12 @@ namespace QuizaphBackend.Controllers
                         ["quizType"] = request.QuizType.ToString(),
                         ["title"] = request.Title,
                         ["category"] = request.Category.ToString(),
-                        ["difficulty"] = request.Difficulty,
-                        ["questionAmount"] = request.QuestionAmount,
+                        ["questionAmount"] = request.NumberOfQuestions,
                         ["instructions"] = request.AdditionalInstructions
                     }
                 );
 
-                var quiz = JsonSerializer.Deserialize<TriviaQuizStructurePrompt>(quizJson,
+                var quiz = JsonSerializer.Deserialize<TriviaQuiz>(quizJson,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                 if (quiz == null)

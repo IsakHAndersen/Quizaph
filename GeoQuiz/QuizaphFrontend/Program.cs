@@ -49,7 +49,6 @@ builder.Services.AddMudServices();
 // Your app-specific services
 builder.Services.AddScoped<CurrentQuizStateService>();
 builder.Services.AddScoped<UserClaimsService>();
-builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<HttpService>();
 
 builder.Services.AddScoped(sp =>

@@ -1,6 +1,8 @@
-﻿using GeoQuizBackend.EntityFramework;
+﻿using CommonModels.Enums;
+using CommonModels.QuizCreationModels.QuizManual;
+using CommonModels.QuizCreationModels.QuizPrompt;
+using GeoQuizBackend.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
-using Models.Enums;
 using QuizaphBackend.Models;
 using System.Data.Entity;
 
@@ -167,52 +169,5 @@ namespace QuizaphBackend.Controllers
         }
         #endregion
 
-        #region Create Quiz Endpoints
-        [HttpPost("manual")]
-        public async Task<IActionResult> CreateTriviaQuizManual([FromBody] TriviaQuizStructureManual triviaQuizStructure)
-        {
-            if (triviaQuizStructure == null || triviaQuizStructure.Questions == null || triviaQuizStructure.Questions.Count() < 5)
-                return BadRequest("Manual quiz structure must contain at least 5 questions.");
-
-            List<QuizQuestion> createdQuestions = new List<QuizQuestion>();
-
-            //// Convert manual structure to QuizQuestion entities
-            //var correspondingQuizId = DictionariesStaticData.QuizTypeIdValuePairs[QuizType.TriviaQuiz];
-            //foreach (var manualQuestion in triviaQuizStructure.Questions)
-            //{
-            //    var quizQuestion = new QuizQuestion
-            //    {
-            //        QuizId = triviaQuizStructure.QuizId,
-            //        QuestionText = manualQuestion.QuestionText,
-            //        Options = manualQuestion.Options,  // Assuming Options is a property
-            //        CorrectAnswer = manualQuestion.CorrectAnswer
-            //    };
-            //    createdQuestions.Add(quizQuestion);
-            //    _context.QuizQuestions.Add(quizQuestion);
-            //}
-            //await _context.SaveChangesAsync();
-            return Ok(createdQuestions);
-        }
-
-        [HttpPost("prompt")]
-        public async Task<IActionResult> CreateTriviaQuizPrompt([FromBody] TriviaQuizStructurePrompt triviaQuizStructure)
-        {
-            if (triviaQuizStructure == null)
-                return BadRequest("Trivia quiz prompt structure cannot be null.");
-
-            // TODO: Use triviaQuizStructure to generate questions (AI or logic)
-            List<QuizQuestion> generatedQuestions = new List<QuizQuestion>();
-
-            // Example: store to DB (optional)
-            foreach (var question in generatedQuestions)
-            {
-                _context.QuizQuestions.Add(question);
-            }
-
-            await _context.SaveChangesAsync();
-
-            return Ok(generatedQuestions);
-        }
-        #endregion
     }
 }

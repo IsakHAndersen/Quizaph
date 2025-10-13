@@ -1,6 +1,8 @@
 ﻿using CommonModels.QuizCreationModels.QuizPrompt;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
+using System.ComponentModel;
 
 namespace QuizaphBackend.Services
 {
@@ -19,30 +21,26 @@ namespace QuizaphBackend.Services
             _configuration = configuration;
 
             // Retrieve configuration values
-            var modelConfig = configuration.GetSection($"OpenAICredentials");
+            var modelConfig = _configuration.GetSection($"OpenAICredentials");
             apiKey = modelConfig["apiKey"]!;
             modelId = modelConfig["modelId"]!;
 
             var builder = Kernel.CreateBuilder();
-
-            // Standard OpenAI (not Azure)
+            builder.Services.AddLogging(services => services.AddConsole().SetMinimumLevel(LogLevel.Trace));
             builder.AddOpenAIChatCompletion(modelId, apiKey!);
-
+            var history = new ChatHistory();
             _kernel = builder.Build();
+            OpenAIPromptExecutionSettings openAIPromptExecutionSettings = new()
+            {
+                FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
+            };
         }
 
         public async Task CreateTriviaQuiz(CreateTriviaQuizPrompt createTriviaQuizPrompt)
         {
-
-            var builder = Kernel.CreateBuilder();
-            builder.Services.AddLogging(services => services.AddConsole().SetMinimumLevel(LogLevel.Trace));
-            
-
-            builder.AddOpenAIChatCompletion(modelOverride, apiKey);
-            var kernelOverride = builder.Build();
-
-            return await RunPromptAsync(kernelOverride, promptPath, args);
-            return await RunPromptAsync(_kernel, promptPath, args);
+           
+           
+           
         }
 
         private static async Task<string> RunPromptAsync(Kernel kernel, string promptPath, Dictionary<string, object> args)
@@ -56,6 +54,14 @@ namespace QuizaphBackend.Services
         public Task<string> CreateQuizAsync(string promptPath, Dictionary<string, object> args, string? modelOverride = null)
         {
             throw new NotImplementedException();
+        }
+
+        public class TriviaQuizPlugin
+        {
+            [KernelFunction("create_trivia_quiz")]
+            [Description("Creates a trivia quiz from a given topic and difficulty.")]
+            public static string CreateQuiz(CreateTriviaQuizPrompt createTriviaQuizPrompt)
+                => $"Generate a {difficulty} level quiz about {topic}.";
         }
     }
 
