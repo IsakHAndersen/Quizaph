@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using QuizaphBackend.Models;
+﻿using CommmonModels.UserModels;
+using CommonModels.QuizModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeoQuizBackend.EntityFramework
 {

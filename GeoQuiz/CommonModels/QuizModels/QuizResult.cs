@@ -1,6 +1,7 @@
-﻿using CommonModels.Enums;
+﻿using CommmonModels.UserModels;
+using CommonModels.Enums;
 
-namespace QuizaphBackend.Models
+namespace CommonModels.QuizModels
 {
     public class QuizResult
     {

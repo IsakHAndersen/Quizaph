@@ -1,4 +1,4 @@
-﻿namespace QuizaphBackend.Models
+﻿namespace CommonModels.QuizModels
 {
     public class QuizDataset
     {

@@ -2,6 +2,7 @@
 using CommonModels.QuizCreationModels.QuizManual;
 using CommonModels.QuizCreationModels.QuizPrompt;
 using CommonModels.QuizModels;
+using CommonModels.UserModels;
 
 namespace QuizaphFrontend.Services
 {
@@ -12,6 +13,18 @@ namespace QuizaphFrontend.Services
         public HttpService(HttpClient httpClient)
         {
             _httpClient = httpClient;           
+        }
+        public async Task<HttpResponseMessage> RegisterUser(CreateUserDTO createUserDTO)
+        {
+            return await _httpClient.PostAsJsonAsync("api/users/register", createUserDTO);
+        }
+        public async Task<HttpResponseMessage> ConfirmEmail(string userId, string token)
+        {
+            return await _httpClient.GetAsync($"api/users/confirm-email?userId={userId}&token={Uri.EscapeDataString(token)}");
+        }
+        public async Task<HttpResponseMessage> ResendVerificationEmail(string email)
+        {
+            return await _httpClient.PostAsJsonAsync("api/users/resend-verification", new { Email = email });
         }
 
         public async Task<List<Quiz>> GetAllQuizzes()

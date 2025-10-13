@@ -153,3 +153,4 @@ C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\refi
 C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\QuizaphBackend.pdb
 C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\QuizaphBackend.genruntimeconfig.cache
 C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\ref\QuizaphBackend.dll
+C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\QuizaphBackend.MvcApplicationPartsAssemblyInfo.cs

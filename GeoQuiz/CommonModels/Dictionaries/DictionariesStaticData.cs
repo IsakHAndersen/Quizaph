@@ -1,7 +1,6 @@
 ﻿using CommonModels.Enums;
 
-
-namespace QuizaphBackend.Models.Dictionaries
+namespace CommonModels.Dictionaries
 {
     public static class DictionariesStaticData
     {

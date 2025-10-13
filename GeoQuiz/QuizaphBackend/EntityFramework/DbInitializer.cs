@@ -1,6 +1,7 @@
-﻿using CommonModels.Enums;
+﻿using CommmonModels.UserModels;
+using CommonModels.Enums;
+using CommonModels.QuizModels;
 using GeoQuizBackend.EntityFramework;
-using QuizaphBackend.Models;
 
 namespace QuizaphBackend.EntityFramework
 {

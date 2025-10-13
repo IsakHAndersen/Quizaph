@@ -2,9 +2,7 @@
 using CommonModels.QuizCreationModels.QuizPrompt;
 using CommonModels.QuizModels;
 using GeoQuizBackend.EntityFramework;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using QuizaphBackend.Models;
 using QuizaphBackend.Services;
 using System.Text.Json;
 

@@ -19,9 +19,12 @@ namespace QuizaphFrontend.Services
 
             if (user.Identity?.IsAuthenticated ?? false)
             {
-                return Convert.ToInt32(user.FindFirst("sub")?.Value
-                    ?? user.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                var userIdString = user.FindFirst("sub")?.Value
+                                   ?? user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (int.TryParse(userIdString, out int userId))
+                    return userId;
             }
+
             return null;
         }
 

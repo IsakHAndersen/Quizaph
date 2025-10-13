@@ -61,7 +61,7 @@ namespace QuizaphBackend.Services
             [KernelFunction("create_trivia_quiz")]
             [Description("Creates a trivia quiz from a given topic and difficulty.")]
             public static string CreateQuiz(CreateTriviaQuizPrompt createTriviaQuizPrompt)
-                => $"Generate a {difficulty} level quiz about {topic}.";
+                => $"Generate a {createTriviaQuizPrompt.Difficulty} level quiz about {createTriviaQuizPrompt.Category}.";
         }
     }
 

@@ -1,7 +1,7 @@
 ﻿
 using CommonModels.Enums;
 
-namespace QuizaphBackend.Models
+namespace CommonModels.QuizModels
 {
     public static class StaticData
     {

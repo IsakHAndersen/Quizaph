@@ -1,8 +1,8 @@
-﻿using CommonModels.Enums;
+﻿using CommmonModels.UserModels;
+using CommonModels.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace QuizaphBackend.Models
+namespace CommonModels.QuizModels
 {
     public class Quiz
     {

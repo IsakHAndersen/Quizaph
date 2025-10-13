@@ -1,12 +1,12 @@
-﻿global using QuizaphBackend.Models;
-using MudBlazor.Services;
+﻿using MudBlazor.Services;
 using QuizaphFrontend.Components;
-using QuizaphFrontend.Models;
 using QuizaphFrontend.Services;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

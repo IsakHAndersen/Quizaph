@@ -1,7 +1,10 @@
 using GeoQuizBackend.EntityFramework;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using QuizaphBackend.EntityFramework;
 using QuizaphBackend.Services;
+using System.Net;
+using System.Net.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
   
@@ -15,6 +18,22 @@ builder.Services.AddSwaggerGen();
 
 // Add Semantic Kernel Service
 builder.Services.AddScoped<ISemanticKernelService, SemanticKernelService>();
+
+builder.Services.AddScoped(client =>
+{
+    var smtpClient = new SmtpClient
+    {
+        Host = "smtp.gmail.com",
+        Port = 587,
+        Credentials = new NetworkCredential(
+            builder.Configuration["ConfirmationEmail"],
+            builder.Configuration["EMAIL:CONFIRMATION:PASSWORD"]),
+        EnableSsl = true
+    };
+    return smtpClient;
+});
+
+builder.Services.AddScoped<IEmailSender, EmailService>();
 
 // EF Core DbContext (InMemory for now)
 builder.Services.AddDbContext<DBContext>(options =>

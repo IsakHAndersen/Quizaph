@@ -2,6 +2,7 @@
 @inject HttpService HttpService
 @page "/Quizzes"
 @using CommonModels.Enums
+@using CommonModels.QuizModels
 @using QuizaphFrontend.Services
 @using Microsoft.AspNetCore.Components.Authorization
 @inject AuthenticationStateProvider AuthStateProvider
@@ -130,9 +131,9 @@
 
     private int pageSize = 10;
 
-    private List<QuizaphBackend.Models.Quiz> quizzes = new();
-    private List<QuizaphBackend.Models.Quiz> filteredQuizzesList = new();
-    private List<QuizaphBackend.Models.Quiz> visibleQuizzesList = new();
+    private List<CommonModels.QuizModels.Quiz> quizzes = new();
+    private List<CommonModels.QuizModels.Quiz> filteredQuizzesList = new();
+    private List<CommonModels.QuizModels.Quiz> visibleQuizzesList = new();
 
     private string search = string.Empty;
 
@@ -189,7 +190,7 @@
         {
             if (!QuizResults.Any())
             {
-                if (userId.HasValue)
+                if (userId != null)
                 {
                     QuizResults = await HttpService.GetCompletedQuizzes(userId.Value);
                 }
