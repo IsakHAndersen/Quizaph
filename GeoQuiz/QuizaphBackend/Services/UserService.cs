@@ -6,7 +6,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace QuizaphFrontend.Services
+namespace QuizaphBackend.Services
 {
     public class UserService
     {

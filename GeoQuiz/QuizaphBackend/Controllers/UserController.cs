@@ -4,7 +4,7 @@ using GeoQuizBackend.EntityFramework;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using QuizaphFrontend.Services;
+using QuizaphBackend.Services;
 using System.Security.Claims;
 
 namespace QuizaphBackend.Controllers

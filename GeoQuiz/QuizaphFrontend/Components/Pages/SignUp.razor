@@ -1,7 +1,8 @@
 ﻿@page "/SignUp"
+@using CommonModels.UserModels
 @using QuizaphFrontend.Services
 @layout EmptyLayout
-@inject NavigationManager navigation
+@inject NavigationManager Navigation
 @inject HttpService HttpService
 <MudPaper Square="true" style="background-color: transparent;" Elevation="0">
     <MudIconButton Icon=@Icons.Material.Filled.Home Color="Color.Primary" Variant="Variant.Filled"
@@ -111,26 +112,26 @@
         public bool RememberMe { get; set; } = false;
     }
 
-    private void NavigateToMainPage() => navigation.NavigateTo("/");
-    private void SignIn() => navigation.NavigateTo("/Login");
+    private void NavigateToMainPage() => Navigation.NavigateTo("/");
+    private void SignIn() => Navigation.NavigateTo("/Login");
 
     private void GoogleLogin()
     {
-        navigation.NavigateTo("auth/google-login", forceLoad: true);
+        Navigation.NavigateTo("auth/google-login", forceLoad: true);
     }
 
     private async void Register()
     {
         if (!IsValidLoginRequest()) return;
 
-        var response = await HttpService.RegisterUser(
-            registerRequestObject.Email,
-            registerRequestObject.Password);
-
+        var response = await HttpService.RegisterUser(new CreateUserDTO
+        {
+                Email = registerRequestObject.Email,
+                Password = registerRequestObject.Password,
+        });
         if (response.IsSuccessStatusCode)
         {
-            await ShowAlertAsync(Severity.Success,
-                "A confirmation email has been sent. Please check your inbox.");
+            Navigation.NavigateTo("/Confirm-email");
         }
         else
         {

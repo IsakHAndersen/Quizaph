@@ -34,6 +34,7 @@ builder.Services.AddScoped(client =>
 });
 
 builder.Services.AddScoped<IEmailSender, EmailService>();
+builder.Services.AddScoped<UserService>();
 
 // EF Core DbContext (InMemory for now)
 builder.Services.AddDbContext<DBContext>(options =>

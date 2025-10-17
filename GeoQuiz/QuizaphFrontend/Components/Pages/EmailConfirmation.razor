@@ -1,0 +1,109 @@
+﻿@page "/email-confirmation"
+@using QuizaphFrontend.Services
+@layout EmptyLayout
+@inject NavigationManager Navigation
+@inject HttpService HttpService
+
+    <MudContainer MaxWidth="MaxWidth.Small">
+        <MudPaper Elevation="3" Class="pa-6">
+            <MudStack Spacing="3" AlignItems="AlignItems.Center">
+                <MudIcon Icon="@Icons.Material.Filled.MarkEmailRead"
+                         Color="Color.Primary"
+                         Size="Size.Large"
+                         Class="mb-2" />
+
+                <MudText Typo="Typo.h5" Class="font-semibold text-gray-800">
+                    Confirm your email
+                </MudText>
+
+                <MudText Typo="Typo.body1" Class="text-gray-600">
+                    We've sent a confirmation link to your email address.
+                    Please check your inbox and click the link to verify your account.
+                </MudText>
+
+                <MudDivider Class="my-4" />
+
+                <MudButton OnClick="@ResendEmail"
+                           Color="Color.Primary"
+                           Variant="Variant.Filled"
+                           Disabled="@_isSending"
+                           StartIcon="@Icons.Material.Filled.Send">
+                    @if (_isSending)
+                    {
+                        <MudProgressCircular Indeterminate="true" Size="Size.Small" Class="mr-2" />
+                        <span>Sending...</span>
+                    }
+                    else
+                    {
+                        <span>Resend confirmation email</span>
+                    }
+                </MudButton>
+
+                @if (_showAlert)
+                {
+                    <MudAlert Severity="@_alertSeverity"
+                              Dense="true"
+                              Elevation="0"
+                              Class="mt-3 text-sm text-left">
+                        @_alertMessage
+                    </MudAlert>
+                }
+
+                <MudText Typo="Typo.caption" Class="text-gray-500 mt-4">
+                    Didn’t receive the email? Check your spam folder or try again.
+                </MudText>
+            </MudStack>
+        </MudPaper>
+    </MudContainer>
+
+@code {
+    [Parameter] public string? Email { get; set; } // You'll pass this in from the registration component
+
+    private bool _isSending = false;
+    private bool _showAlert = false;
+    private string _alertMessage = "";
+    private Severity _alertSeverity = Severity.Info;
+
+    private async Task ResendEmail()
+    {
+        if (string.IsNullOrEmpty(Email))
+        {
+            ShowAlert(Severity.Error, "Missing email address. Please try registering again.");
+            return;
+        }
+
+        try
+        {
+            _isSending = true;
+            _showAlert = false;
+
+            var response = await HttpService.ResendVerificationEmail(Email);
+
+            if (response.IsSuccessStatusCode)
+            {
+                ShowAlert(Severity.Success, "A new verification email has been sent!");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                ShowAlert(Severity.Error, $"Failed to resend: {error}");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowAlert(Severity.Error, $"Unexpected error: {ex.Message}");
+        }
+        finally
+        {
+            _isSending = false;
+        }
+    }
+
+    private void ShowAlert(Severity severity, string message)
+    {
+        _alertSeverity = severity;
+        _alertMessage = message;
+        _showAlert = true;
+        StateHasChanged();
+    }
+}

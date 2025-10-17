@@ -38,9 +38,16 @@ namespace QuizaphBackend.Services
             inlineImage.ContentDisposition!.Inline = true;
             inlineImage.ContentDisposition.DispositionType = DispositionTypeNames.Inline;
             mailMessage.Attachments.Add(inlineImage);
-
             // Send
-            await _smtpClient.SendMailAsync(mailMessage);
+            try
+            {
+                await _smtpClient.SendMailAsync(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                
+            }
+          
         }
         public void Dispose()
         {
