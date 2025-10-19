@@ -17,7 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add Semantic Kernel Service
-builder.Services.AddScoped<ISemanticKernelService, SemanticKernelService>();
+builder.Services.AddScoped<SemanticKernelService>();
 
 builder.Services.AddScoped(client =>
 {

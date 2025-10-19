@@ -1,5 +1,6 @@
 ﻿using CommmonModels.UserModels;
 using CommonModels.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace CommonModels.QuizModels
 {
@@ -16,8 +17,6 @@ namespace CommonModels.QuizModels
         // Quiz info
         public QuizType QuizType { get; set; }
         public QuizMode QuizMode { get; set; }
-
-        // Attributes
         public bool IsCompleted { get; set; }
         public int Score { get; set; }
         public int MaxScore { get; set; }
@@ -27,28 +26,25 @@ namespace CommonModels.QuizModels
 
         public QuizResult() { }
 
-        public QuizResult(QuizType quizType, QuizMode quizMode, int userId, int score, TimeSpan? timeTaken)
+        public QuizResult(QuizType quizType, QuizMode quizMode, int userId, int score, TimeSpan? timeTaken, int maxScore)
         {
             QuizType = quizType;
             QuizMode = quizMode;
             UserId = userId;
             Score = score;
-            MaxScore = StaticData.QuizMaxScores[QuizType];
             TimeTaken = timeTaken;
             CreatedAt = DateTime.UtcNow;
-            IsQuizCompleted();
+            MaxScore = maxScore;
+            IsCompleted = IsQuizCompleted();
         }
          
-        private void IsQuizCompleted() 
+        private bool IsQuizCompleted() 
         {
             if (Score == MaxScore) 
             {
-                IsCompleted = true;
-            } 
-            else 
-            {
-                IsCompleted = false;
+                return true;
             }
+            return false;
         }
     }
 

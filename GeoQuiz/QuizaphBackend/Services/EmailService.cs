@@ -45,7 +45,7 @@ namespace QuizaphBackend.Services
             }
             catch (Exception ex)
             {
-                
+                throw new InvalidOperationException("Failed to send email.", ex);
             }
           
         }

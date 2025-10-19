@@ -50,23 +50,20 @@ namespace QuizaphBackend.EntityFramework
                 {
                     Id = 1,
                     QuizId = 2,
-                    Name = "World War 2 Trivia",
-                    Description = "25 Questions based on World War 2.",
+                    Title = "World War 2 Trivia",
                 },
                 new QuizDataset
                 {
                     Id = 2,
                     QuizId = 2,
-                    Name = "Movies Trivia",
-                    Description = "25 Questions based on Movies.",
+                    Title = "Movies Trivia",
                    
                 },
                 new QuizDataset
                 {
                     Id = 3,
                     QuizId = 2,
-                    Name = "Mythical Creatures Trivia",
-                    Description = "25 Questions about dragons, unicorns, and legends from around the world.",
+                    Title = "Mythical Creatures Trivia",
                 },
             };
 
@@ -282,13 +279,13 @@ namespace QuizaphBackend.EntityFramework
 
             var quizResults = new List<QuizResult>
             {
-                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 100, TimeSpan.FromMinutes(10)),
-                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 90, TimeSpan.FromMinutes(12)),
-                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 50, TimeSpan.FromMinutes(14)),
-                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 50, TimeSpan.FromMinutes(15)),
-                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 20, TimeSpan.FromMinutes(11)),
-                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 12, TimeSpan.FromMinutes(13)),
-                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 10, TimeSpan.FromMinutes(10)),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 100, TimeSpan.FromMinutes(10), 198),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 90, TimeSpan.FromMinutes(12), 198),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 50, TimeSpan.FromMinutes(14), 198),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 50, TimeSpan.FromMinutes(15), 198),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 20, TimeSpan.FromMinutes(11), 198),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 12, TimeSpan.FromMinutes(13), 198),
+                new QuizResult(QuizType.WorldCountriesQuiz, QuizMode.Standard, 1, 10, TimeSpan.FromMinutes(10), 198)
             };
 
             var quizRules = new List<QuizRule>

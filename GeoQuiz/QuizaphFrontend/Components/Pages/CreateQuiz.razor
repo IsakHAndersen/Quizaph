@@ -174,8 +174,9 @@
     private int PromptDifficulty { get; set; } = 1;
     private string PromptContext { get; set; } = string.Empty;
 
-    // Manual questions
+    // Manual Quiz Specific
     private List<QuizQuestion> ManualQuestions { get; set; } = new();
+    private string Description { get; set; } = string.Empty;
 
     protected override void OnInitialized()
     {
@@ -229,7 +230,7 @@
                 Category = SelectedCategory,
                 Difficulty = PromptDifficulty,
                 NumberOfQuestions = PromptQuestionAmount,
-                AdditionalInstructions = PromptContext
+                Instruction = PromptContext
             };
             await HttpService.CreateTriviaQuizPrompt(quiz);
         }

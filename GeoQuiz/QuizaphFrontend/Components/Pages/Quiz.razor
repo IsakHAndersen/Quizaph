@@ -52,7 +52,7 @@
                                    Style="min-width:200px">
                             @foreach (var ds in availableDatasets)
                             {
-                                <MudSelectItem T="QuizDataset" Value="@ds">@ds.Name</MudSelectItem>
+                                <MudSelectItem T="QuizDataset" Value="@ds">@ds.Title</MudSelectItem>
                             }
                         </MudSelect>
                     }
