@@ -1,31 +1,33 @@
-name: Verify Secrets
+name: Build and Run Quizaph Projects
 
 on:
-  workflow_dispatch: # run manually
+  workflow_dispatch:
   push:
     branches:
       - main
 
 jobs:
-  check-secrets:
+  verify-secrets:
     runs-on: ubuntu-latest
-
+    env: # Job-level environment variables available in all steps
+      OAUTH__GOOGLE__ID: ${{ secrets.OAUTH_GOOGLE_ID }}
+      OAUTH__GOOGLE__SECRET: ${{ secrets.OAUTH_GOOGLE_SECRET }}
+      OPENAI__API__KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI__ENDPOINT: ${{ secrets.OPENAI_ENDPOINT }}
+      EMAIL__CONFIRMATION__PASSWORD: ${{ secrets.EMAIL_CONFIRMATION_PASSWORD }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Load and verify secrets
-        env:
-          OAUTH__GOOGLE__ID: ${{ secrets.OAUTH_GOOGLE_ID }}
-          OAUTH__GOOGLE__SECRET: ${{ secrets.OAUTH_GOOGLE_SECRET }}
-          OPENAI__API__KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI__ENDPOINT: ${{ secrets.OPENAI_ENDPOINT }}
-          EMAIL__CONFIRMATION__PASSWORD:  ${{ secrets.EMAIL_CONFIRMATION_PASSWORD }}
-        run: |
-          echo "Secrets have been loaded into environment variables."
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
 
-          # Check each one without exposing values
-          for name in OAUTH_GOOGLE_ID OAUTH_GOOGLE_SECRET OPENAI_API_KEY OPENAI_ENDPOINT; do
+      - name: Verify Secrets
+        run: |
+          echo "Checking secrets..."
+          for name in OAUTH__GOOGLE__ID OAUTH__GOOGLE__SECRET OPENAI__API__KEY OPENAI__ENDPOINT EMAIL__CONFIRMATION__PASSWORD; do
             if [ -z "${!name}" ]; then
               echo "$name is missing!"
               exit 1
@@ -33,5 +35,32 @@ jobs:
               echo "$name is set."
             fi
           done
+          echo "All secrets are available."
 
-          echo "All secrets are available. You can use them in your .NET app like normal."
+  build-and-run-projects:
+    needs: verify-secrets
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [QuizaphFrontend, QuizaphBackend]
+    env: # Secrets again so each matrix job has access
+      OAUTH__GOOGLE__ID: ${{ secrets.OAUTH_GOOGLE_ID }}
+      OAUTH__GOOGLE__SECRET: ${{ secrets.OAUTH_GOOGLE_SECRET }}
+      OPENAI__API__KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI__ENDPOINT: ${{ secrets.OPENAI_ENDPOINT }}
+      EMAIL__CONFIRMATION__PASSWORD: ${{ secrets.EMAIL_CONFIRMATION_PASSWORD }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build Project
+        run: dotnet build path/to/${{ matrix.project }}/${{ matrix.project }}.csproj --configuration Release
+
+      # Run the projects, for testing purposes only
+      # - name: Run Project
+      #   run: dotnet run --project path/to/${{ matrix.project }}/${{ matrix.project }}.csproj

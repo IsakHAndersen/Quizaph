@@ -95,7 +95,7 @@ window.svgInterop = {
                         // Restore original size
                         circle.setAttribute("r", originalRadius);
                         // Restore original fill (if any)
-                        circle.setAttribute("fill", "#0000FF");
+                        circle.setAttribute("fill", "#277DF5");
                     });
                 });
 
