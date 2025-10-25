@@ -156,7 +156,6 @@ C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\ref\
 <<<<<<< HEAD
 C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\QuizaphBackend.MvcApplicationPartsAssemblyInfo.cs
 =======
-C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\QuizaphBackend.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Google.Protobuf.dll
 C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Grpc.Core.Api.dll
 C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Grpc.Net.Client.dll
@@ -194,3 +193,13 @@ C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Poll
 C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Quizaph.ServiceDefaults.dll
 C:\Users\dudis\Source\Repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Quizaph.ServiceDefaults.pdb
 >>>>>>> 946f91a1b9939c8eba2ed00c7e102e74fc2c42b6
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Aspire.Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.HealthChecks.dll
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore.dll
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Npgsql.dll
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Npgsql.DependencyInjection.dll
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\bin\Debug\net8.0\Npgsql.OpenTelemetry.dll
+C:\Users\dudis\source\repos\Quizaph\GeoQuiz\QuizaphBackend\obj\Debug\net8.0\swae.build.ex.cache
