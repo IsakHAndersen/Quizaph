@@ -10,7 +10,6 @@ namespace QuizaphFrontend.Services
             _httpClient = httpClient;
         }
 
-
         public async Task<T> GetQuizData<T>(QuizType type, string dataset)
         {
             var response = await _httpClient.GetAsync($"api/quizzes/data/{type}/{dataset}");

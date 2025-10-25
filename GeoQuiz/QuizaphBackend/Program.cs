@@ -7,6 +7,8 @@ using System.Net;
 using System.Net.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
   
 // Authorization     
 builder.Services.AddAuthorization();
@@ -18,6 +20,7 @@ builder.Services.AddSwaggerGen();
 
 // Add Semantic Kernel Service
 builder.Services.AddScoped<SemanticKernelService>();
+builder.Services.AddScoped<IQuizMappingService, QuizMappingService>();
 
 builder.Services.AddScoped(client =>
 {
@@ -44,6 +47,8 @@ builder.Services.AddDbContext<DBContext>(options =>
            .LogTo(Console.WriteLine, LogLevel.Information);
 });
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 // Seed database
 using (var scope = app.Services.CreateScope())

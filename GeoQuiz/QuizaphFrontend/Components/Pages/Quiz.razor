@@ -4,7 +4,7 @@
 @inject IDialogService DialogService
 @inject CurrentQuizStateService QuizState
 @inject IJSRuntime JS
-@inject HttpService HttpService
+@inject BackendClient HttpService
 @using CommonModels.Enums
 @using CommonModels.QuizModels
 @using QuizaphFrontend.Components.ChildComponents
@@ -105,7 +105,7 @@
                 {
                     case QuizType.WorldCountriesQuiz:
                         <CascadingValue Value="QuizState.CurrentQuizInfo">
-                            <CountriesOfTheWorldComponent />
+                            <CountriesOfTheWorldComponent SelectedQuizMode="selectedMode" OnQuizFinished="ShowEndScreen"/>
                         </CascadingValue>
                         break;
                     case QuizType.TriviaQuiz:
@@ -163,11 +163,21 @@
 
         await DialogService.ShowAsync<BasicDialog>(dialogData.Title, parameters, options);
     }
+
+    public void Dispose()
+    {
+        QuizState.OnResetRequested -= Reset;
+        QuizState.OnShowEndScreen -= ShowEndScreen;
+        QuizState.OnCurrentDatasetChanged -= SelectDataset;
+        QuizState.OnCurrentModeChanged -= SelectMode;
+    }
+
     async Task SelectDataset(QuizDataset quizDataset)
     {
         selectedDataset = quizDataset;
         await QuizState.InvokeDatasetChanged(quizDataset);
     }
+
 
     async Task SelectMode(QuizMode mode)
     {

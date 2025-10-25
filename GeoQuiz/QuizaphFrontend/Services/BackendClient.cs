@@ -6,11 +6,11 @@ using CommonModels.UserModels;
 
 namespace QuizaphFrontend.Services
 {
-    public class HttpService
+    public class BackendClient
     {
         private readonly HttpClient _httpClient;
 
-        public HttpService(HttpClient httpClient)
+        public BackendClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }

@@ -13,5 +13,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonModels\CommonModels.csproj" />
+    <ProjectReference Include="..\Quizaph.ServiceDefaults\Quizaph.ServiceDefaults.csproj" />
   </ItemGroup>
 </Project>

@@ -32,7 +32,6 @@ namespace QuizaphBackend.Services
                 services.AddConsole().SetMinimumLevel(LogLevel.Information));
                 builder.AddOpenAIChatCompletion(_modelId, _apiKey);
             builder.Plugins.AddFromType<TriviaQuizPlugin>("TriviaQuizPlugin");
-
             _kernel = builder.Build();
         }
 
