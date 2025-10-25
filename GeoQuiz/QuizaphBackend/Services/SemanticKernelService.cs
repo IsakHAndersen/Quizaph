@@ -1,68 +1,58 @@
 ﻿using CommonModels.QuizCreationModels.QuizPrompt;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
-using System.ComponentModel;
+using QuizaphBackend.SKPlugins;
+using System.Text.Json;
 
 namespace QuizaphBackend.Services
 {
-
-    public class SemanticKernelService : ISemanticKernelService
+    public class SemanticKernelService
     {
         private readonly Kernel _kernel;
         private readonly IConfiguration _configuration;
-
-        private string apiKey;
-        private string modelId;
-
+        private readonly string _apiKey;
+        private readonly string _modelId;
 
         public SemanticKernelService(IConfiguration configuration)
         {
             _configuration = configuration;
 
-            // Retrieve configuration values
-            var modelConfig = _configuration.GetSection($"OpenAICredentials");
-            apiKey = modelConfig["apiKey"]!;
-            modelId = modelConfig["modelId"]!;
+            _apiKey = _configuration["OpenAI:Api:Key"]
+                ?? throw new ArgumentException("Missing OpenAI:Api:Key in configuration.");
+
+            _modelId = _configuration["OpenAI:ModelId"]
+                ?? throw new ArgumentException("Missing OpenAI:ModelId in configuration.");
+
 
             var builder = Kernel.CreateBuilder();
-            builder.Services.AddLogging(services => services.AddConsole().SetMinimumLevel(LogLevel.Trace));
-            builder.AddOpenAIChatCompletion(modelId, apiKey!);
-            var history = new ChatHistory();
+            builder.Services.AddLogging(services =>
+                services.AddConsole().SetMinimumLevel(LogLevel.Information));
+                builder.AddOpenAIChatCompletion(_modelId, _apiKey);
+            builder.Plugins.AddFromType<TriviaQuizPlugin>("TriviaQuizPlugin");
             _kernel = builder.Build();
-            OpenAIPromptExecutionSettings openAIPromptExecutionSettings = new()
+        }
+
+        public async Task<string> CreateTriviaQuiz(CreateTriviaQuizPrompt createTriviaQuizPrompt)
+        {
+            if (!_kernel.Plugins.TryGetPlugin("TriviaQuizPlugin", out var plugin))
+                throw new InvalidOperationException("TriviaQuizPlugin not registered in kernel.");
+
+            var function = plugin["create_trivia_quiz"];
+
+            var arguments = new KernelArguments
             {
-                FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
+                ["category"] = createTriviaQuizPrompt.Category.ToString(),
+                ["title"] = createTriviaQuizPrompt.Title,
+                ["numberOfQuestions"] = createTriviaQuizPrompt.NumberOfQuestions,
+                ["difficulty"] = createTriviaQuizPrompt.Difficulty,
+                ["instructions"] = createTriviaQuizPrompt.Instruction
             };
-        }
 
-        public async Task CreateTriviaQuiz(CreateTriviaQuizPrompt createTriviaQuizPrompt)
-        {
-           
-           
-           
-        }
-
-        private static async Task<string> RunPromptAsync(Kernel kernel, string promptPath, Dictionary<string, object> args)
-        {
-            var prompt = File.ReadAllText(promptPath);
-            var func = kernel.CreateFunctionFromPrompt(prompt);
-            var result = await kernel.InvokeAsync(func, new KernelArguments(args));
-            return result.ToString();
-        }
-
-        public Task<string> CreateQuizAsync(string promptPath, Dictionary<string, object> args, string? modelOverride = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public class TriviaQuizPlugin
-        {
-            [KernelFunction("create_trivia_quiz")]
-            [Description("Creates a trivia quiz from a given topic and difficulty.")]
-            public static string CreateQuiz(CreateTriviaQuizPrompt createTriviaQuizPrompt)
-                => $"Generate a {difficulty} level quiz about {topic}.";
+            var result = await _kernel.InvokeAsync(function, arguments);
+            return result.GetValue<string>() ?? string.Empty;
         }
     }
-
 }

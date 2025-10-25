@@ -2,9 +2,7 @@
 using CommonModels.QuizCreationModels.QuizPrompt;
 using CommonModels.QuizModels;
 using GeoQuizBackend.EntityFramework;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using QuizaphBackend.Models;
 using QuizaphBackend.Services;
 using System.Text.Json;
 
@@ -15,36 +13,22 @@ namespace QuizaphBackend.Controllers
     public class QuizCreationController : ControllerBase
     {
         private readonly DBContext _context;
-        private readonly ISemanticKernelService _semanticKernelService;
-        public QuizCreationController(DBContext context, ISemanticKernelService semanticKernelService)
+        private readonly SemanticKernelService _semanticKernelService;
+        private readonly QuizMappingService _quizMappingService;
+        public QuizCreationController(DBContext context, SemanticKernelService semanticKernelService, QuizMappingService quizMappingService)
         {
             _context = context;
             _semanticKernelService = semanticKernelService;
+            _quizMappingService = quizMappingService;
         }
 
         [HttpPost("create-trivia-quiz")]
         public async Task<IActionResult> CreateTriviaQuiz([FromBody] CreateTriviaQuiz createTriviaQuiz)
         {
-            var quiz = new TriviaQuiz
-            {
-      
-            };
-            //// Convert manual structure to QuizQuestion entities
-            //var correspondingQuizId = DictionariesStaticData.QuizTypeIdValuePairs[QuizType.TriviaQuiz];
-            //foreach (var manualQuestion in triviaQuizStructure.Questions)
-            //{
-            //    var quizQuestion = new QuizQuestion
-            //    {
-            //        QuizId = triviaQuizStructure.QuizId,
-            //        QuestionText = manualQuestion.QuestionText,
-            //        Options = manualQuestion.Options,  // Assuming Options is a property
-            //        CorrectAnswer = manualQuestion.CorrectAnswer
-            //    };
-            //    createdQuestions.Add(quizQuestion);
-            //    _context.QuizQuestions.Add(quizQuestion);
-            //}
-            //await _context.SaveChangesAsync();
-            return Ok(quiz);
+            var quizDataset = new QuizDataset(createTriviaQuiz);
+            await _context.QuizDatasets.AddAsync(quizDataset);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpPost("create-trivia-quiz-prompt")]
@@ -55,27 +39,17 @@ namespace QuizaphBackend.Controllers
 
             try
             {
-                var quizJson = await _semanticKernelService.CreateQuizAsync(
-                    "QuizPromptFormats/TriviaQuizPrompt.json.txt",
-                    new Dictionary<string, object>
-                    {
-                        ["quizType"] = request.QuizType.ToString(),
-                        ["title"] = request.Title,
-                        ["category"] = request.Category.ToString(),
-                        ["questionAmount"] = request.NumberOfQuestions,
-                        ["instructions"] = request.AdditionalInstructions
-                    }
-                );
+                // Generate quiz JSON using Semantic Kernel and map into appropriate model, lastly save in db and return dataset.
+                var quizJson = await _semanticKernelService.CreateTriviaQuiz(request);
 
-                var quiz = JsonSerializer.Deserialize<TriviaQuiz>(quizJson,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var quizDataset = _quizMappingService.MapTriviaQuizJsonToDataset(quizJson, request);
 
-                if (quiz == null)
+                if (quizDataset == null)
                     return StatusCode(500, "Failed to parse quiz JSON");
-                await _context.SaveChangesAsync();
 
-                // Return to frontend
-                return Ok(quiz);
+                _context.QuizDatasets.Add(quizDataset);
+                await _context.SaveChangesAsync();
+                return Ok(quizDataset);
             }
             catch (Exception ex)
             {

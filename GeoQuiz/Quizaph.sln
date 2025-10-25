@@ -6,7 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizaphFrontend", "QuizaphFrontend\QuizaphFrontend.csproj", "{E22040F8-F9E4-4A3A-9888-9CD2F7866571}"
 	ProjectSection(ProjectDependencies) = postProject
 		{81FE9CD6-23FD-43DA-93BA-4AC94BBD9FBB} = {81FE9CD6-23FD-43DA-93BA-4AC94BBD9FBB}
-		{CF875FB3-4D05-44F1-89B9-A42DB13DB884} = {CF875FB3-4D05-44F1-89B9-A42DB13DB884}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizaphBackend", "QuizaphBackend\QuizaphBackend.csproj", "{CF875FB3-4D05-44F1-89B9-A42DB13DB884}"
@@ -17,6 +16,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonModels", "CommonModels\CommonModels.csproj", "{81FE9CD6-23FD-43DA-93BA-4AC94BBD9FBB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{1F63C0DF-F2CF-44F1-A1FC-C9765F4BA1AF}"
+	ProjectSection(SolutionItems) = preProject
+		deploy.yaml = deploy.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quizaph.AppHost", "Quizaph.AppHost\Quizaph.AppHost.csproj", "{D680ED95-525A-4DAE-BBE7-5867867CD2C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quizaph.ServiceDefaults", "Quizaph.ServiceDefaults\Quizaph.ServiceDefaults.csproj", "{285A3B76-908F-68E7-58D5-22782D65FF3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,9 +46,20 @@ Global
 		{81FE9CD6-23FD-43DA-93BA-4AC94BBD9FBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81FE9CD6-23FD-43DA-93BA-4AC94BBD9FBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81FE9CD6-23FD-43DA-93BA-4AC94BBD9FBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D680ED95-525A-4DAE-BBE7-5867867CD2C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D680ED95-525A-4DAE-BBE7-5867867CD2C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D680ED95-525A-4DAE-BBE7-5867867CD2C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D680ED95-525A-4DAE-BBE7-5867867CD2C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{285A3B76-908F-68E7-58D5-22782D65FF3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{285A3B76-908F-68E7-58D5-22782D65FF3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{285A3B76-908F-68E7-58D5-22782D65FF3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{285A3B76-908F-68E7-58D5-22782D65FF3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1F63C0DF-F2CF-44F1-A1FC-C9765F4BA1AF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {183ADC9D-C68C-49B5-A8BA-7A5CC4E8699B}

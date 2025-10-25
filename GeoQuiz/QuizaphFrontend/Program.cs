@@ -1,12 +1,14 @@
-﻿global using QuizaphBackend.Models;
 using MudBlazor.Services;
 using QuizaphFrontend.Components;
-using QuizaphFrontend.Models;
 using QuizaphFrontend.Services;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -49,16 +51,21 @@ builder.Services.AddMudServices();
 // Your app-specific services
 builder.Services.AddScoped<CurrentQuizStateService>();
 builder.Services.AddScoped<UserClaimsService>();
-builder.Services.AddScoped<HttpService>();
+//builder.Services.AddScoped<BackendClient>();
 
-builder.Services.AddScoped(sp =>
-{
-    var baseAddress = builder.Configuration["ServiceAdresses:QuizaphBackend"]
-                     ?? throw new InvalidOperationException("QuizaphBackend base address not configured.");
-    return new HttpClient { BaseAddress = new Uri(baseAddress) };
-});
+//builder.Services.AddScoped(sp =>
+//{
+//    var baseAddress = builder.Configuration["ServiceAdresses:QuizaphBackend"]
+//                     ?? throw new InvalidOperationException("QuizaphBackend base address not configured.");
+//    return new HttpClient { BaseAddress = new Uri(baseAddress) };
+//});
+
+builder.Services.AddHttpClient<BackendClient>(
+    static client => client.BaseAddress = new("https+http://quizaphbackend"));
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

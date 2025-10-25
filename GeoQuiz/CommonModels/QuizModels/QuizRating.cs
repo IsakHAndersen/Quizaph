@@ -1,4 +1,7 @@
-﻿namespace QuizaphBackend.Models
+﻿
+using CommmonModels.UserModels;
+
+namespace CommonModels.QuizModels
 {
     public class QuizRating
     {

@@ -1,9 +1,7 @@
 ﻿using CommonModels.Enums;
-using CommonModels.QuizCreationModels.QuizManual;
-using CommonModels.QuizCreationModels.QuizPrompt;
+using CommonModels.QuizModels;
 using GeoQuizBackend.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
-using QuizaphBackend.Models;
 using System.Data.Entity;
 
 namespace QuizaphBackend.Controllers
@@ -168,6 +166,5 @@ namespace QuizaphBackend.Controllers
             return Ok(questions);
         }
         #endregion
-
     }
 }

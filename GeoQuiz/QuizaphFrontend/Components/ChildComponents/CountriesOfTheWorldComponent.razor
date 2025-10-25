@@ -1,11 +1,12 @@
 ﻿@using CommonModels.Enums
+@using CommonModels.QuizModels
 @using QuizaphFrontend.Components.MudblazorDialogComponents
 @using QuizaphFrontend.Models.Quizes
 @using QuizaphFrontend.Services
 @inject IJSRuntime JS
 @inject CurrentQuizStateService QuizState
 @inject IDialogService DialogService
-@inject HttpService HttpService
+@inject BackendClient HttpService
 @inject UserClaimsService UserClaimsService
 @inject NavigationManager navigation
 @implements IDisposable

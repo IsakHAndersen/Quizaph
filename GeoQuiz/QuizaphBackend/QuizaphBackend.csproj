@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>4e8091e7-eae4-4678-b5f8-49a34323b859</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.5.2" />
     <PackageReference Include="EntityFramework" Version="6.5.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.6" />
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.65.0" />
@@ -22,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommonModels\CommonModels.csproj" />
+    <ProjectReference Include="..\Quizaph.ServiceDefaults\Quizaph.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>

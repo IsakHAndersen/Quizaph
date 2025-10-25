@@ -1,5 +1,5 @@
 ﻿using CommonModels.Enums;
-using QuizaphFrontend.Models;
+using CommonModels.QuizModels;
 
 namespace QuizaphFrontend.Services
 {

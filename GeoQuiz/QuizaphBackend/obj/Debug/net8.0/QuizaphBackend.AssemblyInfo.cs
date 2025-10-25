@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("4e8091e7-eae4-4678-b5f8-49a34323b859")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuizaphBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5d704622298fc9127ffea892e0bc32abf002e049")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73556115b7d084f2889ba12eae7fc0f847eaa70d")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuizaphBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuizaphBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

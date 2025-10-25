@@ -2,16 +2,29 @@
 using CommonModels.QuizCreationModels.QuizManual;
 using CommonModels.QuizCreationModels.QuizPrompt;
 using CommonModels.QuizModels;
+using CommonModels.UserModels;
 
 namespace QuizaphFrontend.Services
 {
-    public class HttpService
+    public class BackendClient
     {
         private readonly HttpClient _httpClient;
 
-        public HttpService(HttpClient httpClient)
+        public BackendClient(HttpClient httpClient)
         {
-            _httpClient = httpClient;           
+            _httpClient = httpClient;
+        }
+        public async Task<HttpResponseMessage> RegisterUser(CreateUserDTO createUserDTO)
+        {
+            return await _httpClient.PostAsJsonAsync("api/users/register", createUserDTO);
+        }
+        public async Task<HttpResponseMessage> ConfirmEmail(string userId, string token)
+        {
+            return await _httpClient.GetAsync($"api/users/confirm-email?userId={userId}&token={Uri.EscapeDataString(token)}");
+        }
+        public async Task<HttpResponseMessage> ResendVerificationEmail(string email)
+        {
+            return await _httpClient.PostAsJsonAsync("api/users/resend-verification", new { Email = email });
         }
 
         public async Task<List<Quiz>> GetAllQuizzes()
@@ -103,29 +116,26 @@ namespace QuizaphFrontend.Services
             return await response.Content.ReadFromJsonAsync<List<QuizQuestion>>();
         }
 
-        public async Task<TriviaQuiz?> CreateTriviaQuiz(CreateTriviaQuiz createTriviaQuiz)
+        public async Task<bool> CreateTriviaQuiz(CreateTriviaQuiz createTriviaQuiz)
         {
             var response = await _httpClient.PostAsJsonAsync(
-                "api/quizzes/create/trivia-quiz/manual", createTriviaQuiz
+                "api/quizzes/create-trivia-quiz",
+                createTriviaQuiz
             );
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.Content.ReadFromJsonAsync<TriviaQuiz>();
-            }
-            else { return null; }
+            return response.IsSuccessStatusCode;
         }
 
-        public async Task<TriviaQuiz?> CreateTriviaQuizPrompt(CreateTriviaQuizPrompt createTriviaQuizPrompt)
+        public async Task<QuizDataset?> CreateTriviaQuizPrompt(CreateTriviaQuizPrompt createTriviaQuizPrompt)
         {
             var response = await _httpClient.PostAsJsonAsync(
-                "api/QuizCreation/create-quiz",
+                "api/QuizCreation/create-trivia-quiz-prompt",
                 createTriviaQuizPrompt
             );
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<TriviaQuiz>();
+                return await response.Content.ReadFromJsonAsync<QuizDataset>();
             }
-            else { return null; } 
+            else { return null; }
         }
     }
 }

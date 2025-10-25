@@ -1,6 +1,6 @@
 ﻿using CommonModels.Enums;
 
-namespace QuizaphBackend.Models
+namespace CommonModels.QuizModels
 {
     public class QuizStatistic
     {

@@ -1,8 +1,9 @@
-﻿@inject HttpService HttpService
+﻿@inject BackendClient HttpService
 @page "/Create-quiz"
 @using CommonModels.Enums
 @using CommonModels.QuizCreationModels.QuizManual
 @using CommonModels.QuizCreationModels.QuizPrompt
+@using CommonModels.QuizModels
 @using QuizaphFrontend.Services
 @using Microsoft.AspNetCore.Components.Authorization
 @using MudBlazor
@@ -82,7 +83,7 @@
                                              Adornment="Adornment.Start"
                                              AdornmentIcon="@Icons.Material.Filled.BarChart"
                                              Min="1" Max="5" />
-                            <MudTextField @bind-Value="PromptContext" Variant="Variant.Outlined" Label="Additional Context" Placeholder="Optional extra info"
+                            <MudTextField @bind-Value="PromptContext" Variant="Variant.Outlined" Label="Quiz context" Placeholder="Describe the quiz you wish to create"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Info" />
                         }
                         @if (ModeSelection == "Manual")
@@ -173,8 +174,9 @@
     private int PromptDifficulty { get; set; } = 1;
     private string PromptContext { get; set; } = string.Empty;
 
-    // Manual questions
+    // Manual Quiz Specific
     private List<QuizQuestion> ManualQuestions { get; set; } = new();
+    private string Description { get; set; } = string.Empty;
 
     protected override void OnInitialized()
     {
@@ -228,7 +230,7 @@
                 Category = SelectedCategory,
                 Difficulty = PromptDifficulty,
                 NumberOfQuestions = PromptQuestionAmount,
-                AdditionalInstructions = PromptContext
+                Instruction = PromptContext
             };
             await HttpService.CreateTriviaQuizPrompt(quiz);
         }

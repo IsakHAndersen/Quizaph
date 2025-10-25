@@ -1,10 +1,5 @@
 ﻿using CommonModels.QuizCreationModels.BaseModels;
-using QuizaphBackend.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CommonModels.QuizModels;
 
 namespace CommonModels.QuizCreationModels.QuizManual
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace QuizaphBackend.Models
+namespace CommonModels.QuizModels
 {
     public class QuizQuestion
     {
