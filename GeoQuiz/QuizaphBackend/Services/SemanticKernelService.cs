@@ -42,6 +42,7 @@ public class SemanticKernelService
 
             Rules:
             - Produce only valid JSON
+            - Prefer more correct answers for each question, example: "What is the river that flows through egypt". Possible answers should not only be nile river, but also just nile. Or if there are very similar ways to spell a answer, example portugese or portuguese
             - Leave the parameters not related to your generation alone. (e.g., Id, QuizId, Title, QuizType and QuizCategory)
             - DifficultyLevel must match the difficulty specified, and generate the number of questions as specified, unless logically impossible
             - Each question must include Question, CorrectAnswers, DifficultyLevel

@@ -8,6 +8,7 @@ var backend = builder.AddProject<Projects.QuizaphBackend>("quizaphbackend")
     .WithReference(sqlDatabase)
     .WaitFor(sqlDatabase);
 
+
 builder.AddProject<Projects.QuizaphFrontend>("quizaphfrontend")
     .WithReference(backend);
 

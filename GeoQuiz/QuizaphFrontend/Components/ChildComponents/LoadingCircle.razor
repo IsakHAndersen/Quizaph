@@ -1,0 +1,20 @@
+﻿
+@if (Loading == true)
+{
+    <MudProgressCircular Color="Color.Primary" Style="@GetPositionStyle()" Indeterminate="true" />
+}
+
+@code {
+    [Parameter] public bool AbsoluteMiddlePosition { get; set; }
+    [Parameter] public bool Loading { get; set; } = false;
+
+
+    private string GetPositionStyle()
+    {
+        if (AbsoluteMiddlePosition)
+        {
+            return "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);";
+        }
+        return string.Empty;
+    }
+}

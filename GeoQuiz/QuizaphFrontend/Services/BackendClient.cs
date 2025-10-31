@@ -135,18 +135,5 @@ namespace QuizaphFrontend.Services
             );
             return response.IsSuccessStatusCode;
         }
-
-        public async Task<QuizDataset?> CreateTriviaQuizPrompt(CreateTriviaQuizPrompt createTriviaQuizPrompt)
-        {
-            var response = await _httpClient.PostAsJsonAsync(
-                "api/quizcreation/create-trivia-quiz-prompt",
-                createTriviaQuizPrompt
-            );
-
-            if (response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<QuizDataset>();
-
-            return null;
-        }
     }
 }

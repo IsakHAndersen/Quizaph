@@ -1,4 +1,6 @@
+using Microsoft.Extensions.Http.Resilience;
 using MudBlazor.Services;
+using Polly;
 using QuizaphFrontend.Components;
 using QuizaphFrontend.Services;
 using System.Security.Claims;
@@ -60,16 +62,43 @@ builder.Services.AddScoped<CurrentQuizStateService>();
 builder.Services.AddScoped<UserClaimsService>();
 
 builder.Services.AddHttpClient<BackendClient>(
-    static client => {
+    static client =>
+    {
         client.BaseAddress = new("https+http://quizaphbackend");
-        // Added because calls to llm take longer than default 10 sec limit before timeout, TODO: add separate client for long running calls.
-        client.Timeout = TimeSpan.FromMinutes(1);
     });
+
+#pragma warning disable EXTEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+builder.Services
+    .AddHttpClient<OpenAIClient>(client =>
+    {
+        client.BaseAddress = new Uri("https+http://quizaphbackend");
+        client.Timeout = Timeout.InfiniteTimeSpan; // Disable HttpClient's own timeout
+    })
+     .RemoveAllResilienceHandlers()
+    // Add a custom pipeline 1. Max Retries 2. Request Timeout Limit 3. Circuit breaker options
+    .AddResilienceHandler("OpenAIHandler", builder =>
+    {
+        builder.AddRetry(new HttpRetryStrategyOptions
+        {
+            MaxRetryAttempts = 2
+        });
+        builder.AddTimeout(new HttpTimeoutStrategyOptions
+        {
+            Timeout = TimeSpan.FromMinutes(2)
+        });
+        builder.AddCircuitBreaker(new HttpCircuitBreakerStrategyOptions
+        {
+            MinimumThroughput = 5,
+            SamplingDuration = TimeSpan.FromMinutes(5),
+            FailureRatio = 0.9
+        });
+    });
+#pragma warning restore EXTEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+
 
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

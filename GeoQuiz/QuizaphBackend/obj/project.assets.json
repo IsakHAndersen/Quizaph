@@ -4883,11 +4883,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\QuizaphBackend.csproj",
+      "projectUniqueName": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\QuizaphBackend.csproj",
       "projectName": "QuizaphBackend",
-      "projectPath": "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\QuizaphBackend.csproj",
+      "projectPath": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\QuizaphBackend.csproj",
       "packagesPath": "C:\\Users\\dudis\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\obj\\",
+      "outputPath": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\QuizaphBackend\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4908,11 +4908,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\CommonModels\\CommonModels.csproj": {
-              "projectPath": "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\CommonModels\\CommonModels.csproj"
+            "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\CommonModels\\CommonModels.csproj": {
+              "projectPath": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\CommonModels\\CommonModels.csproj"
             },
-            "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\Quizaph.ServiceDefaults\\Quizaph.ServiceDefaults.csproj": {
-              "projectPath": "C:\\Users\\dudis\\source\\repos\\Quizaph\\GeoQuiz\\Quizaph.ServiceDefaults\\Quizaph.ServiceDefaults.csproj"
+            "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\Quizaph.ServiceDefaults\\Quizaph.ServiceDefaults.csproj": {
+              "projectPath": "C:\\Users\\dudis\\Source\\Repos\\Quizaph\\GeoQuiz\\Quizaph.ServiceDefaults\\Quizaph.ServiceDefaults.csproj"
             }
           }
         }
@@ -4927,7 +4927,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -4973,7 +4973,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.2.25502.107/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

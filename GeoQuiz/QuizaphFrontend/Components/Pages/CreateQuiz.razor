@@ -1,4 +1,5 @@
 ﻿@inject BackendClient HttpService
+@inject OpenAIClient OpenAIClient
 @page "/Create-quiz"
 @using CommonModels.Enums
 @using CommonModels.QuizCreationModels.QuizManual
@@ -45,15 +46,18 @@
                         </MudText>
 
                         <!-- Title -->
-                        <MudTextField @bind-Value="QuizTitle" Variant="Variant.Outlined" Label="Quiz Title" Placeholder="Enter quiz title"
+                        <MudTextField @bind-Value="QuizTitle" Variant="Variant.Outlined" Label="Quiz Title" Placeholder="Enter descriptive quiz title"
                                       Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Title" />
 
                         <!-- Category -->
-                        <MudSelect T="QuizCategory" @bind-Value="SelectedCategory" Label="Subject" Variant="Variant.Outlined"
-                                   StartIcon="@Icons.Material.Filled.Category">
+                        <MudSelect T="QuizCategory" Label="Subject" Variant="Variant.Outlined"
+                                   StartIcon="@Icons.Material.Filled.Category"
+                                   @bind-Value="SelectedCategory">
                             @foreach (QuizCategory category in Enum.GetValues(typeof(QuizCategory)))
                             {
-                                <MudSelectItem T="QuizCategory" Value="@category">@category.ToString()</MudSelectItem>
+                                <MudSelectItem T="QuizCategory" Value="@category">
+                                    @HelperMethods.SplitByCamelCase(category.ToString())
+                                </MudSelectItem>
                             }
                         </MudSelect>
 
@@ -148,8 +152,9 @@
                                 Add Question
                             </MudButton>
                         }
+                        <QuizaphFrontend.Components.ChildComponents.LoadingCircle Loading="IsLoading" AbsoluteMiddlePosition="true" />
                         <!-- Submit -->
-                        <MudButton Variant="Variant.Filled" Color="Color.Success" Class="mt-4" StartIcon="@Icons.Material.Filled.CheckCircle" OnClick="SubmitQuizCreation">
+                        <MudButton Variant="Variant.Filled" Disabled="@IsLoading" Color="Color.Success" Class="mt-4" StartIcon="@Icons.Material.Filled.CheckCircle" OnClick="SubmitQuizCreation">
                             Create Quiz
                         </MudButton>
 
@@ -177,6 +182,9 @@
     // Manual Quiz Specific
     private List<QuizQuestion> ManualQuestions { get; set; } = new();
     private string Description { get; set; } = string.Empty;
+
+    // Loading boolean
+    private bool IsLoading { get; set; } = false;
 
     protected override void OnInitialized()
     {
@@ -210,31 +218,53 @@
 
     private async Task SubmitQuizCreation()
     {
-        if (ModeSelection == "Manual")
+        IsLoading = true;
+        try
         {
-            var quiz = new CreateTriviaQuiz
+            if (ModeSelection == "Manual")
             {
-                QuizType = selectedQuizType,
-                Title = QuizTitle,
-                Category = SelectedCategory,
-                Questions = ManualQuestions
-            };
-            await HttpService.CreateTriviaQuiz(quiz);
+                var quiz = new CreateTriviaQuiz
+                {
+                    QuizType = selectedQuizType,
+                    Title = QuizTitle,
+                    Category = SelectedCategory,
+                    Questions = ManualQuestions
+                };
+                await HttpService.CreateTriviaQuiz(quiz);
+            }
+            else if (ModeSelection == "Prompt")
+            {
+                var quiz = new CreateTriviaQuizPrompt
+                {
+                    QuizType = selectedQuizType,
+                    Title = QuizTitle,
+                    Category = SelectedCategory,
+                    Difficulty = PromptDifficulty,
+                    NumberOfQuestions = PromptQuestionAmount,
+                    Instruction = PromptContext
+                };
+                await OpenAIClient.CreateTriviaQuizPrompt(quiz);
+            }
         }
-        else if (ModeSelection == "Prompt")
+        finally
         {
-            var quiz = new CreateTriviaQuizPrompt
-            {
-                QuizType = selectedQuizType,
-                Title = QuizTitle,
-                Category = SelectedCategory,
-                Difficulty = PromptDifficulty,
-                NumberOfQuestions = PromptQuestionAmount,
-                Instruction = PromptContext
-            };
-            await HttpService.CreateTriviaQuizPrompt(quiz);
+            ResetForm();
+            IsLoading = false;
         }
     }
+
+    private void ResetForm()
+    {
+        QuizTitle = string.Empty;
+        SelectedCategory = QuizCategory.GeneralKnowledge;
+        PromptQuestionAmount = 10;
+        PromptDifficulty = 1;
+        PromptContext = string.Empty;
+        ManualQuestions.Clear();
+        for (int i = 0; i < 5; i++)
+            ManualQuestions.Add(new QuizQuestion { Question = "", CorrectAnswers = new List<string> { "" } });
+    }
+
 }
 
 
