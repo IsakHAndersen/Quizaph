@@ -25,7 +25,7 @@ namespace QuizaphBackend.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetQuizById(int id)
+        public IActionResult GetQuizById(Guid id)
         {
             var quiz = _context.Quizzes.FirstOrDefault(q => q.Id == id);
             if (quiz == null) return NotFound();
@@ -35,7 +35,7 @@ namespace QuizaphBackend.Controllers
 
         #region Quiz Result Endpoints
         [HttpGet("{userId}/quiz-results")]
-        public IActionResult GetAllResults(int userId)
+        public IActionResult GetAllResults(Guid userId)
         {
             var results = _context.QuizResults
                 .Where(r => r.UserId == userId)
@@ -45,7 +45,7 @@ namespace QuizaphBackend.Controllers
         }
 
         [HttpGet("{userId}/completed-quizzes")]
-        public IActionResult GetCompletedQuizzes(int userId)
+        public IActionResult GetCompletedQuizzes(Guid userId)
         {
             var completed =  _context.QuizResults
                 .Where(r => r.UserId == userId && r.IsCompleted)
@@ -60,7 +60,7 @@ namespace QuizaphBackend.Controllers
         }
 
         [HttpGet("{userId}/quiz-results/{quizType}/{quizMode}")]
-        public IActionResult GetBestQuizResult(int userId, QuizType quizType, QuizMode quizMode)
+        public IActionResult GetBestQuizResult(Guid userId, QuizType quizType, QuizMode quizMode)
         {
             var result = _context.QuizResults
                 .Where(r => r.UserId == userId && r.QuizType == quizType && r.QuizMode == quizMode)
@@ -115,7 +115,7 @@ namespace QuizaphBackend.Controllers
 
         #region QuizRules Endpoints
         [HttpGet("quiz/{quizId}/rules")]
-        public IActionResult GetQuizRules(int quizId)
+        public IActionResult GetQuizRules(Guid quizId)
         {
             var result = _context.QuizRules.Where(a => a.QuizId == quizId).ToList();
             if (result == null)
@@ -125,40 +125,41 @@ namespace QuizaphBackend.Controllers
         #endregion
 
         #region Quiz Dataset Endpoints
-        [HttpGet("quiz/{quizId}/datasets")]
-        public IActionResult GetQuizDataSets(int quizId)
+        [HttpGet("quiz/{quiztype}/datasets")]
+        public IActionResult GetQuizDataSets(QuizType quiztype)
         {
             var datasets = _context.QuizDatasets
-                .Where(ds => ds.QuizId == quizId)
+                .Where(ds => ds.QuizType == quiztype)
                 .ToList(); // returns the full entity objects
 
             if (!datasets.Any())
-                return NotFound($"No datasets found for QuizId {quizId}.");
+                return NotFound($"No datasets found for quiz type: {quiztype.ToString()}.");
 
             return Ok(datasets);
         }
 
-        [HttpGet("quiz/{quizId}/datasets/{datasetId}")]
-        public IActionResult GetQuizDataSet(int quizId, int datasetId)
+        [HttpGet("quiz/{quiztype}/datasets/{datasetId}")]
+        public IActionResult GetQuizDataSet(QuizType quiztype, Guid datasetId)
         {
             var dataset = _context.QuizDatasets
                 .Include(ds => ds.Questions)
-                .FirstOrDefault(ds => ds.QuizId == quizId && ds.Id == datasetId);
+                .FirstOrDefault(ds => ds.QuizType == quiztype && ds.Id == datasetId);
 
             if (dataset == null)
-                return NotFound($"No dataset {datasetId} found for QuizId {quizId}.");
+                return NotFound($"No dataset {datasetId} found for quiz type: {quiztype}.");
 
             return Ok(dataset);
         }
 
-        [HttpGet("quiz/{quizId}/datasets/{datasetId}/questions")]
-        public IActionResult GetQuizQuestions(int quizId, int datasetId)
+        [HttpGet("quiz/{quiztype}/datasets/{datasetId}/questions")]
+        public IActionResult GetQuizQuestions(QuizType quiztype, Guid datasetId)
         {
             var datasetExists = _context.QuizDatasets
-                .Any(ds => ds.QuizId == quizId && ds.Id == datasetId);
+                .Any(ds => ds.QuizType == quiztype && ds.Id == datasetId);
 
             if (!datasetExists)
-                return NotFound($"No dataset {datasetId} found for QuizId {quizId}.");
+                return NotFound($"No dataset {datasetId} found for quiz type: {quiztype}.");
+
             var questions = _context.QuizQuestions
                 .Where(q => q.QuizDataSetId == datasetId)
                 .ToList();

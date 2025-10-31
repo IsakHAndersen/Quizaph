@@ -4,6 +4,7 @@ using CommonModels.QuizModels;
 using GeoQuizBackend.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 using QuizaphBackend.Services;
+using QuizaphBackend.SKInstructions;
 using System.Text.Json;
 
 namespace QuizaphBackend.Controllers
@@ -14,12 +15,10 @@ namespace QuizaphBackend.Controllers
     {
         private readonly DBContext _context;
         private readonly SemanticKernelService _semanticKernelService;
-        private readonly QuizMappingService _quizMappingService;
-        public QuizCreationController(DBContext context, SemanticKernelService semanticKernelService, QuizMappingService quizMappingService)
+        public QuizCreationController(DBContext context, SemanticKernelService semanticKernelService)
         {
             _context = context;
             _semanticKernelService = semanticKernelService;
-            _quizMappingService = quizMappingService;
         }
 
         [HttpPost("create-trivia-quiz")]
@@ -36,25 +35,34 @@ namespace QuizaphBackend.Controllers
         {
             if (request == null)
                 return BadRequest("Invalid request");
-
             try
             {
-                // Generate quiz JSON using Semantic Kernel and map into appropriate model, lastly save in db and return dataset.
-                var quizJson = await _semanticKernelService.CreateTriviaQuiz(request);
+                var instructions = new TriviaQuizPromptParameters
+                {
+                    Instruction = request.Instruction,
+                    NumberOfQuestions = request.NumberOfQuestions,
+                    DifficultyLevel = request.Difficulty
+                };
+                // Generate questions using Semantic Kernel
+                var quizJson = await _semanticKernelService.CreateTriviaQuiz(instructions);
 
-                var quizDataset = _quizMappingService.MapTriviaQuizJsonToDataset(quizJson, request);
+                var quizQuestions = JsonSerializer.Deserialize<List<QuizQuestion>>(quizJson, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
 
-                if (quizDataset == null)
-                    return StatusCode(500, "Failed to parse quiz JSON");
+                // Create quiz dataset and save to database
+                var dataset = new QuizDataset(request.Title, request.Category, request.QuizType, quizQuestions ?? new List<QuizQuestion>());
 
-                _context.QuizDatasets.Add(quizDataset);
+                _context.QuizDatasets.Add(dataset);
                 await _context.SaveChangesAsync();
-                return Ok(quizDataset);
+                return Ok(dataset);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Quiz generation failed: {ex.Message}");
             }
         }
+
     }
 }

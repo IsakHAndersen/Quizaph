@@ -23,12 +23,6 @@ namespace CommonModels.QuizModels
 
             return maxScore;
         }
-
-        public static readonly Dictionary<QuizType, int> QuizIdByQuizType = new()
-        {
-            { QuizType.WorldCountriesQuiz, 1 },
-            { QuizType.TriviaQuiz, 2 },
-        };
     }
 
 }

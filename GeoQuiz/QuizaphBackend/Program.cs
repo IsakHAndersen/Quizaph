@@ -20,7 +20,6 @@ builder.Services.AddSwaggerGen();
 
 // Add Semantic Kernel Service
 builder.Services.AddScoped<SemanticKernelService>();
-builder.Services.AddScoped<IQuizMappingService, QuizMappingService>();
 
 builder.Services.AddScoped(client =>
 {
@@ -46,6 +45,19 @@ builder.Services.AddDbContext<DBContext>(options =>
            .EnableSensitiveDataLogging()
            .LogTo(Console.WriteLine, LogLevel.Information);
 });
+
+
+// Cors
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
@@ -60,10 +72,11 @@ using (var scope = app.Services.CreateScope())
 // Middleware pipeline
 if (app.Environment.IsDevelopment())
 {
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
+app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

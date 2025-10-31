@@ -38,8 +38,15 @@ builder.Services.AddAuthentication("Cookies")
         options.Scope.Add("email");
         options.Events.OnCreatingTicket = ctx =>
         {
-            string picuri = ctx.User.GetProperty("picture").GetString() ?? "";
-            ctx.Identity?.AddClaim(new Claim("picture", picuri));
+            string id = ctx.Principal.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+            string email = ctx.Principal.FindFirstValue(ClaimTypes.Email) ?? "";
+            string picture = ctx.User.GetProperty("picture").GetString() ?? "";
+
+            ctx.Identity?.AddClaim(new Claim("picture", picture));
+            ctx.Identity?.AddClaim(new Claim("AppUserId", id));
+
+            // All logged-in users automatically get "Membership"
+            ctx.Identity?.AddClaim(new Claim(ClaimTypes.Role, "Membership"));
             return Task.CompletedTask;
         };
     });
@@ -51,17 +58,13 @@ builder.Services.AddMudServices();
 // Your app-specific services
 builder.Services.AddScoped<CurrentQuizStateService>();
 builder.Services.AddScoped<UserClaimsService>();
-//builder.Services.AddScoped<BackendClient>();
-
-//builder.Services.AddScoped(sp =>
-//{
-//    var baseAddress = builder.Configuration["ServiceAdresses:QuizaphBackend"]
-//                     ?? throw new InvalidOperationException("QuizaphBackend base address not configured.");
-//    return new HttpClient { BaseAddress = new Uri(baseAddress) };
-//});
 
 builder.Services.AddHttpClient<BackendClient>(
-    static client => client.BaseAddress = new("https+http://quizaphbackend"));
+    static client => {
+        client.BaseAddress = new("https+http://quizaphbackend");
+        // Added because calls to llm take longer than default 10 sec limit before timeout, TODO: add separate client for long running calls.
+        client.Timeout = TimeSpan.FromMinutes(1);
+    });
 
 var app = builder.Build();
 

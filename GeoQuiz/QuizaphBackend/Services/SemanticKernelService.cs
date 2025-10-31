@@ -1,58 +1,79 @@
 ﻿using CommonModels.QuizCreationModels.QuizPrompt;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.AI;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.ChatCompletion;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
-using QuizaphBackend.SKPlugins;
+using QuizaphBackend.SKInstructions;
 using System.Text.Json;
 
-namespace QuizaphBackend.Services
+public class SemanticKernelService
 {
-    public class SemanticKernelService
+    private readonly Kernel _kernel;
+    private readonly IChatClient _chatClient;
+
+    public SemanticKernelService(IConfiguration configuration)
     {
-        private readonly Kernel _kernel;
-        private readonly IConfiguration _configuration;
-        private readonly string _apiKey;
-        private readonly string _modelId;
+        var apiKey = configuration["OpenAI:Api:Key"]
+            ?? throw new ArgumentException("Missing OpenAI:Api:Key in configuration.");
+        var modelId = configuration["OpenAI:ModelId"]
+            ?? throw new ArgumentException("Missing OpenAI:ModelId in configuration.");
 
-        public SemanticKernelService(IConfiguration configuration)
-        {
-            _configuration = configuration;
+        // Initialize Kernel with OpenAI Chat Client
+        _kernel = Kernel.CreateBuilder()
+            .AddOpenAIChatClient(modelId, apiKey)
+            .Build();
 
-            _apiKey = _configuration["OpenAI:Api:Key"]
-                ?? throw new ArgumentException("Missing OpenAI:Api:Key in configuration.");
+        // Retrieve the IChatClient service
+        _chatClient = _kernel.GetRequiredService<IChatClient>();
+    }
 
-            _modelId = _configuration["OpenAI:ModelId"]
-                ?? throw new ArgumentException("Missing OpenAI:ModelId in configuration.");
+    public async Task<string> CreateTriviaQuiz(TriviaQuizPromptParameters promptParameters)
+    {
+        if (promptParameters == null) throw new ArgumentNullException(nameof(promptParameters));
 
+        // Generate JSON schema for QuizDataset
+        var quizSchema = GenerateSchema(typeof(CommonModels.QuizModels.QuizQuestion));
 
-            var builder = Kernel.CreateBuilder();
-            builder.Services.AddLogging(services =>
-                services.AddConsole().SetMinimumLevel(LogLevel.Information));
-                builder.AddOpenAIChatCompletion(_modelId, _apiKey);
-            builder.Plugins.AddFromType<TriviaQuizPlugin>("TriviaQuizPlugin");
-            _kernel = builder.Build();
-        }
+        // Build the prompt for the LLM
+        var promptText = $"""
+            You are a professional quiz creator. Use the following quiz creation object as context to create a new trivia quiz:
+            {JsonSerializer.Serialize(promptParameters, new JsonSerializerOptions { WriteIndented = true })}
 
-        public async Task<string> CreateTriviaQuiz(CreateTriviaQuizPrompt createTriviaQuizPrompt)
-        {
-            if (!_kernel.Plugins.TryGetPlugin("TriviaQuizPlugin", out var plugin))
-                throw new InvalidOperationException("TriviaQuizPlugin not registered in kernel.");
+            Generate an array of questions that follow this .NET model:
+            {quizSchema} but only fill in the Difficulty, Question, and CorrectAnswers fields for each question.
 
-            var function = plugin["create_trivia_quiz"];
+            Rules:
+            - Produce only valid JSON
+            - Leave the parameters not related to your generation alone. (e.g., Id, QuizId, Title, QuizType and QuizCategory)
+            - DifficultyLevel must match the difficulty specified, and generate the number of questions as specified, unless logically impossible
+            - Each question must include Question, CorrectAnswers, DifficultyLevel
+            - Do not hallucinate properties, only use those defined in the model
+            - DifficultyLevel must be an integer from 1 (easy) to 5 (hard)
+            - A question may have more than one correct answer if it makes sense
+            - Generate the number of questions specified in the prompt, unless the topic logically limits the possible questions (e.g., 'Name the solar system planets')
+            - CorrectAnswers must be an array of strings; do not translate answers into other languages 
+            """;
 
-            var arguments = new KernelArguments
+        // Call the LLM to generate the quiz JSON
+        var response = await _chatClient.GetResponseAsync(new[] { new ChatMessage(ChatRole.User, promptText) });
+        return response.Text;
+    }
+
+    private static string GenerateSchema(Type type)
+    {
+        var props = type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+        var schema = props.ToDictionary(
+            p => p.Name,
+            p =>
             {
-                ["category"] = createTriviaQuizPrompt.Category.ToString(),
-                ["title"] = createTriviaQuizPrompt.Title,
-                ["numberOfQuestions"] = createTriviaQuizPrompt.NumberOfQuestions,
-                ["difficulty"] = createTriviaQuizPrompt.Difficulty,
-                ["instructions"] = createTriviaQuizPrompt.Instruction
-            };
+                if (p.PropertyType.IsGenericType &&
+                    p.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+                {
+                    var elementType = p.PropertyType.GetGenericArguments()[0];
+                    return $"List<{elementType.Name}>";
+                }
 
-            var result = await _kernel.InvokeAsync(function, arguments);
-            return result.GetValue<string>() ?? string.Empty;
-        }
+                return p.PropertyType.Name;
+            });
+
+        return JsonSerializer.Serialize(schema, new JsonSerializerOptions { WriteIndented = true });
     }
 }

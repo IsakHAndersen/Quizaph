@@ -2,8 +2,8 @@
 {
     public class QuizRule
     {
-        public int Id { get; set; }
-        public int QuizId { get; set; }
+        public Guid Id { get; set; }
+        public Guid QuizId { get; set; }
         public string Rule { get; set; } = string.Empty;
 
         public Quiz Quiz { get; set; } = null!;

@@ -1,24 +1,46 @@
-﻿using CommonModels.QuizCreationModels.QuizManual;
+﻿using CommonModels.Enums;
+using CommonModels.QuizCreationModels.QuizManual;
 
 namespace CommonModels.QuizModels
 {
     public class QuizDataset
     {
-        public int Id { get; set; }
-        public int QuizId { get; set; }
-        public Quiz Quiz { get; set; } = default!;
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; } = string.Empty;
-        public List<QuizQuestion> Questions { get; set; } = new();
+        public List<QuizQuestion> Questions { get; set; } = new List<QuizQuestion>();
         public int MaxScore => Questions?.Count ?? 0;
+        public QuizCategory QuizCategory { get; set; }
+        public QuizType QuizType { get; set; }
 
         public QuizDataset()
         {
             
         }
+        public QuizDataset(string title, QuizCategory quizCategory, QuizType quizType, List<QuizQuestion> quizQuestions)
+        {
+            Title = title;
+            QuizCategory = quizCategory;
+            QuizType = quizType;
+            quizQuestions.ForEach(q =>
+                {
+                    q.QuizDataSetId = Id;
+                    q.QuizDataset = this;
+                }
+            );
+            Questions = quizQuestions;
+        }
+
         public QuizDataset(CreateTriviaQuiz createTriviaQuiz)
         {
-            QuizId = QuizStaticData.QuizIdByQuizType[createTriviaQuiz.QuizType];
+            QuizType = createTriviaQuiz.QuizType;
+            QuizCategory = createTriviaQuiz.Category;
             Title = createTriviaQuiz.Title;
+            createTriviaQuiz.Questions.ForEach(q =>
+            {
+                q.QuizDataSetId = Id;
+                q.QuizDataset = this;
+            }
+            );
             Questions = createTriviaQuiz.Questions;
         }
     }

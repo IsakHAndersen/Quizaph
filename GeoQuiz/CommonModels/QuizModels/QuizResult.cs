@@ -7,12 +7,12 @@ namespace CommonModels.QuizModels
     public class QuizResult
     {
         // Primary key for each attempt
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
 
         // Foreign key to user
         public User User { get; set; } = default!;
-        public int UserId { get; set; } 
+        public Guid UserId { get; set; } 
 
         // Quiz info
         public QuizType QuizType { get; set; }
@@ -26,7 +26,7 @@ namespace CommonModels.QuizModels
 
         public QuizResult() { }
 
-        public QuizResult(QuizType quizType, QuizMode quizMode, int userId, int score, TimeSpan? timeTaken, int maxScore)
+        public QuizResult(QuizType quizType, QuizMode quizMode, Guid userId, int score, TimeSpan? timeTaken, int maxScore)
         {
             QuizType = quizType;
             QuizMode = quizMode;

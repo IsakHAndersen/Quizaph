@@ -105,7 +105,7 @@
                 {
                     case QuizType.WorldCountriesQuiz:
                         <CascadingValue Value="QuizState.CurrentQuizInfo">
-                            <CountriesOfTheWorldComponent SelectedQuizMode="selectedMode" OnQuizFinished="ShowEndScreen"/>
+                            <CountriesOfTheWorldComponent/>
                         </CascadingValue>
                         break;
                     case QuizType.TriviaQuiz:
@@ -130,7 +130,7 @@
     protected override async Task OnInitializedAsync()
     {
         var rules = await HttpService.GetQuizRules(QuizState.CurrentQuizInfo.Id);
-        var availableDatasets = await HttpService.GetQuizDataSets(QuizState.CurrentQuizInfo.Id);
+        var availableDatasets = await HttpService.GetQuizDataSets(QuizState.CurrentQuizInfo.QuizType);
         if (availableDatasets != null)
         {
             this.availableDatasets = availableDatasets;
@@ -178,12 +178,12 @@
         await QuizState.InvokeDatasetChanged(quizDataset);
     }
 
-
     async Task SelectMode(QuizMode mode)
     {
         selectedMode = mode;
         await QuizState.InvokeModeChanged(mode);
     }
+
     async Task Reset()
     {
         await QuizState.InvokeRequestReset();

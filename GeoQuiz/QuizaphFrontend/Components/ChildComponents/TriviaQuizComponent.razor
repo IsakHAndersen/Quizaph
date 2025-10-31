@@ -100,7 +100,7 @@
     private async Task OnDatasetChanged(QuizDataset dataset)
     {
         SelectedDataset = dataset;
-        var questions = await HttpService.GetQuizQuestions(QuizInfo.Id, dataset.Id);
+        var questions = await HttpService.GetQuizQuestions(QuizInfo.QuizType, dataset.Id);
 
         if (questions == null || !questions.Any())
             return;

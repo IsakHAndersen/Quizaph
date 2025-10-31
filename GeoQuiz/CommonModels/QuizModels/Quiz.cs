@@ -6,8 +6,8 @@ namespace CommonModels.QuizModels
 {
     public class Quiz
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
+        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
         public User User { get; set; } = default!;
         public int TimesTaken { get; set; } = 0;
         [Required]
@@ -20,7 +20,9 @@ namespace CommonModels.QuizModels
         [Required]
         public string ImagePath { get; set; } = string.Empty;
         [Required]
-        public QuizCategory QuizCategory { get; set; }
+
+        // Only set category for quiztypes that are not versatile eg. CountriesOfTheWorld
+        public QuizCategory QuizCategory { get; set; } = QuizCategory.GeneralKnowledge;
         public List<QuizResult> QuizResults { get; set; } = new();
         public List<QuizRating> QuizRatings { get; set; } = new();
         public QuizMode QuizModes { get; set; } = QuizMode.None;
@@ -33,7 +35,7 @@ namespace CommonModels.QuizModels
         }
 
         public Quiz(
-        int userId,
+        Guid userId,
         string title,
         string description,
         string imagePath,

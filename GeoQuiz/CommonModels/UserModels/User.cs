@@ -4,7 +4,7 @@ namespace CommmonModels.UserModels
 {
     public class User
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public DateTime RegisteredAt { get; set; }
         public ICollection<QuizResult> QuizResults { get; set; } = new List<QuizResult>();
