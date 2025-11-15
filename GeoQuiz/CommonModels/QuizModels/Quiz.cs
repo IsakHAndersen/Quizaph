@@ -1,4 +1,4 @@
-﻿using CommmonModels.UserModels;
+﻿using CommonModels.UserModels;
 using CommonModels.Enums;
 using System.ComponentModel.DataAnnotations;
 

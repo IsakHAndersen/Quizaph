@@ -7,7 +7,7 @@
 @inject CurrentQuizStateService QuizState
 @inject IDialogService DialogService
 @inject BackendClient HttpService
-@inject UserClaimsService UserClaimsService
+@inject IAuthService AuthService
 @inject NavigationManager navigation
 @implements IDisposable
 
@@ -163,7 +163,7 @@
     protected override void OnInitialized()
     {
         QuizState.OnResetRequested += Reset;
-        QuizState.OnShowEndScreen += ShowEndScreen;
+        QuizState.OnEndQuiz += EndQuiz;
         QuizState.OnCurrentModeChanged += OnModeChanged;
         RetrieveQuizData();
         TotalAnswers = CountryQuizData.Countries.Count();
@@ -263,7 +263,7 @@
                     if (QuizTimer == 0)
                     {
                         timerPaused = true;
-                        await ShowEndScreen();
+                        await EndQuiz();
                     }
                 }
             }
@@ -289,7 +289,7 @@
         if (quizLives.All(l => l.IsLost))
         {
             // All lives lost, end the quiz
-            _ = ShowEndScreen();
+            _ = EndQuiz();
         }
     }
     #endregion 
@@ -298,7 +298,7 @@
     public void Dispose()
     {
         QuizState.OnResetRequested -= Reset;
-        QuizState.OnShowEndScreen -= ShowEndScreen;
+        QuizState.OnEndQuiz -= EndQuiz;
         QuizState.OnCurrentModeChanged -= OnModeChanged;
         _timerCts?.Cancel();
     }
@@ -331,7 +331,7 @@
             await JS.InvokeVoidAsync("svgInterop.enablePracticeHover");
         else
             await JS.InvokeVoidAsync("svgInterop.disablePracticeHover");
-            
+
         await Reset();
     }
     public async void RandomModeNextCountry()
@@ -343,7 +343,7 @@
         if (unguessed.Count == 0)
         {
             Console.WriteLine("Random mode finished!");
-            await ShowEndScreen();
+            await EndQuiz();
             return;
         }
 
@@ -351,7 +351,7 @@
         Console.WriteLine($"Next country to guess: {RandomModeCountryToGuess.CountryName} ({RandomModeCountryToGuess.Id})");
     }
 
-    private async Task ShowEndScreen()
+    private async Task EndQuiz()
     {
         if (fullScreenMode)
         {
@@ -364,9 +364,21 @@
             Score = GuessedAnswers,
             MaxScore = TotalAnswers,
         };
+
+        var bestResult = await HttpService.GetBestUserQuizResult(QuizInfo.QuizType, SelectedMode);
+        bool newBest = false;
+        if (bestResult != null)
+        {
+            newBest = (bestResult.Score > GuessedAnswers);
+        } 
+        // Call backend to store result
+        HttpService.CreateQuizResult(result);
+       
+
         var parameters = new DialogParameters
         {
             { nameof(EndScreenDialog.QuizResult), result },
+            { nameof(EndScreenDialog.IsNewPersonalBest), newBest }
         };
 
         var options = new DialogOptions { MaxWidth = MaxWidth.Medium, CloseButton = true };
@@ -424,7 +436,6 @@
         return $"white-space: nowrap; background-color: {bgColor}; padding: 4px 8px; border-radius: 4px; margin: 4px; margin-bottom: 12px;";
     }
 
-
     private async Task OnSearchKeyUp(KeyboardEventArgs args)
     {
         if (timerPaused) return;
@@ -454,7 +465,7 @@
 
             if (GuessedAnswers == TotalAnswers)
             {
-                await ShowEndScreen();
+                await EndQuiz();
             }
         }
     }

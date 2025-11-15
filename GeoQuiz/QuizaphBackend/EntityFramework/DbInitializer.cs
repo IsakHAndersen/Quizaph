@@ -1,4 +1,4 @@
-﻿using CommmonModels.UserModels;
+﻿using CommonModels.UserModels;
 using CommonModels.Enums;
 using CommonModels.QuizModels;
 using GeoQuizBackend.EntityFramework;
@@ -324,7 +324,7 @@ namespace QuizaphBackend.EntityFramework
                     Id = userId,
                     RegisteredAt = DateTime.Now,
                     Email = "examplemail@gmail.com",
-                    Name = "Isak",
+                    Username = "Isak",
                 }
             };
 

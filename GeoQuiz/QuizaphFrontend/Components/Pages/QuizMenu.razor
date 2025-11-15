@@ -6,7 +6,7 @@
 @using QuizaphFrontend.Services
 @using Microsoft.AspNetCore.Components.Authorization
 @inject AuthenticationStateProvider AuthStateProvider
-@inject UserClaimsService UserClaimsService
+@inject IAuthService AuthService
 
 
 
@@ -142,7 +142,7 @@
     protected override async Task OnInitializedAsync()
     {
         quizzes = await HttpService.GetAllQuizzes();
-        userId = await UserClaimsService.GetUserIdAsync();
+        userId = await AuthService.GetUserIdAsync();
         await ApplyFilters(); // Populate filtered and visible quizzes
     }
 

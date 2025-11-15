@@ -67,7 +67,7 @@
     protected override void OnInitialized()
     {
         QuizState.OnResetRequested += Reset;
-        QuizState.OnShowEndScreen += ShowEndScreen;
+        QuizState.OnEndQuiz += ShowEndScreen;
         QuizState.OnCurrentDatasetChanged += OnDatasetChanged;
     }
 
@@ -113,7 +113,7 @@
     public void Dispose()
     {
         QuizState.OnResetRequested -= Reset;
-        QuizState.OnShowEndScreen -= ShowEndScreen;
+        QuizState.OnEndQuiz -= ShowEndScreen;
     }
 
     public async Task Reset()

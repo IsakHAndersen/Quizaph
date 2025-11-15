@@ -1,9 +1,13 @@
 ﻿@page "/SignUp"
 @using CommonModels.UserModels
 @using QuizaphFrontend.Services
+@using System.ComponentModel.DataAnnotations
 @layout EmptyLayout
 @inject NavigationManager Navigation
-@inject BackendClient HttpService
+@inject BackendClient BackendClient
+@inject IJSRuntime JS
+@inject IConfiguration Configuration
+
 <MudPaper Square="true" style="background-color: transparent;" Elevation="0">
     <MudIconButton Icon=@Icons.Material.Filled.Home Color="Color.Primary" Variant="Variant.Filled"
                    Style="text-transform: none; margin-left: 20px; margin-bottom: 10px;" OnClick="@NavigateToMainPage">
@@ -16,17 +20,22 @@
                     Welcome To Quizaph
                 </MudText>
 
-                <!-- Email/Password Fields -->
-                <MudTextField @bind-Value="registerRequestObject.Email" Label="Email"
-                              Variant="Variant.Outlined" Margin="Margin.Dense" />
-                <MudTextField @bind-Value="registerRequestObject.Password" InputType="@PasswordInput" Label="Password"
-                              Variant="Variant.Outlined" Margin="Margin.Dense" />
-                <MudTextField @bind-Value="registerRequestObject.ConfirmPassword" InputType="@PasswordInput"
-                              Label="Confirm Password" Variant="Variant.Outlined" Margin="Margin.Dense" />
-                <MudButton Style="width: 120px; align-self: center" Color="Color.Primary" OnClick="@Register"
-                           Variant="Variant.Text">
-                    Continue
-                </MudButton>
+                <!-- Username/Email/Password Fields -->
+                <form action="@($"{BackendUrl}/api/users/register")" method="post">
+                        <input type="text" name="username" placeholder="Username" style="width:100%; padding: 8px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc;" />
+
+                        <input type="email" name="email" placeholder="Email" style="width:100%; padding: 8px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc;" />
+
+                        <input type="password" name="password" placeholder="Password" style="width:100%; padding: 8px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc;" />
+
+                        <input type="password" name="confirmPassword" placeholder="Confirm Password" style="width:100%; padding: 8px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc;" />
+
+                        <button type="submit"
+                                class="mud-button-root mud-button mud-button-filled mud-button-filled-primary"
+                                style="width:120px; margin-top: 10px;">
+                            Sign up
+                        </button>
+                </form>
 
                 <MudDivider DividerType="DividerType.Middle" Class="my-2" />
 
@@ -61,7 +70,7 @@
                 <!-- Remember Me -->
                 <MudStack Spacing="2" Row="true" AlignItems="AlignItems.Center" Style="margin-left: 5px;">
                     <MudText>Remember me?</MudText>
-                    <MudCheckBox @bind-Value="registerRequestObject.RememberMe" Color="Color.Primary"
+                    <MudCheckBox @bind-Value="registerForm.RememberMe" Color="Color.Primary"
                                  UncheckedColor="Color.Default" Dense />
                 </MudStack>
 
@@ -89,8 +98,9 @@
     bool ShowAlertFlag = false;
     Severity AlertSeverity = Severity.Normal;
     string AlertMessage = "";
+    string BackendUrl => Configuration["BackendBaseUrl"]!;
 
-    private async Task ShowAlertAsync(Severity severity, string message)
+    private async Task ShowAlert(Severity severity, string message)
     {
         AlertSeverity = severity;
         AlertMessage = message;
@@ -101,14 +111,16 @@
     }
     #endregion
 
-    private RegisterRequestObject registerRequestObject { get; set; } = new RegisterRequestObject();
+    private RegisterForm registerForm { get; set; } = new RegisterForm();
     InputType PasswordInput = InputType.Password;
 
-    private class RegisterRequestObject
-    {
+
+    public class RegisterForm
+    {   
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string ConfirmPassword { get; set; } = string.Empty;
+        public string Username { get; set; } = string.Empty;
         public bool RememberMe { get; set; } = false;
     }
 
@@ -120,33 +132,11 @@
         Navigation.NavigateTo("auth/google-login", forceLoad: true);
     }
 
-    private async void Register()
-    {
-        if (!IsValidLoginRequest()) return;
-
-        var response = await HttpService.RegisterUser(new CreateUserDTO
-        {
-                Email = registerRequestObject.Email,
-                Password = registerRequestObject.Password,
-        });
-        if (response.IsSuccessStatusCode)
-        {
-            Navigation.NavigateTo("/Confirm-email");
-        }
-        else
-        {
-            var error = await response.Content.ReadAsStringAsync();
-            await ShowAlertAsync(Severity.Error, $"Registration failed: {error}");
-        }
-    }
-
-
-
     private bool IsValidLoginRequest()
     {
-        if (!IsValidPassword(registerRequestObject.Password)) return false;
-        if (!IsValidEmail(registerRequestObject.Email)) return false;
-        if (registerRequestObject.Password != registerRequestObject.ConfirmPassword) return false;
+        if (!IsValidPassword(registerForm.Password)) return false;
+        if (!IsValidEmail(registerForm.Email)) return false;
+        if (registerForm.Password != registerForm.ConfirmPassword) return false;
         return true;
     }
 
@@ -154,7 +144,7 @@
     {
         if (string.IsNullOrWhiteSpace(email))
         {
-            _ = ShowAlertAsync(Severity.Error, "Email is required.");
+            _ = ShowAlert(Severity.Error, "Email is required.");
             return false;
         }
 
@@ -165,7 +155,7 @@
         }
         catch
         {
-            _ = ShowAlertAsync(Severity.Error, "Invalid email format.");
+            _ = ShowAlert(Severity.Error, "Invalid email format.");
             return false;
         }
     }
@@ -174,19 +164,19 @@
     {
         if (string.IsNullOrWhiteSpace(password))
         {
-            _ = ShowAlertAsync(Severity.Error, "Password cannot be empty.");
+            _ = ShowAlert(Severity.Error, "Password cannot be empty.");
             return false;
         }
 
         if (password.Length < 8)
         {
-            _ = ShowAlertAsync(Severity.Error, "Password cannot be less than 8 characters.");
+            _ = ShowAlert(Severity.Error, "Password cannot be less than 8 characters.");
             return false;
         }
 
         if (!System.Text.RegularExpressions.Regex.IsMatch(password, @"^[a-zA-Z0-9]+$"))
         {
-            _ = ShowAlertAsync(Severity.Error, "Password cannot contain special characters.");
+            _ = ShowAlert(Severity.Error, "Password cannot contain special characters.");
             return false;
         }
 

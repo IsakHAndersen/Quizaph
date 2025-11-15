@@ -1,6 +1,12 @@
-﻿@inject NavigationManager navigation
+﻿@inject NavigationManager Navigation
 @page "/Login"
+@using CommonModels.UserModels
+@using QuizaphFrontend.Services
 @layout EmptyLayout
+@inject BackendClient BackendClient
+@inject IAuthService AuthService
+@inject HttpClient HttpClient
+@inject IJSRuntime JS
 
 <MudPaper Square="true" style="background-color: transparent;" Elevation="0">
     <MudIconButton Icon=@Icons.Material.Filled.Home Color="Color.Primary" Variant="Variant.Filled"
@@ -17,7 +23,7 @@
                 AdornmentAriaLabel="Show Password"></MudTextField>
                 <MudButton Style="width: 120px; align-self: center" Color="Color.Primary" OnClick="@SignIn"
                            Variant="Variant.Text">
-                    Login
+                    Log in
                 </MudButton>
                 <MudDivider DividerType="DividerType.Middle" Class="my-1" />
 
@@ -49,7 +55,7 @@
                 <MudDivider DividerType="DividerType.Middle" Class="my-1" />
                 <MudStack Spacing="2" Row="true" AlignItems="AlignItems.Center" Style="margin-left: 5px;">
                     <MudText> Remember me? </MudText>
-                    <MudCheckBox @bind-Value="loginRequestObject.RememberMe" Color="Color.Primary" UncheckedColor="Color.Default" Dense></MudCheckBox>
+                    <MudCheckBox @bind-Value="RememberMe" Color="Color.Primary" UncheckedColor="Color.Default" Dense></MudCheckBox>
                 </MudStack>
                 <MudStack Spacing="2" Row="true" AlignItems="AlignItems.Center" Style="align-self:center;">
                     <MudButton Style="align-self: center; color: black; text-transform: none;" OnClick="@SignUp"
@@ -75,6 +81,7 @@
     bool ShowAlertFlag = false;
     Severity AlertSeverity = Severity.Normal;
     string AlertMessage = "";
+    private bool RememberMe = false;
 
     private async void ShowAlert(Severity severity, string message)
     {
@@ -86,31 +93,14 @@
     }
     #endregion
 
-    private LoginRequestObject loginRequestObject { get; set; } = new LoginRequestObject();
+    private LoginDTO loginRequestObject { get; set; } = new();
     bool isShow;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
     private void GoogleLogin()
     {
-        navigation.NavigateTo("auth/google-login", forceLoad: true);
-    }
-
-    private class LoginRequestObject
-    {
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public bool RememberMe { get; set; } = false;
-    }
-
-    private void LoginWithGoogle()
-    {
-        navigation.NavigateTo("https://localhost:7008/api/auth/google-login", forceLoad: true);
-    }
-
-    private void NavigateToMainPage()
-    {
-        navigation.NavigateTo("/");
+        Navigation.NavigateTo("auth/google-login", forceLoad: true);
     }
 
     void ShowPassword()
@@ -131,15 +121,17 @@
 
     private void SignUp()
     {
-        navigation.NavigateTo("SignUp");
+        Navigation.NavigateTo("SignUp");
     }
 
-    private void SignIn()
+    private void NavigateToMainPage()
     {
-        var loginResult = false;
-        if (!loginResult)
-        {
-            ShowAlert(Severity.Error, "Invalid login. Try again.");
-        }
+        Navigation.NavigateTo("/");
+    }
+
+    private async Task SignIn()
+    {
+        await BackendClient.Login(loginRequestObject);
+        Navigation.NavigateTo("/");
     }
 }

@@ -1,8 +1,14 @@
 ﻿using CommonModels.Enums;
 using CommonModels.QuizCreationModels.QuizManual;
-using CommonModels.QuizCreationModels.QuizPrompt;
 using CommonModels.QuizModels;
 using CommonModels.UserModels;
+using Grpc.Net.Client.Configuration;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
+using MudBlazor;
+using System.Text.Json;
+using static System.Net.WebRequestMethods;
 
 namespace QuizaphFrontend.Services
 {
@@ -15,11 +21,43 @@ namespace QuizaphFrontend.Services
             _httpClient = httpClient;
         }
 
-        public async Task<HttpResponseMessage> RegisterUser(CreateUserDTO createUserDTO)
+        public async Task<ActionResult> Login(LoginDTO loginRequest)
         {
-            return await _httpClient.PostAsJsonAsync("api/users/register", createUserDTO);
+            var response = await _httpClient.PostAsJsonAsync("api/users/login", loginRequest);
+            response.EnsureSuccessStatusCode();
+            return new OkResult();
+        }
+        public async Task<User?> GetUserByEmail(string email)
+        {
+            var response = await _httpClient
+                .GetAsync($"/api/users/by-email?email={Uri.EscapeDataString(email)}");
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return null;
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<User>();
         }
 
+        public async Task<User?> FindUserByLogin(string providerName, string providerId)
+        {
+            var response = await _httpClient.
+                GetAsync($"api/users/by-login?providerName={providerName}&providerId={providerId}"
+            );
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return null;
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<User>();
+        }
+
+        public async Task<ActionResult> Register(CreateUserDTO createUserDto)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/users/register", createUserDto);
+            response.EnsureSuccessStatusCode();
+            return new OkResult();
+        }
+        public async Task<HttpResponseMessage> RegisterExternalProvider(CreateExternalUserDTO user)
+        {
+            return await _httpClient.PostAsJsonAsync("api/users/register/external", user);
+        }
         public async Task<HttpResponseMessage> ConfirmEmail(Guid userId, string token)
         {
             return await _httpClient.GetAsync(
@@ -41,6 +79,13 @@ namespace QuizaphFrontend.Services
             return quizzes ?? new List<Quiz>();
         }
 
+
+        public async Task<HttpResponseMessage> CreateQuizResult(QuizResult quizResult)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"api/quizzes/quiz-result/create", quizResult);
+            response.EnsureSuccessStatusCode();
+            return response;
+        }
         public async Task<List<QuizResult>> GetAllUserQuizResults(Guid userId)
         {
             var response = await _httpClient.GetAsync($"api/quizzes/{userId}/quiz-results");
@@ -59,14 +104,18 @@ namespace QuizaphFrontend.Services
             return completed ?? new List<QuizResult>();
         }
 
-        public async Task<QuizResult?> GetBestUserQuizResultAsync(Guid userId, QuizType type, QuizMode mode)
+        public async Task<QuizResult?> GetBestUserQuizResult(QuizType type, QuizMode mode)
         {
-            var response = await _httpClient.GetAsync($"api/quizzes/{userId}/quiz-results/{type}/{mode}");
+            var response = await _httpClient.GetAsync($"api/quizzes/quiz-results/{type}/{mode}/best");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return null;
 
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                throw new UnauthorizedAccessException("User not authenticated.");
+
             response.EnsureSuccessStatusCode();
+
             return await response.Content.ReadFromJsonAsync<QuizResult>();
         }
 

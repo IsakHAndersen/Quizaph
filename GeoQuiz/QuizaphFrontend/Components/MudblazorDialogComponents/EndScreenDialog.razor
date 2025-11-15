@@ -1,7 +1,7 @@
 ﻿@using CommonModels.QuizModels
 @using QuizaphFrontend.Services
 @inject BackendClient HttpService
-@inject UserClaimsService UserClaimsService 
+@inject AuthService AuthService 
 
 <MudDialog>
     <DialogContent>
@@ -26,7 +26,7 @@
                 </MudText>
             }
 
-            @if (IsPersonalBest)
+            @if (IsNewPersonalBest)
             {
                 <MudText Color="Color.Success" Style="font-size: 15px;">
                     🎉 New Personal Best!
@@ -66,14 +66,14 @@
     </DialogContent>
 </MudDialog>
 
-@code { 
+@code {
     [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;
     [Parameter] public QuizResult QuizResult { get; set; } = default!;
+    [Parameter] public bool IsNewPersonalBest { get; set; }
 
     public double? AverageScorePercent { get; set; } 
     public double? AverageScore { get; set; }
     public TimeSpan? AverageTime { get; set; }
-    public bool IsPersonalBest { get; set; } = false;
     private double? QuizResultPercentage => (double)QuizResult.Score / QuizResult.MaxScore * 100;
 
     protected override async Task OnInitializedAsync()
@@ -85,22 +85,6 @@
             AverageScorePercent = quizStats.AverageScorePercent;
             AverageTime = quizStats.AverageTime;
         }
-        IsPersonalBest = await isPersonalBest();
-    }
-
-    private async Task<bool> isPersonalBest()
-    {
-        var userId = await UserClaimsService.GetUserIdAsync();
-        if (userId.HasValue)
-        {
-            var bestResult = await HttpService.GetBestUserQuizResultAsync(userId.Value, QuizResult.QuizType, QuizResult.QuizMode);
-            if (bestResult == null)
-            {
-                return true; // No previous result, so this is a personal best
-            }
-            return QuizResult.Score > bestResult.Score;
-        }
-        return false;
     }
 
     private void Retry() => MudDialog.Close(DialogResult.Ok("retry"));

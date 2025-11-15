@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using CommonModels.UserModels;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Text.Json;
 
 namespace QuizaphFrontend
 {
@@ -10,7 +12,6 @@ namespace QuizaphFrontend
     [ApiController]
     public class AuthController : ControllerBase
     {
-
         // Trigger Google login
         [HttpGet("google-login")]
         public async Task<ActionResult> Google()

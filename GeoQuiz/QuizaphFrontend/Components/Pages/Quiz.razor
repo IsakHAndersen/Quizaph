@@ -64,7 +64,7 @@
                     </MudButton>
 
                     <MudButton Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
-                               OnClick="ShowEndScreen" StartIcon="@Icons.Material.Filled.Output"
+                               OnClick="EndQuiz" StartIcon="@Icons.Material.Filled.Output"
                                Style="text-transform: none;">
                         End Quiz
                     </MudButton>
@@ -167,7 +167,7 @@
     public void Dispose()
     {
         QuizState.OnResetRequested -= Reset;
-        QuizState.OnShowEndScreen -= ShowEndScreen;
+        QuizState.OnEndQuiz -= EndQuiz;
         QuizState.OnCurrentDatasetChanged -= SelectDataset;
         QuizState.OnCurrentModeChanged -= SelectMode;
     }
@@ -188,7 +188,7 @@
     {
         await QuizState.InvokeRequestReset();
     }
-    async Task ShowEndScreen()
+    async Task EndQuiz()
     {
         bool? result = await DialogService.ShowMessageBox(
         "End Quiz?",

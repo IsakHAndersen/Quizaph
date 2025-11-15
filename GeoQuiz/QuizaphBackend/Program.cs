@@ -1,4 +1,5 @@
 using GeoQuizBackend.EntityFramework;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using QuizaphBackend.EntityFramework;
@@ -13,10 +14,25 @@ builder.AddServiceDefaults();
 // Authorization     
 builder.Services.AddAuthorization();
 
+// Http Context
+builder.Services.AddHttpContextAccessor();
+
 // Controllers + Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Cookie Authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = ".AspNetCore.Identity.Application";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.None;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+        options.SlidingExpiration = true;
+    });
 
 // Add Semantic Kernel Service
 builder.Services.AddScoped<SemanticKernelService>();
@@ -36,7 +52,7 @@ builder.Services.AddScoped(client =>
 });
 
 builder.Services.AddScoped<IEmailSender, EmailService>();
-builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // EF Core DbContext (InMemory for now)
 builder.Services.AddDbContext<DBContext>(options =>
