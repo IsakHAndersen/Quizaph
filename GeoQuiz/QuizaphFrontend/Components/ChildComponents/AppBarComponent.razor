@@ -152,8 +152,11 @@
     private string currentRoute;
     private bool isPrivilegedUser = false;
     bool isLoggedIn = false;
+    [Parameter] public EventCallback<bool> LightModeChanged { get; set; }
 
 
+    public async Task ToggleDarkMode()
+        => await LightModeChanged.InvokeAsync(!isDarkMode);
 
     private List<(string Label, string Route, string Icon)> tabs = new()
     {

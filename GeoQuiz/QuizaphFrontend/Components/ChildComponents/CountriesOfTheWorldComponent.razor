@@ -146,6 +146,7 @@
     private string searchText = string.Empty;
     private bool fullScreenMode = false;
     private string PracticeModeHoveredCountry = "Hover over a country to show name";
+    private Continent selectedContinent;
 
     // Timer mode specific
     private bool timerPaused = false;
@@ -166,6 +167,21 @@
         QuizState.OnEndQuiz += EndQuiz;
         QuizState.OnCurrentModeChanged += OnModeChanged;
         RetrieveQuizData();
+        TotalAnswers = CountryQuizData.Countries.Count();
+    }
+
+
+    private async void OnContinentChanged(Continent continent)
+    {
+        selectedContinent = continent;
+        await FilterByContinent();
+
+    }   
+
+    private async Task FilterByContinent()
+    {
+        CountryQuizData.Countries.Where(c => c.Continent == selectedContinent).ToList();
+        await JS.InvokeVoidAsync("continentChanged", CountryQuizData);
         TotalAnswers = CountryQuizData.Countries.Count();
     }
 
@@ -313,7 +329,13 @@
             a.IsLost = false;
             a.NameOfError = string.Empty;
         });
+        // Get fresh data
+        CountryQuizData = StaticQuizDataRetrievalService.GetCountryQuizData();
         RandomModeNextCountry();
+        if (selectedContinent != Continent.None)
+        {
+            await FilterByContinent();
+        };
         await JS.InvokeVoidAsync("resetSvg");
     }
 
