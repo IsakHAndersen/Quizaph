@@ -13,8 +13,6 @@ namespace QuizaphBackend.Services
         }
         public async Task SendEmailAsync(string email, string subject, string message)
         {
-
-            // create MailMessage
             var mailMessage = new MailMessage
             {
                 From = new MailAddress("sporting.inn@gmail.com"),
@@ -22,8 +20,6 @@ namespace QuizaphBackend.Services
                 IsBodyHtml = true
             };
             mailMessage.To.Add(email);
-
-            // HTML references the CID
             var htmlBody = $@"
                 <p>{message}</p>
                 <p>
@@ -32,13 +28,11 @@ namespace QuizaphBackend.Services
                 <p>Regards,<br>Sporting Inn</p>";
             mailMessage.Body = htmlBody;
 
-            // Attach image as inline
             var inlineImage = new Attachment("Images/QuizaphEmailPic.jpg");
             inlineImage.ContentId = "logo";
             inlineImage.ContentDisposition!.Inline = true;
             inlineImage.ContentDisposition.DispositionType = DispositionTypeNames.Inline;
             mailMessage.Attachments.Add(inlineImage);
-            // Send
             try
             {
                 await _smtpClient.SendMailAsync(mailMessage);
@@ -46,8 +40,7 @@ namespace QuizaphBackend.Services
             catch (Exception ex)
             {
                 throw new InvalidOperationException("Failed to send email.", ex);
-            }
-          
+            } 
         }
         public void Dispose()
         {

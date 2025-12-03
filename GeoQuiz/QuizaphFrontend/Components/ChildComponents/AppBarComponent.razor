@@ -1,7 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using QuizaphFrontend.Services
 @inject NavigationManager navigation
-@inject UserClaimsService UserClaimsService
 @inject AuthenticationStateProvider AuthStateProvider
 @inject BackendClient HttpService
 
@@ -97,12 +96,17 @@
                     <Authorized>
                         <div class="d-flex align-center ml-4">
                             <MudText Style="font-size: 14px; font-weight: 500; margin-right: 12px;">
-                                @context.User.Identity.Name
+                                @context.User.Identity!.Name
                             </MudText>
-                            <MudAvatar 
-                                       Size="Size.Medium"
-                                       Class="elevation-1">
-                                <MudImage Src="@context.User.Claims.Where(p => p.Type == "picture").FirstOrDefault()?.Value"></MudImage>
+                            <MudAvatar Size="Size.Medium" Class="elevation-1">
+                                @if (context.User.Claims.FirstOrDefault(c => c.Type == "picture")?.Value is string picture && !string.IsNullOrWhiteSpace(picture))
+                                {
+                                    <MudImage Src="@picture" />
+                                }
+                                else
+                                {
+                                    <MudIcon Icon="@Icons.Material.Filled.Person" />
+                                }
                             </MudAvatar>
                         </div>
                     </Authorized>
@@ -148,8 +152,11 @@
     private string currentRoute;
     private bool isPrivilegedUser = false;
     bool isLoggedIn = false;
+    [Parameter] public EventCallback<bool> LightModeChanged { get; set; }
 
 
+    public async Task ToggleDarkMode()
+        => await LightModeChanged.InvokeAsync(!isDarkMode);
 
     private List<(string Label, string Route, string Icon)> tabs = new()
     {
@@ -180,7 +187,7 @@
 
         if (isLoggedIn)
         {
-            isPrivilegedUser = user.IsInRole("Admin") || user.IsInRole("Membership");
+            isPrivilegedUser = user.IsInRole("Admin") || user.IsInRole("User");
         }
         else
         {

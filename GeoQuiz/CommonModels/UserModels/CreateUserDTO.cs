@@ -8,9 +8,17 @@ namespace CommonModels.UserModels
 {
     public class CreateUserDTO
     {
-        public string? Email { get; set; }
-        public string? Password { get; set; }
-        public string? ExternalProviderName { get; set; }
-        public string? ExternalProviderId { get; set; }
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string Username { get; set; } = string.Empty;
+
+        public CreateUserDTO(string email, string password, string username)
+        {
+            Email = email;
+            Password = password;
+            Username = username;
+        }
     }
+
+   
 }

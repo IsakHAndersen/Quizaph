@@ -2,13 +2,22 @@
 @inherits LayoutComponentBase
 @inject NavigationManager navigation
 
+@if (isDarkMode)
+{
+    <MudThemeProvider Theme="@DarkTheme" />
+}
+else
+{
+    <MudThemeProvider />
+}
+
 <MudThemeProvider />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
-    <AppBarComponent />
+    <AppBarComponent @bind-Value=this.LightModeChanged/>
     <MudMainContent Style="background-color: #f1f8fa; min-height: 100vh; padding-top: 60px;">
         @Body
     </MudMainContent>
@@ -23,9 +32,14 @@
 
 @code
 {
-    public bool isDarkMode = true;
     private int selectedTab = 1; // Dummy tab with no content
 
+    public bool LightModeChanged;
+
+    private MudTheme DarkTheme = new MudTheme
+    {
+  
+    };
     private void MainIconClick()
     {
         selectedTab = 1;

@@ -1,3 +1,6 @@
+using CommonModels.UserModels;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Http.Resilience;
 using MudBlazor.Services;
 using Polly;
@@ -15,51 +18,11 @@ builder.Configuration
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddControllers();
-
+builder.Services.AddHttpContextAccessor();
 
 builder.Configuration.AddUserSecrets<Program>();
 
-// Authentication and Authorization 
-builder.Services.AddAuthentication("Cookies")
-    .AddCookie("Cookies", options =>
-    {
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SameSite = SameSiteMode.Strict;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.LoginPath = "/auth/google-login";
-        options.LogoutPath = "/auth/logout";
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-        options.SlidingExpiration = true;
-    })
-    .AddGoogle("Google", options =>
-    {
-        options.ClientId = builder.Configuration["OAuth:Google:Id"] ?? throw new InvalidOperationException("Google ClientId not configured.");
-        options.ClientSecret = builder.Configuration["OAuth:Google:Secret"] ?? throw new InvalidOperationException("Google ClientSecret not configured.");
-        options.SaveTokens = true;
-        options.Scope.Add("profile");
-        options.Scope.Add("email");
-        options.Events.OnCreatingTicket = ctx =>
-        {
-            string id = ctx.Principal.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
-            string email = ctx.Principal.FindFirstValue(ClaimTypes.Email) ?? "";
-            string picture = ctx.User.GetProperty("picture").GetString() ?? "";
 
-            ctx.Identity?.AddClaim(new Claim("picture", picture));
-            ctx.Identity?.AddClaim(new Claim("AppUserId", id));
-
-            // All logged-in users automatically get "Membership"
-            ctx.Identity?.AddClaim(new Claim(ClaimTypes.Role, "Membership"));
-            return Task.CompletedTask;
-        };
-    });
-builder.Services.AddAuthorization();
-
-// Mudblazor and FontAwesome icons
-builder.Services.AddMudServices();
-
-// Your app-specific services
-builder.Services.AddScoped<CurrentQuizStateService>();
-builder.Services.AddScoped<UserClaimsService>();
 
 builder.Services.AddHttpClient<BackendClient>(
     static client =>
@@ -67,21 +30,23 @@ builder.Services.AddHttpClient<BackendClient>(
         client.BaseAddress = new("https+http://quizaphbackend");
     });
 
+builder.Services.AddScoped(sp =>
+{
+    var nav = sp.GetRequiredService<NavigationManager>();
+    return new HttpClient { BaseAddress = new Uri(nav.BaseUri) };
+});
+
+
 #pragma warning disable EXTEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 builder.Services
     .AddHttpClient<OpenAIClient>(client =>
     {
         client.BaseAddress = new Uri("https+http://quizaphbackend");
-        client.Timeout = Timeout.InfiniteTimeSpan; // Disable HttpClient's own timeout
     })
      .RemoveAllResilienceHandlers()
-    // Add a custom pipeline 1. Max Retries 2. Request Timeout Limit 3. Circuit breaker options
+    // Add a custom pipeline (retry, timeout, circuit breaker)  
     .AddResilienceHandler("OpenAIHandler", builder =>
     {
-        builder.AddRetry(new HttpRetryStrategyOptions
-        {
-            MaxRetryAttempts = 2
-        });
         builder.AddTimeout(new HttpTimeoutStrategyOptions
         {
             Timeout = TimeSpan.FromMinutes(2)
@@ -95,6 +60,77 @@ builder.Services
     });
 #pragma warning restore EXTEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
+
+// Authentication and Authorization 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie("Cookies", options =>
+    {
+        options.Cookie.Name = ".AspNetCore.Identity.Application";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.None;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.LoginPath = "/auth/google-login";
+        options.LogoutPath = "/auth/logout";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+        options.SlidingExpiration = true;
+    })
+    .AddGoogle("Google", options =>
+    {
+        options.ClientId = builder.Configuration["OAuth:Google:Id"] ?? throw new InvalidOperationException("Google ClientId not configured.");
+        options.ClientSecret = builder.Configuration["OAuth:Google:Secret"] ?? throw new InvalidOperationException("Google ClientSecret not configured.");
+        options.SaveTokens = true;
+        options.Scope.Add("profile");
+        options.Scope.Add("email");
+        options.Events.OnTicketReceived = async context =>
+        {
+            var googleId = context.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+            var email = context.Principal.FindFirstValue(ClaimTypes.Email);
+            var name = context.Principal.FindFirstValue(ClaimTypes.Name);
+            var picture = context.Principal.FindFirst(claim => claim.Type == "picture")?.Value
+                         ?? context.Request.Form["picture"]; // fallback
+            if (string.IsNullOrEmpty(googleId) || string.IsNullOrEmpty(email))
+            {
+                context.Fail("Invalid Google identity.");
+                return;
+            }
+            // Create a DI scope (critical!)
+            using var scope = context.HttpContext.RequestServices.CreateScope();
+            var services = scope.ServiceProvider;
+
+            // Now resolve the FULL BackendClient with methods
+            var backendClient = services.GetRequiredService<BackendClient>();
+            var user = await backendClient.FindUserByLogin("Google", googleId);
+            if (user == null)
+            {
+                var userDto = new CreateExternalUserDTO
+                {
+                    ExternalProviderName = "Google",
+                    ExternalProviderId = googleId,
+                    Email = email,
+                    Name = name ?? "",
+                };
+                await backendClient.RegisterExternalProvider(userDto);
+            };
+        };
+        options.Events.OnCreatingTicket = context =>
+        {
+            var picture = context.Identity?.FindFirst("picture")?.Value ??
+                          context.User.GetProperty("picture").GetString();
+            if (!string.IsNullOrEmpty(picture))
+                context.Identity?.AddClaim(new Claim("picture", picture));
+
+            context.Identity?.AddClaim(new Claim(ClaimTypes.Role, "User"));
+            return Task.CompletedTask;
+        };
+    });
+builder.Services.AddAuthorization();
+
+// Mudblazor and FontAwesome icons
+builder.Services.AddMudServices();
+
+// Your app-specific services
+builder.Services.AddScoped<CurrentQuizStateService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 

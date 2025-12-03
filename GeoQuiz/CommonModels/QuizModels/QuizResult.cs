@@ -1,4 +1,4 @@
-﻿using CommmonModels.UserModels;
+﻿using CommonModels.UserModels;
 using CommonModels.Enums;
 using System.ComponentModel.DataAnnotations;
 
@@ -7,7 +7,7 @@ namespace CommonModels.QuizModels
     public class QuizResult
     {
         // Primary key for each attempt
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
 
         // Foreign key to user

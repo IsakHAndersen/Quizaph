@@ -1,8 +1,11 @@
 ﻿using CommonModels.Enums;
 using CommonModels.QuizModels;
 using GeoQuizBackend.EntityFramework;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.Entity;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace QuizaphBackend.Controllers
 {
@@ -32,12 +35,41 @@ namespace QuizaphBackend.Controllers
             return Ok(quiz);
         }
         #endregion 
-
         #region Quiz Result Endpoints
+        [HttpPost("quiz-result/create")]
+        public IActionResult CreateQuizResult([FromBody] QuizResult quizResult)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                         ?? User.FindFirst("sub")?.Value;
+            if (!Guid.TryParse(userId, out var userGuid))
+                return Unauthorized();
+            quizResult.UserId = userGuid;
+            _context.QuizResults.Add(quizResult);
+            _context.SaveChanges();
+            return Ok();
+        }
+
         [HttpGet("{userId}/quiz-results")]
         public IActionResult GetAllResults(Guid userId)
         {
             var results = _context.QuizResults
+                .Where(r => r.UserId == userId)
+                .OrderByDescending(r => r.CreatedAt)
+                .ToList();
+            return Ok(results);
+        }
+
+        [HttpGet("quiz-results")]
+        public IActionResult QuizResult()
+        {
+            var results = _context.QuizResults.AsNoTracking().ToList();
+            return Ok(results); 
+        }
+
+        [HttpGet("users/{userId}/quiz-results")]
+        public IActionResult GetUserQuizResults(Guid userId)
+        {
+            var results = _context.QuizResults.AsNoTracking()
                 .Where(r => r.UserId == userId)
                 .OrderByDescending(r => r.CreatedAt)
                 .ToList();
@@ -59,19 +91,23 @@ namespace QuizaphBackend.Controllers
             return Ok(completed);
         }
 
-        [HttpGet("{userId}/quiz-results/{quizType}/{quizMode}")]
-        public IActionResult GetBestQuizResult(Guid userId, QuizType quizType, QuizMode quizMode)
+        [HttpGet("quiz-results/{type}/{mode}/best")]
+        [Authorize]
+        public async Task<ActionResult<QuizResult>> GetBestUserQuizResult(QuizType type, QuizMode mode)
         {
-            var result = _context.QuizResults
-                .Where(r => r.UserId == userId && r.QuizType == quizType && r.QuizMode == quizMode)
-                .OrderByDescending(r => r.Score)   // <-- best score first
-                .ThenByDescending(r => r.CreatedAt) // tie-breaker: latest attempt
-                .FirstOrDefault();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                         ?? User.FindFirst("sub")?.Value;
 
-            if (result == null)
-                return NotFound();
+            if (!Guid.TryParse(userId, out var userGuid))
+                return Unauthorized();
 
-            return Ok(result);
+            var result = await _context.QuizResults
+                .Where(a => a.UserId == userGuid)
+                .Where(a => a.QuizType == type)
+                .Where(a => a.QuizMode == mode)
+                .OrderByDescending(a => a.Score)
+                .FirstOrDefaultAsync();
+            return result is null ? NotFound() : Ok(result);
         }
 
         [HttpGet("quiz-stats/{quizType}/{quizMode}")]

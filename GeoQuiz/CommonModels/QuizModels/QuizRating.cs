@@ -1,5 +1,5 @@
 ﻿
-using CommmonModels.UserModels;
+using CommonModels.UserModels;
 
 namespace CommonModels.QuizModels
 {
