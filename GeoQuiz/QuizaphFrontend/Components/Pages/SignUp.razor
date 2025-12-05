@@ -7,6 +7,8 @@
 @inject BackendClient BackendClient
 @inject IJSRuntime JS
 @inject IConfiguration Configuration
+@inject HttpClient Http
+
 
 <MudPaper Square="true" style="background-color: transparent;" Elevation="0">
     <MudIconButton Icon=@Icons.Material.Filled.Home Color="Color.Primary" Variant="Variant.Filled"
@@ -14,80 +16,71 @@
     </MudIconButton>
     <MudContainer MaxWidth="MaxWidth.ExtraSmall">
         <MudPaper MaxHeight="40%" Width="100%" Square="true"
-                  style="background-color: #ffffff; border-radius: 20px; padding: 30px 40px 30px 40px;">
+                  style="border-radius: 20px; padding: 30px 40px 30px 40px;">
             <MudStack Spacing="2">
                 <MudText Typo="Typo.h5" Style="font-weight: 500; align-self: center; margin-bottom: 10px;">
                     Welcome To Quizaph
                 </MudText>
 
-                <!-- Username/Email/Password Fields -->
-                <form action="@($"{BackendUrl}/api/users/register")" method="post">
-                        <input type="text" name="username" placeholder="Username" style="width:100%; padding: 8px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc;" />
+                <!-- NEW: Proper Blazor + MudBlazor registration form (AJAX) -->
+                <EditForm Model="@model" OnValidSubmit="@HandleRegister">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary/>
 
-                        <input type="email" name="email" placeholder="Email" style="width:100%; padding: 8px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc;" />
+                    <MudTextField @bind-Value="model.Username"
+                                  Label="Username"
+                                  Required="true"
+                                  Class="mb-3" />
 
-                        <input type="password" name="password" placeholder="Password" style="width:100%; padding: 8px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc;" />
+                    <MudTextField @bind-Value="model.Email"
+                                  Label="Email"
+                                  InputType="InputType.Email"
+                                  Required="true"
+                                  Class="mb-3" />
 
-                        <input type="password" name="confirmPassword" placeholder="Confirm Password" style="width:100%; padding: 8px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc;" />
+                    <MudTextField @bind-Value="model.Password"
+                                  Label="Password"
+                                  InputType="InputType.Password"
+                                  Required="true"
+                                  Class="mb-3" />
 
-                        <button type="submit"
-                                class="mud-button-root mud-button mud-button-filled mud-button-filled-primary"
-                                style="width:120px; margin-top: 10px;">
-                            Sign up
-                        </button>
-                </form>
+                    <MudTextField @bind-Value="model.ConfirmPassword"
+                                  Label="Confirm Password"
+                                  InputType="InputType.Password"
+                                  Required="true"
+                                  For="@(() => model.ConfirmPassword)"
+                                  Class="mb-4" />
 
-                <MudDivider DividerType="DividerType.Middle" Class="my-2" />
+                    <MudStack AlignItems="AlignItems.Center">
+                        <MudButton ButtonType="ButtonType.Submit"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   Disabled="@loading"
+                                   Style="width:120px;">
+                                   Sign Up
+                        </MudButton>
 
-                <!-- Google Sign-In Button -->
+                        @if (!string.IsNullOrEmpty(AlertMessage))
+                        {
+                            <MudAlert Severity="Severity.Error" Class="ml-3">@AlertMessage</MudAlert>
+                        }
+                    </MudStack>
+                </EditForm>
+
+                <MudDivider DividerType="DividerType.Middle" Class="my-6" />
+
+                <!-- Google button stays exactly as you had it -->
                 <MudStack Spacing="3" Row="true" AlignItems="AlignItems.Center" Style="align-self:center;">
                     <MudButton OnClick="@GoogleLogin"
-                               Variant="Variant.Outlined"
+                               Variant="Variant.Text"
                                Color="Color.Default"
-                               Style="background-color: white;
-                      border: 0px solid;
-                      text-transform: none;
-                      color: #3c4043;
-                      font-weight: 500;
-                      border-radius: 4px;
-                      padding: 0 12px;
-                      height: 40px;">
-
+                               Style="text-transform: none; font-weight: 500; border-radius: 4px; padding: 0 12px; height: 40px;">
                         <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-                            <!-- Google "G" logo -->
-                            <img src="https://developers.google.com/identity/images/g-logo.png"
-                                 alt="Google"
-                                 style="width: 18px; height: 18px;" />
-
-                            <!-- Button text -->
+                            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="width: 18px; height: 18px;" />
                             <span>Sign up with Google</span>
                         </MudStack>
                     </MudButton>
                 </MudStack>
-
-                <MudDivider DividerType="DividerType.Middle" Class="my-1" />
-
-                <!-- Remember Me -->
-                <MudStack Spacing="2" Row="true" AlignItems="AlignItems.Center" Style="margin-left: 5px;">
-                    <MudText>Remember me?</MudText>
-                    <MudCheckBox @bind-Value="registerForm.RememberMe" Color="Color.Primary"
-                                 UncheckedColor="Color.Default" Dense />
-                </MudStack>
-
-                <!-- Already a user? -->
-                <MudStack Spacing="2" Row="true" AlignItems="AlignItems.Center" Style="align-self:center;">
-                    <MudButton Style="align-self: center; color: black; text-transform: none;" OnClick="@SignIn"
-                               Variant="Variant.Text">
-                        Already a user? Sign In
-                    </MudButton>
-                </MudStack>
-
-                @if (ShowAlertFlag)
-                {
-                    <MudAlert Severity="@AlertSeverity" Elevation="0" Dense="true">
-                        @AlertMessage
-                    </MudAlert>
-                }
             </MudStack>
         </MudPaper>
     </MudContainer>
@@ -111,75 +104,56 @@
     }
     #endregion
 
-    private RegisterForm registerForm { get; set; } = new RegisterForm();
+    private RegisterModel model = new();
+    private bool loading = false;
     InputType PasswordInput = InputType.Password;
 
 
-    public class RegisterForm
-    {   
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public string ConfirmPassword { get; set; } = string.Empty;
-        public string Username { get; set; } = string.Empty;
-        public bool RememberMe { get; set; } = false;
-    }
-
     private void NavigateToMainPage() => Navigation.NavigateTo("/");
     private void SignIn() => Navigation.NavigateTo("/Login");
+
+    private async Task HandleRegister()
+    {
+        loading = true;
+        AlertMessage = null;
+
+        try
+        {
+            var response = await Http.PostAsJsonAsync($"{BackendUrl}/api/users/register", model);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Cookie is set → full reload so Blazor sees the logged-in user
+                Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
+                return;
+            }
+
+            var error = await response.Content.ReadAsStringAsync();
+            AlertMessage = error.Contains("Username", StringComparison.OrdinalIgnoreCase) ? "Username already taken" :
+                           error.Contains("Email", StringComparison.OrdinalIgnoreCase) ? "Email already registered" :
+                           "Unable to register. Please check your details and try again.";
+        }
+        catch (Exception ex)
+        {
+            AlertMessage = "Network error. Please try again.";
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
 
     private void GoogleLogin()
     {
         Navigation.NavigateTo("auth/google-login", forceLoad: true);
     }
 
-    private bool IsValidLoginRequest()
+
+    public class RegisterModel
     {
-        if (!IsValidPassword(registerForm.Password)) return false;
-        if (!IsValidEmail(registerForm.Email)) return false;
-        if (registerForm.Password != registerForm.ConfirmPassword) return false;
-        return true;
-    }
-
-    private bool IsValidEmail(string email)
-    {
-        if (string.IsNullOrWhiteSpace(email))
-        {
-            _ = ShowAlert(Severity.Error, "Email is required.");
-            return false;
-        }
-
-        try
-        {
-            var _ = new System.Net.Mail.MailAddress(email);
-            return true;
-        }
-        catch
-        {
-            _ = ShowAlert(Severity.Error, "Invalid email format.");
-            return false;
-        }
-    }
-
-    private bool IsValidPassword(string password)
-    {
-        if (string.IsNullOrWhiteSpace(password))
-        {
-            _ = ShowAlert(Severity.Error, "Password cannot be empty.");
-            return false;
-        }
-
-        if (password.Length < 8)
-        {
-            _ = ShowAlert(Severity.Error, "Password cannot be less than 8 characters.");
-            return false;
-        }
-
-        if (!System.Text.RegularExpressions.Regex.IsMatch(password, @"^[a-zA-Z0-9]+$"))
-        {
-            _ = ShowAlert(Severity.Error, "Password cannot contain special characters.");
-            return false;
-        }
-
-        return true;
+        [Required] public string Username { get; set; } = "";
+        [Required, EmailAddress] public string Email { get; set; } = "";
+        [Required, StringLength(100, MinimumLength = 6)] public string Password { get; set; } = "";
+        [Required, Compare(nameof(Password))] public string ConfirmPassword { get; set; } = "";
     }
 }

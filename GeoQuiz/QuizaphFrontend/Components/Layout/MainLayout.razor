@@ -1,27 +1,20 @@
 ﻿@using QuizaphFrontend.Components.ChildComponents
 @inherits LayoutComponentBase
 @inject NavigationManager navigation
+@inject IJSRuntime JS
 
-@if (isDarkMode)
-{
-    <MudThemeProvider Theme="@DarkTheme" />
-}
-else
-{
-    <MudThemeProvider />
-}
-
-<MudThemeProvider />
+<MudThemeProvider Theme="@CustomQuizaphTheme" IsDarkMode="@isDarkMode"/>
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
-    <AppBarComponent @bind-Value=this.LightModeChanged/>
-    <MudMainContent Style="background-color: #f1f8fa; min-height: 100vh; padding-top: 60px;">
+    <AppBarComponent OnDarkModeToggled="@HandleDarkModeChanged" />
+    <MudMainContent Style="min-height: 100vh; padding-top: 60px;">
         @Body
     </MudMainContent>
 </MudLayout>
+
 
 
 <div id="blazor-error-ui" data-nosnippet>
@@ -33,13 +26,60 @@ else
 @code
 {
     private int selectedTab = 1; // Dummy tab with no content
+    private bool isDarkMode = false;
 
-    public bool LightModeChanged;
-
-    private MudTheme DarkTheme = new MudTheme
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-  
+        if (firstRender)
+        {
+			// Initialize dark mode from local storage
+            var saved = await JS.InvokeAsync<string>("localStorage.getItem", "darkMode");
+            if (bool.TryParse(saved, out bool savedMode))
+            {
+                isDarkMode = savedMode;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private MudTheme CustomQuizaphTheme = new MudTheme()
+    {
+        PaletteLight = new PaletteLight()
+        {
+            Primary = "#4A6CF7",           // Modern, friendly blue for buttons/links
+            Secondary = "#F5A623",         // Accent color for highlights (orange/gold)
+            Background = "#F9FAFB",        // Soft off-white background
+            Surface = "#FFFFFF",            // Card surfaces
+            AppbarBackground = "#FFFFFF",   // Top bar neutral white
+            DrawerBackground = "#F4F5F7",   // Slightly darker than background
+            TextPrimary = "#1A1A1A",       // Strong contrast for text
+            TextSecondary = "#4B5563",     // Softer secondary text
+            Success = "#22C55E",           // For positive indicators
+            Info = "#3B82F6",               // For info highlights
+            Warning = "#FBBF24",           // Warnings / cautions
+            Error = "#EF4444",             // Error state
+            Divider = "#E5E7EB",           // Subtle borders
+            ActionDefault = "#4A6CF7",     // Default interactive color
+        },
+        PaletteDark = new PaletteDark()
+        {
+            Primary = "#7AA9FF",           // Softer blue for dark mode
+            Secondary = "#F5C06B",         // Warm accent color
+            Background = "#121212",        // Dark background
+            Surface = "#1E1E1E",           // Card surfaces slightly lighter
+            AppbarBackground = "#1B1B1B",  // Top bar for dark mode
+            DrawerBackground = "#1A1A1A",  // Drawer slightly lighter
+            TextPrimary = "#E5E7EB",       // Light text for contrast
+            TextSecondary = "#9CA3AF",     // Softer secondary text
+            Success = "#22C55E",           // Same as light for consistency
+            Info = "#60A5FA",               // Info color adjusted for dark
+            Warning = "#FBBF24",           // Warm highlight still readable
+            Error = "#F87171",             // Error red slightly softer on dark
+            Divider = "#2C2C2C",           // Subtle dark borders
+            ActionDefault = "#7AA9FF",     // Buttons / links
+        }
     };
+
     private void MainIconClick()
     {
         selectedTab = 1;
@@ -49,6 +89,12 @@ else
     private void Logout()
     {
         
+    }
+
+    private void HandleDarkModeChanged(bool darkModeEnabled)
+    {
+        isDarkMode = darkModeEnabled;
+        StateHasChanged(); // Triggers re-render with correct theme
     }
 
     private void SignIn()

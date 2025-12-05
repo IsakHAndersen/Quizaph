@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Text.Json;
+using static QuizaphFrontend.Components.Pages.SignUp;
 
 namespace QuizaphFrontend
 {
@@ -29,5 +30,17 @@ namespace QuizaphFrontend
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect("/");
         }
+
+        //[HttpPost("register")]
+        //public async Task<IActionResult> Register(RegisterModel model)
+        //{
+        //    // ... create user ...
+
+        //    // Log the user in immediately after registration
+        //    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+        //        new ClaimsPrincipal(claimsIdentity));
+
+        //    return Redirect("/");
+        //}
     }
 }

@@ -11,61 +11,55 @@
 @inject NavigationManager navigation
 @implements IDisposable
 
-<MudPaper Square="true" style="background-color: #E9F4F7; overflow: hidden; border-radius: 20px;" Elevation="0" id="container">
-        <MudPaper 
-                  Style="position: absolute; top: 15px; left: 20px; z-index: 1100; background-color: transparent;
-                     padding: 8px 12px; border-radius: 8px; display: flex; gap: 12px; align-items: center; border-block: 0;"
-                  Elevation="0">
+<MudPaper Square="true" Style="overflow:hidden; border-radius:20px;" Elevation="0" id="container">
 
-            <MudButton OnClick="@TogglePanel"
-                       Variant="Variant.Text"
-                       Color="Color.Dark"
-                       EndIcon="@toggleIcon"
-                       Style="text-transform: none; max-width: 250px;">
-                View Countries
-            </MudButton>
-        </MudPaper>
+    
+    <MudButton OnClick="@TogglePanel"
+               Variant="Variant.Filled"
+               EndIcon="@toggleIcon"
+               Color="Color.Primary"
+               Style="position:absolute; top:15px; left:20px; z-index:1100;
+                  padding:8px 12px; border-radius:8px; text-transform:none; max-width:250px;">
+        View Countries
+    </MudButton>
 
-        @if (showPanel)
-        {
-            <MudExpansionPanels Style="position: absolute; top: 60px; margin: 20px; margin-right: 70px;" Dense>
-                @foreach (var continentGroup in CountryQuizData.Countries.GroupBy(a => a.Continent))
-                {
-                    <MudExpansionPanel Text="@FormatContinentName(continentGroup.Key)" Icon="@Icons.Material.Filled.Public" Style="margin: 3px; elevation: 0;">
-                        <MudStack Row="true" Spacing="0" Wrap="Wrap.Wrap">
-                            @foreach (var country in continentGroup)
-                            {
-                                <MudText Style="@GetCountryStyle(country)">
-                                    @(country.Guessed? country.CountryName: "•••••")
-                                </MudText>
-                            }
-                        </MudStack>
-                    </MudExpansionPanel>
-                }
-            </MudExpansionPanels>
-        }
-        <MudText Style="position: absolute; top: 15px; right: 20px; background-color: rgba(255, 255, 255, 0.8);
-                        padding: 8px 12px; border-radius: 12px; font-weight: bold; font-size: 15px; font-family: 'Roboto Condensed';">
-            @GuessedAnswers / @TotalAnswers
-        </MudText>
+    @if (showPanel)
+    {
+        <MudExpansionPanels Style="position:absolute; top:60px; margin:20px; margin-right:70px;" Dense Elevation="0">
+            @foreach (var continentGroup in CountryQuizData.Countries.GroupBy(a => a.Continent))
+            {
+                <MudExpansionPanel Text="@FormatContinentName(continentGroup.Key)" Icon="@Icons.Material.Filled.Public" Style="elevation:0;">
+                    <MudStack Row="true" Spacing="0" Wrap="Wrap.Wrap">
+                        @foreach (var country in continentGroup)
+                        {
+                            <MudText>
+                                @(country.Guessed? country.CountryName: "•••••")
+                            </MudText>
+                        }
+                    </MudStack>
+                </MudExpansionPanel>
+            }
+        </MudExpansionPanels>
+    }
+
+    <MudText Typo="Typo.body2" Class="score-badge">
+        @GuessedAnswers / @TotalAnswers
+    </MudText>
 
     @if (SelectedMode == QuizMode.Timed)
     {
-        <MudStack Style="position: absolute; margin-top: 15px; left: 50%; transform: translateX(-50%); background-color: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 10px;" Row="true" AlignItems="AlignItems.Center" Spacing="1">
-            <MudIconButton Icon="@((timerPaused ? Icons.Material.Filled.PlayArrow : Icons.Material.Filled.Pause))" style="padding: 0px;"
-                           OnClick="TogglePause" />
-            <MudText style="font-size: 15px; font-weight: bold;">
+        <MudStack Class="mode-panel" Row="true" AlignItems="AlignItems.Center" Spacing="1">
+            <MudIconButton Icon="@((timerPaused ? Icons.Material.Filled.PlayArrow : Icons.Material.Filled.Pause))" Style="padding:0;" OnClick="TogglePause" />
+            <MudText Typo="Typo.body2" Style="font-weight:bold;">
                 @TimeSpan.FromSeconds(QuizTimer).ToString(@"mm\:ss")
             </MudText>
-            <MudIcon Style="margin-left: 7px;" Icon="@Icons.Material.Filled.HourglassEmpty" />
+            <MudIcon Icon="@Icons.Material.Filled.HourglassEmpty" />
         </MudStack>
     }
+
     @if (SelectedMode == QuizMode.RandomWithLives)
     {
-        <MudStack Style="position: absolute; margin-top: 15px; left: 50%; transform: translateX(-50%);
-                         background-color: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 10px;"
-                  AlignItems="AlignItems.Center" Spacing="2">
-
+        <MudStack Class="mode-panel" Row="true" AlignItems="AlignItems.Center" Spacing="2">
             <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3">
                 @foreach (var life in quizLives)
                 {
@@ -79,33 +73,29 @@
             </MudText>
         </MudStack>
     }
+
     @if (SelectedMode == QuizMode.Practice)
     {
-        <MudStack Style="position: absolute; margin-top: 15px; left: 50%; transform: translateX(-50%);
-                             background-color: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 10px;"
-                  AlignItems="AlignItems.Center" Spacing="2">
+        <MudStack Class="mode-panel" Row="true" AlignItems="AlignItems.Center" Spacing="2">
             <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Primary">
                 @PracticeModeHoveredCountry
             </MudText>
         </MudStack>
     }
-     
-        <div id="svg-zoom-container" style="width: 100%; height: 100%; overflow: hidden; touch-action: none;" @ref="_svgContainer">
-                <object id="svg-map"
-                        type="image/svg+xml"
-                        data="SVGS/world_modified.svg"
-                        style="width: 100%; height: 100%; max-height: 100%; cursor: move;">
-                </object>
-        </div>
 
+    <div id="svg-zoom-container" style="width:100%; height:100%; overflow:hidden; touch-action:none;" @ref="_svgContainer">
+        <object id="svg-map"
+                type="image/svg+xml"
+                data="SVGS/world_modified.svg"
+                style="width:100%; height:100%; max-height:100%; cursor:move;">
+        </object>
+    </div>
 
-        <!-- Zoom Buttons -->
-        <div style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px;">
-            <MudFab Size="Size.Small" Color="Color.Primary" OnClick="@SvgZoomIn" Style="min-width: 36px; min-height: 36px; background: #3DD45C; opacity: 0.7;" EndIcon="@Icons.Material.Filled.Add">
-            </MudFab>
-            <MudFab Size="Size.Small" Color="Color.Primary" OnClick="@SvgZoomOut" Style="min-width: 36px; min-height: 36px; background: #C92447; opacity: 0.7;" EndIcon="@Icons.Material.Filled.Remove">
-            </MudFab>
-        </div>
+    <!-- Zoom Buttons -->
+    <div style="position:absolute; right:16px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:8px;">
+        <MudFab Size="Size.Small" Color="Color.Primary" OnClick="@SvgZoomIn" EndIcon="@Icons.Material.Filled.Add" />
+        <MudFab Size="Size.Small" Color="Color.Primary" OnClick="@SvgZoomOut" EndIcon="@Icons.Material.Filled.Remove" />
+    </div>
 
     @if (SelectedMode != QuizMode.RandomWithLives)
     {
@@ -116,20 +106,44 @@
                       Variant="Variant.Outlined"
                       Adornment="Adornment.End"
                       AdornmentIcon="@Icons.Material.Filled.Search"
-                      AdornmentColor="Color.Dark"
-                      Style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-                             width: 300px; height: 40px; background-color: white;"
+                      AdornmentColor="Color.Default"
+                      Style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); width:300px; height:40px;"
                       OnKeyUp="@OnSearchKeyUp"
                       @ref="_searchField" />
     }
- 
 
-        <MudFab StartIcon="@(fullScreen? Icons.Material.Filled.FullscreenExit : Icons.Material.Filled.Fullscreen)"
-                    Color="Color.Primary"
-                    Style="position: absolute; bottom: 16px; right: 16px;"
-                    Size="Size.Small"
-                    OnClick="@ToggleFullScreen" />
-    </MudPaper>
+    <MudFab StartIcon="@(fullScreen? Icons.Material.Filled.FullscreenExit : Icons.Material.Filled.Fullscreen)"
+            Color="Color.Primary"
+            Style="position:absolute; bottom:16px; right:16px;"
+            Size="Size.Small"
+            OnClick="@ToggleFullScreen" />
+</MudPaper>
+
+<style>
+
+    .score-badge {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        padding: 8px 12px;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 15px;
+        font-family: 'Roboto Condensed';
+        background-color: var(--mud-palette-surface);
+    }
+
+    .mode-panel {
+        position: absolute;
+        margin-top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px;
+        border-radius: 10px;
+        background-color: var(--mud-palette-surface);
+    }
+</style>
+
 
 @code {
     [CascadingParameter] private Quiz QuizInfo { get; set; } = default!;

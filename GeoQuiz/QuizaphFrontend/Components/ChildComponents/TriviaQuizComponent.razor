@@ -10,50 +10,66 @@
 <MudPaper Square="true"
           Class="quiz-container"
           Elevation="0"
-          Style="min-height: calc(100vh -70px); background-color: #E9F4F7; overflow: hidden; border-radius: 20px; display: flex; flex-direction: column; padding: 20px;">
-        @if (QuizQuestions != null)
-        {
-            <MudGrid Class="mt-5" Spacing="2">
-                @foreach (var question in QuizQuestions)
-                {
-                    <MudItem xs="12" sm="6" md="4" lg="3">
-                        <MudPaper Class="pa-5"
-                                  Elevation="0"
-                                  Style="background-color: white; border-radius: 10px;">
-                            <!-- Question text -->
-                            <MudText Typo="Typo.body1" Class="mb-3">
-                                @question.Question
-                            </MudText>
+          Style="
+              min-height: calc(100vh - 70px);
+              background-color: var(--mud-palette-background);
+              overflow: hidden;
+              border-radius: 20px;
+              display: flex;
+              flex-direction: column;
+              padding: 20px;">
 
-                            <MudText Typo="Typo.body2"
-                                     Color="Color.Secondary"
-                                     Class="italic">
-                                @(question.IsGuessed == true
-                                                    ? question.CorrectAnswers.FirstOrDefault()
-                                                    : "—")
-                            </MudText>
-                        </MudPaper>
-                    </MudItem>
-                }
-            </MudGrid>
-            <MudStack Row="false"
-                      Justify="Justify.Center"
-                      AlignItems="AlignItems.Center"
-                      Class="mt-6">
-                <MudTextField T="string"
-                              @bind-Value="searchText"
-                              Immediate="true"
-                              Placeholder="Guess here"
-                              Variant="Variant.Outlined"
-                              Adornment="Adornment.End"
-                              AdornmentIcon="@Icons.Material.Filled.Search"
-                              AdornmentColor="Color.Dark"
-                              Style="width: 300px; height: 40px; background-color: white;"
-                              OnKeyUp="@OnSearchKeyUp"
-                              @ref="_searchField" />
-            </MudStack>
-        }
+    @if (QuizQuestions != null)
+    {
+        <MudGrid Class="mt-5" Spacing="2">
+            @foreach (var question in QuizQuestions)
+            {
+                <MudItem xs="12" sm="6" md="4" lg="3">
+
+                    <MudPaper Class="pa-5"
+                              Elevation="0"
+                              Style="
+                                          background-color: var(--mud-palette-surface);
+                                          border-radius: 10px;">
+                        <!-- Question text -->
+                        <MudText Typo="Typo.body1" Class="mb-3">
+                            @question.Question
+                        </MudText>
+
+                        <MudText Typo="Typo.body2"
+                                 Color="Color.Secondary"
+                                 Class="italic">
+                            @(question.IsGuessed == true
+                                                ? question.CorrectAnswers.FirstOrDefault()
+                                                : "—")
+                        </MudText>
+                    </MudPaper>
+                </MudItem>
+            }
+        </MudGrid>
+        <!-- Search input -->
+        <MudStack Row="false"
+                  Justify="Justify.Center"
+                  AlignItems="AlignItems.Center"
+                  Class="mt-6">
+            <MudTextField T="string"
+                          @bind-Value="searchText"
+                          Immediate="true"
+                          Placeholder="Guess here"
+                          Variant="Variant.Outlined"
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          AdornmentColor="Color.Default"
+                          Style="
+                                  width: 300px;
+                                  height: 40px;
+                                  background-color: var(--mud-palette-surface);"
+                          OnKeyUp="@OnSearchKeyUp"
+                          @ref="_searchField" />
+        </MudStack>
+    }
 </MudPaper>
+
 
 @code {
     [CascadingParameter] private Quiz QuizInfo { get; set; } = default!;
