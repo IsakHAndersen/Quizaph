@@ -6,15 +6,18 @@
 @inject IJSRuntime JS
 
 <MudAppBar Fixed="true" Elevation="0" Color="Color.Surface" Class="appbar-height">
-    <MudContainer MaxWidth="MaxWidth.Large" Class="d-flex justify-space-between align-center" Style="height:100%; padding:0 16px;">
+    <MudContainer MaxWidth="MaxWidth.Large" Class="d-flex justify-space-between align-center" Style="height:100%;">
 
         <!-- Left side -->
         <div class="d-flex align-center">
-            <img src="QuizImages/appbaricon.png" alt="Quizaph Logo" width="36" height="36" class="mr-2" />
+            <MudStack Spacing="6" Row=true AlignItems="AlignItems.Center"> 
+                <img src="QuizImages/AppbarIcon.png" alt="Quizaph Logo" width="60" height="60"/>
 
-            <MudText Class="quizaph-gradient" Style="font-size:24px; font-weight:500; font-family:'Roboto Condensed'; margin-right:20px;">
-                Quizaph
-            </MudText>
+                <MudText Class="quizaph-gradient" Style="font-size:24px; font-weight:500; font-family:'Roboto Condensed'; margin-right:20px;">
+                    Quizaph
+                </MudText>
+            </MudStack>
+         
 
             <!-- Desktop "Tabs" -->
             <MudHidden Breakpoint="Breakpoint.SmAndDown">
@@ -63,16 +66,17 @@
 
         <!-- Right side -->
         <div class="d-flex align-center">
-            <MudIconButton Icon="@((isDarkMode) ? Icons.Material.Filled.WbSunny : Icons.Material.Filled.NightsStay)"
+            <MudIconButton Icon="@((isDarkMode) ? Icons.Material.Filled.NightsStay: Icons.Material.Filled.WbSunny)"
                            OnClick="ToggleDarkMode"
                            Size="Size.Small"
+                           Class="mr-2"
                            Style="@GetIconColor()" />
 
             @if (!isLoggedIn)
             {
                 <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                    <MudButton Variant="Variant.Text" OnClick="@SignIn" Style="text-transform:none; font-weight:400;" Size="Size.Large">Login</MudButton>
-                    <MudButton OnClick="@SignUp" Variant="Variant.Filled" Size="Size.Large"
+                    <MudButton Variant="Variant.Text" OnClick="@SignIn" Style="text-transform:none; font-weight:400;" Size="Size.Medium">Login</MudButton>
+                    <MudButton OnClick="@SignUp" Variant="Variant.Filled" Size="Size.Medium"
                                Style="border-radius:20px; text-transform:none; white-space:nowrap; min-width:90px;">
                         Sign Up
                     </MudButton>
@@ -83,7 +87,7 @@
                 <MudMenu Label="Profile" Variant="Variant.Text"
                          EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
                          StartIcon="@Icons.Material.Filled.Person"
-                         Color="Color.Inherit" Dense Class="profile-menu">
+                         Dense Class="profile-menu">
                     <MudMenuItem Icon="@Icons.Material.Filled.Person" Label="Edit Profile" />
                     <MudMenuItem Icon="@Icons.Material.Filled.BarChart" Label="Quiz Stats" />
                     <MudMenuItem Icon="@Icons.Material.Filled.Logout" Label="Logout" OnClick="Logout" />
@@ -226,6 +230,6 @@
 
     private string GetIconColor()
     {
-        return isDarkMode ? "color: orange;" : "color: #1E3A8A;";
+        return isDarkMode ? "color: #1E3A8A;": "color: orange;";
     }
 }

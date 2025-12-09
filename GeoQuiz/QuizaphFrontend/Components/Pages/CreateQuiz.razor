@@ -9,15 +9,14 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using MudBlazor
 
-<MudPaper Square="true" Elevation="0" Class="pt-12" Style="background-color: #f5f6fa; min-height:100vh;">
+<MudPaper Square="true" Elevation="0" Class="pt-12" Style="min-height:100vh;">
     <MudContainer MaxWidth="MaxWidth.Large">
-
 
         <MudGrid Spacing="3">
 
             <!-- Left: Quiz Type Selector -->
             <MudItem xs="12" md="3">
-                <MudPaper Outlined="true" Style="background-color:#ffffff; border-radius:20px; padding:20px; box-shadow:0px 4px 12px rgba(0,0,0,0.05);">
+                <MudPaper Outlined="true" Style="border-radius:20px; padding:20px;">
                     <MudSelect T="QuizType"
                                Label="Quiz Type"
                                Variant="Variant.Filled"
@@ -38,19 +37,26 @@
 
             <!-- Right: Quiz Form -->
             <MudItem xs="12" md="9">
-                <MudPaper Style="background-color:#ffffff; border-radius:20px; padding:30px; box-shadow:0px 8px 24px rgba(0,0,0,0.08);">
+                <MudPaper Style="border-radius:20px; padding:30px;">
                     <MudStack Spacing="4">
-                        <!-- Quiz Info -->
-                        <MudText Typo="Typo.h4" Align="Align.Center" Class="mb-6" Style="font-weight:600; color:#3b3f5c;">
+
+                        <!-- Title -->
+                        <MudText Typo="Typo.h4" Align="Align.Center" Class="mb-6" Style="font-weight:600;">
                             <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-2" /> Create Quiz
                         </MudText>
 
-                        <!-- Title -->
-                        <MudTextField @bind-Value="QuizTitle" Variant="Variant.Outlined" Label="Quiz Title" Placeholder="Enter descriptive quiz title"
-                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Title" />
+                        <!-- Quiz Title -->
+                        <MudTextField @bind-Value="QuizTitle"
+                                      Variant="Variant.Outlined"
+                                      Label="Quiz Title"
+                                      Placeholder="Enter descriptive quiz title"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Title" />
 
                         <!-- Category -->
-                        <MudSelect T="QuizCategory" Label="Subject" Variant="Variant.Outlined"
+                        <MudSelect T="QuizCategory"
+                                   Label="Subject"
+                                   Variant="Variant.Outlined"
                                    StartIcon="@Icons.Material.Filled.Category"
                                    @bind-Value="SelectedCategory">
                             @foreach (QuizCategory category in Enum.GetValues(typeof(QuizCategory)))
@@ -62,7 +68,10 @@
                         </MudSelect>
 
                         <!-- Mode -->
-                        <MudSelect T="string" @bind-Value="ModeSelection" Label="Creation Mode" Variant="Variant.Outlined"
+                        <MudSelect T="string"
+                                   @bind-Value="ModeSelection"
+                                   Label="Creation Mode"
+                                   Variant="Variant.Outlined"
                                    StartIcon="@Icons.Material.Filled.Mode">
                             @foreach (var mode in QuizCreationModes)
                             {
@@ -87,9 +96,15 @@
                                              Adornment="Adornment.Start"
                                              AdornmentIcon="@Icons.Material.Filled.BarChart"
                                              Min="1" Max="5" />
-                            <MudTextField @bind-Value="PromptContext" Variant="Variant.Outlined" Label="Quiz context" Placeholder="Describe the quiz you wish to create"
-                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Info" />
+
+                            <MudTextField @bind-Value="PromptContext"
+                                          Variant="Variant.Outlined"
+                                          Label="Quiz context"
+                                          Placeholder="Describe the quiz you wish to create"
+                                          Adornment="Adornment.Start"
+                                          AdornmentIcon="@Icons.Material.Filled.Info" />
                         }
+
                         @if (ModeSelection == "Manual")
                         {
                             <MudText Typo="Typo.subtitle1" Class="mb-2" Style="font-weight:500;">
@@ -100,9 +115,9 @@
                                 @foreach (var question in ManualQuestions)
                                 {
                                     <MudItem xs="12" md="6" Class="d-flex flex-column mb-4">
+
                                         <!-- Question -->
-                                        <MudTextField T="string"
-                                                      @bind-Value="question.Question"
+                                        <MudTextField @bind-Value="question.Question"
                                                       Variant="Variant.Outlined"
                                                       Placeholder="Enter question"
                                                       Adornment="Adornment.Start"
@@ -115,8 +130,7 @@
                                         {
                                             var idx = i;
                                             <div class="d-flex align-center mb-2">
-                                                <MudTextField T="string"
-                                                              @bind-Value="question.CorrectAnswers[idx]"
+                                                <MudTextField @bind-Value="question.CorrectAnswers[idx]"
                                                               Variant="Variant.Outlined"
                                                               Placeholder=@($"Answer {idx + 1}")
                                                               Adornment="Adornment.Start"
@@ -138,23 +152,35 @@
                                             Add Answer
                                         </MudButton>
 
-                                        <MudButton Variant="Variant.Text" Color="Color.Error"
+                                        <MudButton Variant="Variant.Text"
+                                                   Color="Color.Error"
                                                    StartIcon="@Icons.Material.Filled.Delete"
                                                    OnClick="@(() => RemoveQuestion(question))">
                                             Remove Question
                                         </MudButton>
+
                                     </MudItem>
                                 }
                             </MudGrid>
 
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
-                                       OnClick="AddQuestion" Class="mt-2">
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.Filled.Add"
+                                       OnClick="AddQuestion"
+                                       Class="mt-2">
                                 Add Question
                             </MudButton>
                         }
+
                         <QuizaphFrontend.Components.ChildComponents.LoadingCircle Loading="IsLoading" AbsoluteMiddlePosition="true" />
+
                         <!-- Submit -->
-                        <MudButton Variant="Variant.Filled" Disabled="@IsLoading" Color="Color.Success" Class="mt-4" StartIcon="@Icons.Material.Filled.CheckCircle" OnClick="SubmitQuizCreation">
+                        <MudButton Variant="Variant.Filled"
+                                   Disabled="@IsLoading"
+                                   Color="Color.Success"
+                                   Class="mt-4"
+                                   StartIcon="@Icons.Material.Filled.CheckCircle"
+                                   OnClick="SubmitQuizCreation">
                             Create Quiz
                         </MudButton>
 
@@ -165,6 +191,7 @@
         </MudGrid>
     </MudContainer>
 </MudPaper>
+
 
 @code {
     private QuizType selectedQuizType = QuizType.TriviaQuiz;
