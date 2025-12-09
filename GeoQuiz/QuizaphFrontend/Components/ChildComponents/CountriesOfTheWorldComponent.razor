@@ -505,6 +505,9 @@
             }
         }
     }
-
+    private void SelectContinent(List<Country> countries)
+    {
+        await JS.InvokeVoidAsync("selectContinent", countries);
+    }
     #endregion
 }
